@@ -1,4 +1,4 @@
-# sketchup-llm-dae-pipeline
+# Propojení dvou světů (CAD + LLM)
 
 > **Deterministická pipeline: fyzické měření → SketchUp 2016 → COLLADA (.dae) → sémantický JSON → LLM analýza bez halucinací.**
 

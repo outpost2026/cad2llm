@@ -52,7 +52,7 @@ Groq validace: žádné nekonzistence
 
 Projekt vznikl jako součást **Outpost 2026** — off-grid modulárního bydlení vlastní výstavby v Praze (dřevěná konstrukce, solární systém 8S2P LiFePO4 630 Ah). Cílem je přesnější prototypování prostoru v součinnosti s LLM nástroji.
 
-Aktuální scope: **Zone 2** — vývojový/obytný uzel, ~4 500 × 2 000 mm. Aspirační cíl: celý objekt Outpost (~45 m²).
+Aktuální scope: **Zone 2** — vývojový/obytný uzel, ~450 × 200 cm. Aspirační cíl: celý objekt Outpost (~45 m²).
 
 * * *
 

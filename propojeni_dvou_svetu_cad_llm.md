@@ -125,14 +125,14 @@ sketchup-llm-dae-pipeline/
 
 ## Quickstart
 
-```bash
-git clone https://github.com/outpost2026/sketchup-llm-dae-pipeline
-cd sketchup-llm-dae-pipeline
+[Download konverzní skript](https://github.com/outpost2026/cad2llm/blob/main/convert_dae_to_json_v3.py)
+
 pip install lxml numpy
 
-python scripts/convert_dae_to_json_v3.py examples/mistnost_2_v4.dae output.json
-```
+*bash* -> python convert_dae_to_json_v3.py examples/mistnost_2_v4.dae output.json
 
+
+```
 * * *
 
 ## Klíčová technická rozhodnutí

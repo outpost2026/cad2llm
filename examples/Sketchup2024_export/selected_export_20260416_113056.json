@@ -1,0 +1,167 @@
+[
+  {
+    "id": 3349,
+    "name": "Kamna Priti mini D_zone_bed_energy wall primary wood fuel",
+    "type": "ComponentInstance",
+    "definition": "stove_main",
+    "tag": "energy_nodes",
+    "hierarchy_path": [
+
+    ],
+    "spatial_data_m": {
+      "origin_xyz": [
+        157.02866141732275,
+        63.480314960629975,
+        0.0
+      ],
+      "center_xyz": [
+        165.52220472440936,
+        69.6141732283465,
+        13.385826771653544
+      ],
+      "size_xyz": [
+        16.987086614173222,
+        26.77165354330709,
+        12.26771653543306
+      ]
+    },
+    "metadata": {
+      "SU_InstanceSet": {
+        "Owner": "",
+        "Status": ""
+      },
+      "energy": {
+        "capacity_ah": 628,
+        "cell_count": 16,
+        "configuration": 16,
+        "parallel": 2,
+        "series": 8,
+        "type": "battery",
+        "voltage": 24
+      }
+    }
+  },
+  {
+    "id": 3354,
+    "name": "Energy source main power invertor mppt dc -ac max load 3,2 kw",
+    "type": "ComponentInstance",
+    "definition": "HVM3.2H_hybrid_invertor",
+    "tag": "energy_nodes",
+    "hierarchy_path": [
+
+    ],
+    "spatial_data_m": {
+      "origin_xyz": [
+        70.4724409448819,
+        74.80314960629919,
+        42.322834645669296
+      ],
+      "center_xyz": [
+        75.78740157480316,
+        76.77165354330707,
+        49.21259842519686
+      ],
+      "size_xyz": [
+        10.629921259842519,
+        13.779527559055119,
+        3.9370078740157624
+      ]
+    },
+    "metadata": {
+      "SU_InstanceSet": {
+        "Owner": "",
+        "Status": ""
+      }
+    }
+  },
+  {
+    "id": 3353,
+    "name": "24V gokwh 100ah lfp battery",
+    "type": "ComponentInstance",
+    "definition": "24V_secondary_100ah_lfp",
+    "tag": "energy_nodes",
+    "hierarchy_path": [
+
+    ],
+    "spatial_data_m": {
+      "origin_xyz": [
+        80.90551181102362,
+        69.29133858267714,
+        -1.5777218104420236e-30
+      ],
+      "center_xyz": [
+        91.24015748031495,
+        74.01574803149605,
+        4.330708661417323
+      ],
+      "size_xyz": [
+        20.669291338582667,
+        8.661417322834646,
+        9.448818897637807
+      ]
+    },
+    "metadata": {
+      "SU_InstanceSet": {
+        "Owner": "",
+        "Status": ""
+      },
+      "energy": {
+        "capacity_ah": 100,
+        "type": "battery",
+        "voltage": 24
+      }
+    }
+  },
+  {
+    "id": 3369,
+    "name": "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+    "type": "ComponentInstance",
+    "definition": "Main_battery_of_the_house",
+    "tag": "energy_nodes",
+    "hierarchy_path": [
+
+    ],
+    "spatial_data_m": {
+      "origin_xyz": [
+        70.2755905511811,
+        71.96850393700787,
+        20.669291338582678
+      ],
+      "center_xyz": [
+        92.8346456692913,
+        75.35433070866142,
+        24.704724409448822
+      ],
+      "size_xyz": [
+        45.11811023622042,
+        8.070866141732285,
+        6.771653543307096
+      ]
+    },
+    "metadata": {
+      "SU_InstanceSet": {
+        "Owner": "",
+        "Status": ""
+      },
+      "energy": {
+        "capacity_ah": 628,
+        "type": "battery",
+        "voltage": 24
+      },
+      "safety": {
+        "fire_risk": true,
+        "min_distance_m": 0.5
+      },
+      "thermal": {
+        "heat_loss_w": 0.03,
+        "heat_loss_w_max": 5,
+        "type": "battery_cell"
+      },
+      "zone": {
+        "temp_max_c": 35,
+        "temp_min_c": 5,
+        "type": "energy_storage"
+      }
+    }
+  }
+]

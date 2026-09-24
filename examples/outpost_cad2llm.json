@@ -1,0 +1,673 @@
+{
+  "project_metadata": {
+    "name": "mistnost_2_sk24",
+    "export_date": "2026-04-16T08:41:34Z",
+    "global_origin_gps": [
+      50.150888,
+      14.42336652
+    ],
+    "units": "meters"
+  },
+  "nodes": [
+    {
+      "id": "2HEdQ$2uz6weqBWn8VZ9hU",
+      "instance_name": "Worktop #01 hlavní pracovni plocha dřevěná",
+      "definition_name": "worktop_user",
+      "tag": "Shelves",
+      "hierarchy_path": [
+        "Worktop #01 hlavní pracovni plocha dřevěná"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [1.52, 1.76, 0.745],
+        "center_xyz": [2.65, 1.86, 0.77],
+        "size_xyz": [2.26, 0.2, 0.05]
+      }
+    },
+    {
+      "id": "0rmtt3FRj1YPd1mfgkqUd5",
+      "instance_name": "Bed_01_mattres_with_light_frame",
+      "definition_name": "sleep_zone",
+      "tag": "bed_m2",
+      "hierarchy_path": [
+        "Bed_01_mattres_with_light_frame"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.495, 0.0, 0.0],
+        "center_xyz": [3.495, 0.485, 0.09],
+        "size_xyz": [2.0, 0.97, 0.18]
+      }
+    },
+    {
+      "id": "0xR6h3hK9El9GD4kuGaPyI",
+      "instance_name": "Kamna Priti mini D_zone_bed_energy wall primary wood fuel",
+      "definition_name": "stove_main",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "Kamna Priti mini D_zone_bed_energy wall primary wood fuel"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [3.989, 1.612, 0.0],
+        "center_xyz": [4.204, 1.768, 0.34],
+        "size_xyz": [0.431, 0.312, 0.68]
+      }
+    },
+    {
+      "id": "0uDj5QkETBQQmBjJxIhmbx",
+      "instance_name": "LFP_main_base",
+      "definition_name": "lfp_main_worktop_policka_na_main_battery",
+      "tag": "Shelves",
+      "hierarchy_path": [
+        "LFP_main_base"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [1.69, 1.76, 0.49],
+        "center_xyz": [2.733, 1.88, 0.508],
+        "size_xyz": [2.087, 0.24, 0.035]
+      }
+    },
+    {
+      "id": "3$BXbQTyT7PAzeoUxQw8sQ",
+      "instance_name": "main_table_rectangel_food_work_dump_place",
+      "definition_name": "table_main",
+      "tag": "table_main",
+      "hierarchy_path": [
+        "main_table_rectangel_food_work_dump_place"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [-0.002, 0.084, 0.0],
+        "center_xyz": [0.336, 0.457, 0.332],
+        "size_xyz": [0.675, 0.745, 0.665]
+      }
+    },
+    {
+      "id": "1NaeDDsSv4JxyC4PEVikGU",
+      "instance_name": "24V gokwh 100ah lfp battery",
+      "definition_name": "24V_secondary_100ah_lfp",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "24V gokwh 100ah lfp battery"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.055, 1.76, 0.0],
+        "center_xyz": [2.317, 1.88, 0.11],
+        "size_xyz": [0.525, 0.24, 0.22]
+      }
+    },
+    {
+      "id": "1BcSPOxrr53PbvzNkvbqYN",
+      "instance_name": "Energy source main power invertor mppt dc -ac max load 3,2 kw",
+      "definition_name": "HVM3.2H_hybrid_invertor",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "Energy source main power invertor mppt dc -ac max load 3,2 kw"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [1.79, 1.9, 1.075],
+        "center_xyz": [1.925, 1.95, 1.25],
+        "size_xyz": [0.27, 0.1, 0.35]
+      }
+    },
+    {
+      "id": "2NZJ6aglP7YB$GS3QbF3fT",
+      "instance_name": "floor_m2",
+      "definition_name": "wooden_floor",
+      "tag": "floor_wooden",
+      "hierarchy_path": [
+        "floor_m2"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [0.0, 0.0, 0.0],
+        "center_xyz": [2.25, 1.0, -0.01],
+        "size_xyz": [4.548, 2.048, 0.02]
+      }
+    },
+    {
+      "id": "1aWHuPtJbFHgGEepmi$iKD",
+      "instance_name": "wall vnitřní west wooden prostupy pro okna zone bed",
+      "definition_name": "wall_inner_west_wooden_windows_openings",
+      "tag": "walls",
+      "hierarchy_path": [
+        "wall vnitřní west wooden prostupy pro okna zone bed"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.5, 0.0, 0.0],
+        "center_xyz": [2.25, -0.012, 0.995],
+        "size_xyz": [4.5, 0.024, 1.99]
+      }
+    },
+    {
+      "id": "1PACdXT3P7lxblZLb59xoT",
+      "instance_name": "wall vnitřní inner jih south prostup pro okno zone postel stove",
+      "definition_name": ";",
+      "tag": "walls",
+      "hierarchy_path": [
+        "wall vnitřní inner jih south prostup pro okno zone postel stove"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.5, 0.0, 0.0],
+        "center_xyz": [4.512, 1.0, 1.045],
+        "size_xyz": [0.024, 2.0, 2.09]
+      }
+    },
+    {
+      "id": "19EqGzh6H4A9i5w_r48I7P",
+      "instance_name": "wall inner vnitřní zone entry",
+      "definition_name": "wall_inner_north_wooden",
+      "tag": "walls",
+      "hierarchy_path": [
+        "wall inner vnitřní zone entry"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [0.0, 0.0, 0.0],
+        "center_xyz": [-0.012, 1.0, 1.045],
+        "size_xyz": [0.024, 2.0, 2.09]
+      }
+    },
+    {
+      "id": "0yw4wkEnjCEx1KmKLrNYkg",
+      "instance_name": "ceiling_guttafol_135_bottom_layer_ceiling_textile",
+      "definition_name": "Ceiling_m2",
+      "tag": "ceiling",
+      "hierarchy_path": [
+        "ceiling_guttafol_135_bottom_layer_ceiling_textile"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.5, 0.0, 1.99],
+        "center_xyz": [2.25, 1.0, 2.04],
+        "size_xyz": [4.5, 2.0, 0.101]
+      }
+    },
+    {
+      "id": "3Y4EuCQCz8xBULBtNbiwJW",
+      "instance_name": "windows jižní dvojokno bez rámu zone sleeping stove",
+      "definition_name": "window_south",
+      "tag": "windows_m2",
+      "hierarchy_path": [
+        "windows jižní dvojokno bez rámu zone sleeping stove"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.654, 0.045, 0.6],
+        "center_xyz": [4.664, 0.613, 1.175],
+        "size_xyz": [0.02, 1.136, 1.15]
+      }
+    },
+    {
+      "id": "3kByKMdmH4kvdCjgIR8gSn",
+      "instance_name": "windows západní dvojokno bez rámu zone sleeping",
+      "definition_name": "windos_south_west",
+      "tag": "windows_m2",
+      "hierarchy_path": [
+        "windows západní dvojokno bez rámu zone sleeping"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.5, -0.093, 0.561],
+        "center_xyz": [3.872, -0.083, 1.196],
+        "size_xyz": [1.255, 0.02, 1.27]
+      }
+    },
+    {
+      "id": "3G92NKBLH6KfBP4h43Qv6g",
+      "instance_name": "windows západní dvojokno bez rámu zóna dinning dump",
+      "definition_name": "window_west",
+      "tag": "windows_m2",
+      "hierarchy_path": [
+        "windows západní dvojokno bez rámu zóna dinning dump"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [1.575, -0.09, 0.59],
+        "center_xyz": [0.953, -0.08, 1.201],
+        "size_xyz": [1.245, 0.02, 1.221]
+      }
+    },
+    {
+      "id": "1Kz7U9DJz0Yw_J6JQk0rBK",
+      "instance_name": "beam_nosnik_01_wppde",
+      "definition_name": "Beam_east_wall",
+      "tag": "construction_wood",
+      "hierarchy_path": [
+        "beam_nosnik_01_wppde"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [0.04, 2.024, 0.0],
+        "center_xyz": [-0.02, 2.049, 0.997],
+        "size_xyz": [0.12, 0.05, 1.995]
+      }
+    },
+    {
+      "id": "1sjQkYzX974eLKAZXo0cNi",
+      "instance_name": "truss překlad pozednice #01 east wall",
+      "definition_name": "Beam_truss_main_5_m",
+      "tag": "construction_wood",
+      "hierarchy_path": [
+        "truss překlad pozednice #01 east wall"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.774, 2.024, 1.995],
+        "center_xyz": [2.274, 2.064, 2.035],
+        "size_xyz": [5.0, 0.08, 0.08]
+      }
+    },
+    {
+      "id": "01czf7JLz1$9CM5XYGvpl7",
+      "instance_name": "void_entry_point",
+      "definition_name": "Entry_opening_raw_frame_east_wall",
+      "tag": "entrance_void",
+      "hierarchy_path": [
+        "void_entry_point"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [1.695, 2.0, 0.0],
+        "center_xyz": [0.87, 2.0, 0.997],
+        "size_xyz": [1.65, 0.0, 1.995]
+      }
+    },
+    {
+      "id": "19jDrpEEH6cfDadc6m4Nd3",
+      "instance_name": "east_wall_with_entrance_opening_no_windows",
+      "definition_name": "East_wall#1",
+      "tag": "walls",
+      "hierarchy_path": [
+        "east_wall_with_entrance_opening_no_windows"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.5, 2.0, 0.0],
+        "center_xyz": [2.25, 2.012, 1.037],
+        "size_xyz": [4.5, 0.024, 2.075]
+      }
+    },
+    {
+      "id": "0f1MBP1010KfDKls8xXddZ",
+      "instance_name": "beam_nosnik_02",
+      "definition_name": "Beam_east_wall",
+      "tag": "construction_wood",
+      "hierarchy_path": [
+        "beam_nosnik_02"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [1.815, 2.024, 0.0],
+        "center_xyz": [1.755, 2.049, 0.997],
+        "size_xyz": [0.12, 0.05, 1.995]
+      }
+    },
+    {
+      "id": "3YbzVcHZjCVgBNzyHDFDJ4",
+      "instance_name": "beam_nosnik_03",
+      "definition_name": "Beam_east_wall",
+      "tag": "construction_wood",
+      "hierarchy_path": [
+        "beam_nosnik_03"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.62, 2.024, 0.0],
+        "center_xyz": [4.56, 2.049, 0.997],
+        "size_xyz": [0.12, 0.05, 1.995]
+      }
+    },
+    {
+      "id": "1j1EtuG41FNvB5qONTTmfh",
+      "instance_name": "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "definition_name": "Main_battery_of_the_house",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [1.785, 1.828, 0.525],
+        "center_xyz": [2.358, 1.914, 0.628],
+        "size_xyz": [1.146, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "0edAca2afBUvahgOeytYq1",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.718, 1.828, 0.525],
+        "center_xyz": [2.753, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "3YlLCLVLb9oeFLyohi3TCf",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.861, 1.828, 0.525],
+        "center_xyz": [2.896, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "3B2l3oZJX6LhU5jR841gEQ",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [1.928, 1.828, 0.525],
+        "center_xyz": [1.963, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "2OzKmoh8T1N8rBJ7SnOqrX",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.072, 1.828, 0.525],
+        "center_xyz": [2.107, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "3087MaRD99G99xD3Ie5sZ4",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.359, 1.828, 0.525],
+        "center_xyz": [2.394, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "2oOn6gi49EeRCKncSVQsFR",
+      "instance_name": "Unnamed",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "Unnamed"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.144, 1.828, 0.525],
+        "center_xyz": [2.179, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "3Vx6ONEPH28OUiZT0CvCx1",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.0, 1.828, 0.525],
+        "center_xyz": [2.035, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "1UJVmfz9DCguz85iplYB6_",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.215, 1.828, 0.525],
+        "center_xyz": [2.25, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "2sn2wn1$fDJvBzAl6ZZ4zo",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.502, 1.828, 0.525],
+        "center_xyz": [2.537, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "25Ju0PB9D08PfmtnW3wHUW",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.574, 1.828, 0.525],
+        "center_xyz": [2.609, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "3m7jXN0LPFkQ$Ms_0GKtdc",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.789, 1.828, 0.525],
+        "center_xyz": [2.824, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "2QkZIpo6X3DfKCOapENJDD",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.431, 1.828, 0.525],
+        "center_xyz": [2.466, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "3j4MaBKN1CxRUMHkMAeAm0",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.287, 1.828, 0.525],
+        "center_xyz": [2.322, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "2FGlZOWdnFxufk6XjmoJRZ",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [1.785, 1.828, 0.525],
+        "center_xyz": [1.82, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "3c4yn6t2b8Nx7w0E0S80O8",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [2.646, 1.828, 0.525],
+        "center_xyz": [2.681, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "0YKE1DwafAEA2ozwVc41z$",
+      "instance_name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [1.857, 1.828, 0.525],
+        "center_xyz": [1.892, 1.914, 0.628],
+        "size_xyz": [0.07, 0.172, 0.205]
+      }
+    },
+    {
+      "id": "1g_Ca91F90QAxDAdGt8Xxy",
+      "instance_name": "truss překlad pozednice #02 west wall",
+      "definition_name": "Beam_truss_main_5_m",
+      "tag": "construction_wood",
+      "hierarchy_path": [
+        "truss překlad pozednice #02 west wall"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.774, -0.104, 1.91],
+        "center_xyz": [2.274, -0.064, 1.95],
+        "size_xyz": [5.0, 0.08, 0.08]
+      }
+    },
+    {
+      "id": "3azS1DMSf5l9lqDO1ZftqW",
+      "instance_name": "izolace minerální 7cm východní stěna",
+      "definition_name": "insulation_wall_east_7_cm",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální 7cm východní stěna"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.512, 2.022, 0.0],
+        "center_xyz": [2.262, 2.052, 1.037],
+        "size_xyz": [4.5, 0.06, 2.075]
+      }
+    },
+    {
+      "id": "27te8JVDT5mgSHwkXufPuv",
+      "instance_name": "izolace minerální 7cm severní stěna",
+      "definition_name": "insulation_wall_north_7_cm",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální 7cm severní stěna"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [-0.024, 0.0, 0.0],
+        "center_xyz": [-0.059, 1.0, 1.045],
+        "size_xyz": [0.07, 2.0, 2.09]
+      }
+    },
+    {
+      "id": "2ro06J9FvB1hA0MfZYVkGM",
+      "instance_name": "izolace minerální 7cm západní stěna",
+      "definition_name": "insulation_wall_west_7_cm",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální 7cm západní stěna"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.5, -0.094, 0.0],
+        "center_xyz": [2.25, -0.059, 0.995],
+        "size_xyz": [4.5, 0.07, 1.99]
+      }
+    },
+    {
+      "id": "0Q8d16eMv1jQzph4T2kEft",
+      "instance_name": "izolace minerální 7cm jižní stěna",
+      "definition_name": "insulation_wall_south_7_cm",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální 7cm jižní stěna"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.594, 0.0, 0.0],
+        "center_xyz": [4.559, 1.0, 1.045],
+        "size_xyz": [0.07, 2.0, 2.09]
+      }
+    },
+    {
+      "id": "2TFpXnnW54Le04l9qIjqDc",
+      "instance_name": "izolace minerální isover domo plus 10 cm podlaha Lamb.D 0,038 W.",
+      "definition_name": "insulation_mineral_floor_10_cm",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální isover domo plus 10 cm podlaha Lamb.D 0,038 W."
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [-0.024, -0.024, -0.12],
+        "center_xyz": [2.25, 1.0, -0.07],
+        "size_xyz": [4.548, 2.048, 0.1]
+      }
+    },
+    {
+      "id": "2OTupmNT5BM9D_4eGWIOZF",
+      "instance_name": "izolace minerální isover domo plus 10 cm strop Lamb.D 0,038 W.",
+      "definition_name": "insulation_mineral_ceiling_10_cm",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální isover domo plus 10 cm strop Lamb.D 0,038 W."
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.5, -0.0, 1.991],
+        "center_xyz": [2.25, 0.997, 2.091],
+        "size_xyz": [4.5, 2.212, 0.21]
+      }
+    },
+    {
+      "id": "2lML9duI9A4wT0UJhdn6vG",
+      "instance_name": "room#1 půdorys area boundary pergola",
+      "definition_name": "room#1_pergola_area_boundary",
+      "tag": "room1",
+      "hierarchy_path": [
+        "room#1 půdorys area boundary pergola"
+      ],
+      "spatial_data_m": {
+        "origin_xyz": [4.62, 2.074, 0.0],
+        "center_xyz": [2.27, 4.574, 0.0],
+        "size_xyz": [4.7, 5.0, 0.0]
+      }
+    }
+  ]
+}

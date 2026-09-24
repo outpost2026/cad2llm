@@ -1,0 +1,119 @@
+Skvělý úkol. Publikace a aktualizace takového portfolia je klíčová pro ukázku tvých schopností (zvláště s tvým zajímavým pozadím z off-gridu a dílny, které převádíš do IT/AI).
+
+Zde je moje zhodnocení, falsifikace a návrh aktualizace tvého repozitáře CAD2LLM.
+
+1. Zhodnocení vhodnosti publikace/aktualizace
+Rozhodnutí: Publikovat nový Ruby Extension (cad2llm_exporter.rb / .rbz) a posunout repozitář z "Python skriptu pro starý SketchUp" na "Moderní architekturu pro SketchUp 2024" je absolutně nezbytné a vysoce vhodné.
+
+Zdůvodnění:
+
+Evoluce a Seniorita: Ukazuješ tím schopnost opustit funkční, ale už zastaralý přístup (Python parsování XML/Collada) a nahradit ho efektivnějším, nativním řešením (Ruby API přímo ve SketchUpu). To je znak inženýrského myšlení.
+Technický přesah: Zatímco původní skript ukazoval znalost Pythonu a matematiky (násobení matic), nový Ruby plugin ukazuje schopnost pracovat s cizím API (Sketchup API), řešit reálné UI/UX uživatele (tvorba .rbz pluginu) a hlubší porozumění datové struktuře modelu (IFC, Dynamic Attributes).
+Hodnota pro AI/LLM: Nový formát poskytuje LLM mnohem kvalitnější data (hierarchie, tagy, metry místo mm). Tím posouváš projekt z "hračky" na "produkčně použitelné RAG řešení pro architekturu/off-grid".
+Falsifikace (Kdy by aktualizace nebyla vhodná):
+
+Hypotéza: "Nový kód bychom neměli publikovat, protože Python je mezi AI komunitou populárnější než Ruby."
+Vyvrácení: I když je Python v AI králem, v tomto kontextu je Python pouze "překladačem" špatných dat (Collada). Cílem repozitáře CAD2LLM je získat kvalitní data pro LLM, nikoliv ukazovat jen Python kód. Nativní Ruby skript generuje data řádově kvalitněji, rychleji a s menší režií. Navíc to ukazuje, že volíš správný nástroj pro danou práci, a ne ten nejpopulárnější.
+2. Zhodnocení kvality repozitáře a portfolia
+Tvoje současné portfolio (outpost2026/outpost2026 a outpost2026/cad2llm):
+
+Silné stránky:
+Jedinečný příběh (Storytelling): Tvoje profilové README (outpost2026) je skvělé. Přechod z manuální práce (CNC, off-grid) do IT/AI je velmi silný narativ. "Hledání jehly v kupce sena" a "filtrace vaty a balastu" rezonuje. Jsi člověk z praxe, ne teoretik.
+Specifická nika: Propojování CAD (SketchUp) s LLM (RAG) je velmi specifická, neprobádaná a cenná oblast. Není to další generický "To-Do list" nebo "Chatbot".
+Popis problému: V CAD2LLM skvěle popisuješ problém ("Frontier modely v prostoru halucinují, tak jsem na ně vzal dynamit").
+Slabé stránky (Co zlepšit):
+Organizace CAD2LLM repozitáře: Aktuálně máš v rootu repa smíchanou starou v3 Python verzi, Markdown soubory a metodiky. Pro návštěvníka to může působit jako "odkladiště souborů", ne jako strukturovaný nástroj.
+Chybí "Quick Start": Lidé na GitHubu chtějí vidět výsledek do 10 vteřin. Chybí jasná ukázka (snippet) toho, co to dělá – "Vstup: Tohle mám ve SketchUpu. Výstup: Tohle dostanu do LLM."
+3. Návrh nové struktury repozitáře CAD2LLM
+Aktualizací na Ruby plugin bys měl repozitář rozdělit na historickou (Python) část a aktuální (Ruby) část.
+
+cad2llm/
+├── src/
+│   ├── cad2llm_exporter/         # Nový kód pro SketchUp 2024
+│   │   └── main.rb               # Samotný Ruby skript
+│   ├── cad2llm_exporter.rb       # Zavaděč rozšíření
+│   └── legacy_python/            # Původní skript (pro historii a SU2016)
+│       └── convert_dae_to_json_v3.py
+├── docs/
+│   ├── METODIKA_SketchUp_LLM_v4.md
+│   ├── Metodika_cad2llm_postprocesing.md
+│   └── Demonstracni_vystup_analyza_prostorovych_dat.md
+├── releases/                     # Zde nahraješ hotový .rbz soubor
+│   └── cad2llm_exporter.rbz
+├── LICENSE
+└── README.md                     # Zcela nové README
+4. Návrh nového README.md pro CAD2LLM
+Zde je návrh nového README, které staví na tvém skvělém copywritingu, ale přidává profesionální technickou strukturu a reflektuje nový SketchUp 2024 Ruby přístup.
+
+# CAD2LLM: Z CADu do AI bez halucinací
+
+*CAD vs. LLM: Brutální síla s chirurgickou přesností. Frontier modely v prostoru halucinují, tak jsem na ně vzal dynamit. Vlastní parser čistí cestu ze SketchUpu do deterministického JSONu, ve kterém se AI neztratí.*
+
+[![SketchUp](https://img.shields.io/badge/SketchUp-2024_Pro-blue?logo=sketchup)](https://www.sketchup.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## 📌 O projektu
+
+Nástroj převádí 3D modely (architektura, off-grid infrastruktura, stroje) do sémanticky bohatého, prostorově přesného a extrémně kompaktního formátu pro Large Language Models (LLM a systémy RAG).
+
+Zatímco běžné vizuální formáty (.dae, .gltf) obsahují pro AI zbytečný "balast" a vedou k halucinacím o prostoru, CAD2LLM extrahuje pouze to podstatné:
+- **Hierarchii a sémantiku** (co je uvnitř čeho, Tagy/Hladiny).
+- **Metadata** (IFC klasifikace, Dynamic Attributes - např. výkon solárního panelu).
+- **Prostorová data** (Absolutní pozice, rotace a přesné Bounding Boxy v metrech).
+
+Zapomeňte na odhady – Outpost Zone 2 (30 nodů) potvrzuje 0 % nekonzistencí v prostorovém chápaní AI.
+
+---
+
+## 🚀 Novinky: Verze 2.0 (SketchUp 2024 Native)
+
+Projekt prošel zásadním redesignem. Původní Python parser (vydolování dat ze zastaralého Collada/DAE formátu) byl nahrazen **nativním Ruby Extensionem pro SketchUp 2024 Pro**.
+
+**Proč tato změna?**
+- **Přístup ke skrytým datům:** Ruby API má přístup k IFC klasifikacím a dynamickým atributům, které se do `.dae` vůbec neexportují.
+- **Odstranění duplicit:** Není potřeba složitě deduplikovat geometrii v Pythonu. Skript pracuje přímo s instancemi komponent.
+- **Rychlost a UX:** Data pro LLM vygenerujete jedním kliknutím přímo v menu SketchUpu. Žádné exportování souborů a spouštění skriptů bokem.
+
+*(Původní Python řešení pro starší verze SketchUpu je zachováno ve složce `src/legacy_python`)*
+
+---
+
+## 📦 Instalace a Použití
+
+1. Stáhněte si nejnovější verzi pluginu `cad2llm_exporter.rbz` ze složky `releases/` (nebo ze záložky Releases).
+2. Otevřete SketchUp 2024.
+3. Jděte do `Extensions > Extension Manager` (Rozšíření > Správce rozšíření).
+4. Klikněte na `Install Extension`, vyberte stažený `.rbz` soubor a nainstalujte.
+5. V horním menu SketchUpu se objeví nová položka **Extensions > Export CAD2LLM (Outpost)**.
+6. Jedním kliknutím vygenerujete soubor `outpost_cad2llm.json` vedle vašeho modelu.
+
+---
+
+## 🔍 Ukázka výstupu (Před / Po)
+
+Takhle vidí AI objekt ve vaší scéně. Žádné zbytečné vrcholy (vertices) nebo textury, jen čistá inženýrská data.
+
+```json
+{
+  "id": "1BcSPOxrr53PbvzNkvbqYN",
+  "instance_name": "Energy source main power invertor mppt dc -ac max load 3,2 kw",
+  "definition_name": "HVM3.2H_hybrid_invertor",
+  "tag": "energy_nodes",
+  "hierarchy_path": [
+    "Tech Hub Room",
+    "Energy source main power invertor mppt dc -ac max load 3,2 kw"
+  ],
+  "classification_ifc": "IfcFlowTerminal",
+  "spatial_data_m": {
+    "origin_xyz": [1.79, 1.9, 1.075],
+    "rotation_xyz_deg": [0.0, 0.0, 0.0],
+    "center_xyz": [1.925, 1.95, 1.25],
+    "size_xyz": [0.27, 0.1, 0.35]
+  }
+}
+📖 Metodika
+Pokud vás zajímá teoretické pozadí a proč LLM potřebuje deterministická prostorová data, přečtěte si dokumentaci:
+
+Metodika CAD2LLM a Postprocesing
+Demonstrační výstup a analýza
+Tento nástroj vznikl jako součást projektu Outpost 2026 - hledání funkčních řešení bez balastu.

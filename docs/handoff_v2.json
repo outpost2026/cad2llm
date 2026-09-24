@@ -1,0 +1,165 @@
+{
+  "agent_context": {
+    "role": "technical_learning_assistant",
+    "domain": "SketchUp 2024 + Ruby + CAD-to-LLM pipeline",
+    "objective": "guide user from console-level control to structured data export with metadata",
+    "constraints": [
+      "maximize ROI per step",
+      "avoid unnecessary abstraction",
+      "no plugins until core primitives mastered",
+      "always validate before progressing"
+    ]
+  },
+
+  "user_state": {
+    "environment": "SketchUp 2024",
+    "model": "místnost 2 - energy hub",
+    "skills": {
+      "sketchup_geometry": "intermediate",
+      "ruby": "beginner",
+      "console_usage": "basic"
+    },
+    "validated": [
+      "module definition",
+      "function call",
+      "selection access",
+      "attribute write/read"
+    ],
+    "failure_modes": [
+      "syntax errors (missing end)",
+      "module not loaded",
+      "trying too large scripts at once"
+    ]
+  },
+
+  "system_goal": {
+    "north_star": "convert CAD model into structured, queryable, simulation-ready JSON",
+    "intermediate_states": [
+      "metadata attached to entities",
+      "consistent schema across objects",
+      "export pipeline functional",
+      "basic validation of model logic"
+    ]
+  },
+
+  "learning_strategy": {
+    "mode": "incremental",
+    "loop": [
+      "execute small action",
+      "observe output",
+      "verify correctness",
+      "only then extend"
+    ],
+    "granularity": "single function or concept per step"
+  },
+
+  "core_primitives": {
+    "selection": "Sketchup.active_model.selection",
+    "attribute_write": "entity.set_attribute(dict, key, value)",
+    "attribute_read": "entity.get_attribute(dict, key)",
+    "module_call": "LLM.function_name"
+  },
+
+  "current_tasks": [
+    {
+      "id": "T1",
+      "name": "assign_energy_metadata",
+      "input": "selected entity",
+      "action": "set_attribute('energy','type','battery')",
+      "validation": "get_attribute returns 'battery'",
+      "status": "in_progress"
+    },
+    {
+      "id": "T2",
+      "name": "assign_zone_metadata",
+      "input": "selected entity",
+      "action": "set_attribute('zone','type','sleep|work|energy')",
+      "validation": "zone attribute exists",
+      "status": "pending"
+    },
+    {
+      "id": "T3",
+      "name": "assign_thermal_metadata",
+      "input": "wall/floor/ceiling",
+      "action": "set_attribute('thermal','u_value',number)",
+      "validation": "numeric value retrievable",
+      "status": "pending"
+    }
+  ],
+
+  "next_transition_rule": {
+    "condition": "user successfully assigns and verifies metadata on 3+ object types",
+    "next_step": "introduce structured export (JSON)"
+  },
+
+  "export_spec": {
+    "required_fields": [
+      "id",
+      "name",
+      "definition",
+      "tag",
+      "spatial.center",
+      "spatial.size",
+      "metadata"
+    ],
+    "metadata_keys": [
+      "energy",
+      "thermal",
+      "zone",
+      "safety"
+    ]
+  },
+
+  "validation_rules": [
+    {
+      "rule": "every energy object must have voltage or capacity",
+      "type": "consistency"
+    },
+    {
+      "rule": "no object should have empty metadata block",
+      "type": "completeness"
+    },
+    {
+      "rule": "critical objects must include safety metadata",
+      "type": "risk_control"
+    }
+  ],
+
+  "assistant_behavior": {
+    "style": "direct, minimal, technical",
+    "response_format": [
+      "short explanation",
+      "exact command to run",
+      "expected output"
+    ],
+    "error_handling": [
+      "identify root cause",
+      "provide minimal fix",
+      "avoid theory unless needed"
+    ]
+  },
+
+  "resume_protocol": {
+    "step_1": "open SketchUp 2024",
+    "step_2": "open Ruby Console",
+    "step_3": "define minimal LLM module if not loaded",
+    "step_4": "select one object",
+    "step_5": "assign one metadata attribute",
+    "step_6": "verify using get_attribute",
+    "step_7": "repeat for different object type"
+  },
+
+  "stop_conditions": [
+    "metadata cannot be verified",
+    "console returns error",
+    "user attempts multi-step jump without validation"
+  ],
+
+  "progress_signal": {
+    "level_1": "single attribute works",
+    "level_2": "multiple metadata types assigned",
+    "level_3": "consistent tagging across model",
+    "level_4": "export working",
+    "level_5": "validation + automation possible"
+  }
+}

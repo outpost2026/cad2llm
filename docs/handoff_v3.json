@@ -1,0 +1,185 @@
+{
+  "handoff_version": "1.0",
+  "title": "SketchUp 2024 + Ruby + CAD-to-LLM pipeline – výukový handoff",
+  "objective": "Předat ucelené znalosti a postupy od úplných základů Ruby Console až po strukturovaný export JSON s metadaty, včetně chyb a jejich řešení.",
+  "learner_state": {
+    "environment": "SketchUp 2024",
+    "model": "místnost 2 - energy hub",
+    "ruby_level": "začátečník → nyní samostatně tvoří funkce a validace",
+    "metadata_status": "několik komponentů (baterie, postel) má kompletní slovníky energy, safety, thermal, zone",
+    "export_working": true,
+    "next_milestone": "automatizace tagování podle definic + LLM dotazování nad JSON"
+  },
+  "learning_phases": [
+    {
+      "phase": 0,
+      "name": "Otevření konzole a první krůčky",
+      "steps": [
+        "Alt+F11 → Ruby Console",
+        "První příkaz: `puts 'Ahoj'`",
+        "Výběr objektu myší a reference: `ent = Sketchup.active_model.selection.first`",
+        "Čtení jména: `puts ent.name`"
+      ],
+      "key_principle": "Konzole je živý interaktivní nástroj – každý příkaz se vykoná okamžitě.",
+      "typical_errors": [
+        "`nil` – není nic vybráno → klikni na objekt",
+        "`undefined method` – špatný typ entity (hrana, bod) → vyber skupinu/komponentu"
+      ]
+    },
+    {
+      "phase": 1,
+      "name": "Modul a vlastní funkce",
+      "steps": [
+        "Definice modulu: `module LLM; def self.test; puts 'OK'; end; end`",
+        "Volání: `LLM.test`",
+        "Funkce pro hromadné nastavení atributů: `def self.add_energy; sel = Sketchup.active_model.selection; sel.each { |e| e.set_attribute('energy','type','battery') }; end`"
+      ],
+      "key_principle": "Modul seskupuje funkce, `self.` dělá z metody tzv. ‚třídní metodu‘ – volá se na modulu přímo.",
+      "typical_errors": [
+        "Chybějící `end` → SyntaxError, modul se vůbec nenačte",
+        "Zápis `def add_energy` bez `self.` → pak nelze volat `LLM.add_energy`"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "Přiřazování metadat (attribute dictionaries)",
+      "steps": [
+        "Nastavení: `ent.set_attribute('energy', 'type', 'battery')`",
+        "Čtení: `ent.get_attribute('energy', 'type')`",
+        "Vytvoření více slovníků: safety, thermal, zone",
+        "Kontrola všech slovníků: `ent.attribute_dictionaries.each { |d| puts d.name; d.each_pair { |k,v| puts \"#{k}: #{v}\" } }`"
+      ],
+      "key_principle": "Atributy jsou trvale uloženy v modelu .skp, přežijí restart. Proměnné jako `ent` nikoliv.",
+      "typical_errors": [
+        "Po restartu SketchUpu `ent` neexistuje → `NameError`. Řešení: znovu vybrat objekt nebo najít podle `persistent_id`.",
+        "`set_attribute` na nepodporovaném objektu (hrana) → chyba. Pouze skupiny, komponenty, plochy."
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "Export JSON vybraného objektu",
+      "steps": [
+        "Vložení skriptu s `require 'json'`, iterace přes `selection`, sběr `bounds`, `persistent_id`, `layer.name`, `definition.name`, `attribute_dictionaries`",
+        "Volání `export_selected_to_json`",
+        "Uložení do souboru: `File.write(cesta, JSON.pretty_generate(data))`"
+      ],
+      "key_principle": "JSON je strukturovaný formát pro LLM. Každý objekt má `id`, `name`, `spatial`, `metadata`.",
+      "typical_errors": [
+        "Cesta `C:/temp/` neexistuje → chyba při zápisu. Vytvořit složku nebo použít `Dir.tmpdir`.",
+        "JSON neobsahuje metadata → chybí `attribute_dictionaries&.each` (bezpečný operátor `&.`)"
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "Hromadné tagování podle definice komponenty",
+      "steps": [
+        "Funkce `tag_all_batteries`: `model.entities.grep(Sketchup::ComponentInstance).each do |comp| next unless comp.definition.name == 'Main_battery_of_the_house'`",
+        "Uvnitř nastavit všechny atributy najednou",
+        "Spočítat počet upravených komponent"
+      ],
+      "key_principle": "`grep` filtruje entity podle typu, `next unless` podmínka omezí na konkrétní definici.",
+      "typical_errors": [
+        "Použití `model.entities` bez `grep` → zahrne i hrany, plochy, které nemusí mít metodu `definition`",
+        "Překlep v názvu definice → neupraví se nic → vždy ověřit `puts comp.definition.name`"
+      ]
+    },
+    {
+      "phase": 5,
+      "name": "Validace modelu",
+      "steps": [
+        "Funkce `validate_batteries` kontroluje, zda každá baterie má `capacity_ah` a `voltage`",
+        "Prochází všechny komponenty, testuje `get_attribute`",
+        "Vypisuje chybějící atributy"
+      ],
+      "key_principle": "Validace je klíčová pro LLM-ready data – stroj musí dostat konzistentní schéma.",
+      "typical_errors": [
+        "Zapomenout na `nil` – pokud atribut neexistuje, `get_attribute` vrátí `nil`. Podmínka `if cap.nil?` to odhalí."
+      ]
+    }
+  ],
+  "common_error_patterns": [
+    {
+      "error": "`undefined local variable or method 'ent'`",
+      "cause": "Proměnná `ent` nebyla definována (např. po restartu SketchUpu nebo před prvním přiřazením).",
+      "solution": "Znovu vyber objekt myší a napiš `ent = Sketchup.active_model.selection.first` nebo použij `persistent_id`."
+    },
+    {
+      "error": "`SyntaxError (unexpected end-of-input, expecting 'end')`",
+      "cause": "Chybí `end` u `module`, `def`, `do...end` bloku.",
+      "solution": "Spočítej `end` – každý `def` a `module` a `each do` potřebuje svůj `end`."
+    },
+    {
+      "error": "`nil` při volání `get_attribute`",
+      "cause": "Slovník nebo klíč neexistuje – metadata nebyla nikdy nastavena.",
+      "solution": "Nejprve zavolej `set_attribute`. Ověř existenci slovníku přes `attribute_dictionaries`."
+    },
+    {
+      "error": "`No such file or directory @ rb_sysopen - C:/temp/...`",
+      "cause": "Cílová složka neexistuje.",
+      "solution": "Vytvoř složku ručně nebo použij `Dir.mkdir('C:/temp') rescue nil`."
+    },
+    {
+      "error": "`undefined method 'set_attribute' for #<Sketchup::Edge...>`",
+      "cause": "Objekt nepodporuje atributové slovníky (hrany, body, konstrukční čáry).",
+      "solution": "Vyber pouze `Group`, `ComponentInstance` nebo `Face`."
+    }
+  ],
+  "abstractions_for_repo": {
+    "core_primitives": [
+      "`Sketchup.active_model.selection` – přístup k vybraným entitám",
+      "`entity.set_attribute(dict, key, value)` – zápis metadat",
+      "`entity.get_attribute(dict, key)` – čtení metadat",
+      "`entity.attribute_dictionaries` – všechny slovníky",
+      "`entity.bounds` – prostorové informace (střed, velikost)",
+      "`entity.persistent_id` – unikátní identifikátor napříč relacemi",
+      "`entity.definition.name` – název definice komponenty",
+      "`entity.layer.name` – název vrstvy (tag)"
+    ],
+    "pipeline_phases": [
+      "1. Ruční tagování jednoho objektu přes konzoli",
+      "2. Vytvoření funkcí pro opakované použití",
+      "3. Hromadné tagování podle definice/vrstvy",
+      "4. Export celého modelu do JSON",
+      "5. Validace konzistence",
+      "6. (budoucí) Automatické přiřazení podle pravidel (např. podle názvu, materiálu)"
+    ],
+    "json_schema": {
+      "object": {
+        "id": "persistent_id (integer)",
+        "name": "string",
+        "type": "ComponentInstance | Group | Face",
+        "definition": "název definice (pro komponenty)",
+        "tag": "název vrstvy",
+        "spatial": {
+          "center": [x, y, z],
+          "size": [width, depth, height]
+        },
+        "metadata": {
+          "energy": { "type": "battery|socket_load|solar", "voltage": number, "capacity_ah": number, "power_w": number },
+          "thermal": { "type": "battery_cell|furniture|wall", "heat_loss_w": number, "u_value": number },
+          "zone": { "type": "sleep|work|energy_storage", "temp_min_c": number, "temp_max_c": number },
+          "safety": { "fire_risk": boolean, "min_distance_m": number }
+        }
+      }
+    }
+  },
+  "next_recommended_steps": [
+    "1. Rozšířit tagování na všechny typy komponent (stěny, okna, dveře) podle jejich definice.",
+    "2. Vytvořit centrální funkci `LLM.tag_by_definition(definition_name, metadata_hash)`.",
+    "3. Implementovat validaci celého modelu podle pravidel (každý objekt musí mít neprázdné metadata).",
+    "4. Export celého modelu do JSON a spustit nad ním jednoduché LLM dotazy (např. pomocí Python skriptu).",
+    "5. Zautomatizovat spouštění – uložit funkce do pluginu `llm.tools.rb` a načítat při startu."
+  ],
+  "repository_notes": {
+    "github_repo_name": "např. sketchup-llm-pipeline",
+    "suggested_structure": [
+      "/scripts/export_json.rb",
+      "/scripts/tagging_functions.rb",
+      "/scripts/validation.rb",
+      "/examples/battery_export.json",
+      "/docs/handoff.json (tento soubor)",
+      "/README.md"
+    ],
+    "versioning": "Ukládejte verze skriptů spolu s ukázkovými .skp soubory, aby byla reprodukovatelnost."
+  }
+}

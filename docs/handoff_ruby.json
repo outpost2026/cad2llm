@@ -1,0 +1,64 @@
+{
+  "handoff_plan": {
+    "target_repository": "cad2llm",
+    "goal": "Refaktorovat repozitář pro veřejnou publikaci: anonymizace kódu, zobecnění Ruby pluginu, restrukturalizace adresářů a aktualizace dokumentace.",
+    "security_constraints": [
+      "Zkontrolovat a odstranit hardcoded GPS souřadnice (50.15087, 14.42342) z Ruby i Python skriptů.",
+      "Zajistit, že výchozí název projektu nebude 'Outpost_2026', ale generický (např. 'CAD2LLM_Export').",
+      "Ověřit absenci osobních cest v kódu (např. C:\\Users\\...)."
+    ],
+    "steps": [
+      {
+        "phase": 1,
+        "name": "Restrukturalizace adresářů (Git Mv)",
+        "action": "Vytvořit novou adresářovou strukturu a přesunout stávající soubory.",
+        "commands_to_run_later": [
+          "mkdir -p src/cad2llm_exporter",
+          "mkdir -p src/legacy_python",
+          "mkdir docs",
+          "mkdir releases",
+          "git mv convert_dae_to_json_v3.py src/legacy_python/",
+          "git mv METODIKA_SketchUp_LLM_v4.md docs/",
+          "git mv Metodika_cad2llm_postprocesing.md docs/",
+          "git mv Demonstracni_vystup_analyza_prostorovych_dat.md docs/"
+        ]
+      },
+      {
+        "phase": 2,
+        "name": "Anonymizace starého Python kódu (Security)",
+        "action": "Zkontrolovat `src/legacy_python/convert_dae_to_json_v3.py` a odstranit jakékoliv případné hardcoded vazby na 'Outpost' nebo osobní metadata."
+      },
+      {
+        "phase": 3,
+        "name": "Tvorba zobecněného a anonymizovaného Ruby Pluginu",
+        "action": "Vytvořit nové, čisté soubory pro SketchUp plugin. Níže jsou definovány cílové obsahy.",
+        "files_to_create": {
+          "src/cad2llm_exporter.rb": {
+            "description": "Zavaděč rozšíření pro SketchUp.",
+            "content": "require 'sketchup.rb'\nrequire 'extensions.rb'\n\nmodule CAD2LLM\n  unless file_loaded?(__FILE__)\n    ex = SketchupExtension.new('CAD2LLM Exporter', 'cad2llm_exporter/main')\n    ex.description = 'Export SketchUp models to spatial JSON optimized for LLMs and RAG systems.'\n    ex.version     = '2.0.0'\n    ex.copyright   = 'MIT License'\n    ex.creator     = 'CAD2LLM Community'\n    Sketchup.register_extension(ex, true)\n    file_loaded(__FILE__)\n  end\nend"
+          },
+          "src/cad2llm_exporter/main.rb": {
+            "description": "Hlavní logika. Odstraněny hardcoded GPS (fallback na 0.0, 0.0), odstraněn název Outpost (fallback na 'SketchUp_Model'), soubor se ukládá s dynamickým názvem.",
+            "content_modifications": [
+              "Nahradit `lat = model.shadow_info[\"Latitude\"] rescue 50.15087` za `rescue 0.0`.",
+              "Nahradit `lon = ... rescue 14.42342` za `rescue 0.0`.",
+              "Nahradit `model.title.empty? ? \"Outpost_2026\" : model.title` za `model.title.empty? ? \"SketchUp_Model\" : model.title`.",
+              "Dynamické pojmenování JSONu: `export_name = model.title.empty? ? \"cad2llm_export.json\" : \"#{model.title}_cad2llm.json\"`.",
+              "Cesta pro uložení bere buď cestu modelu, nebo `UI.savepanel` pokud model není uložen."
+            ]
+          }
+        }
+      },
+      {
+        "phase": 4,
+        "name": "Sestavení distribučního balíčku (.rbz)",
+        "action": "Zabalit obsah složky `src/` (zavaděč + složka main) do `.zip` a přejmenovat na `.rbz`. Následně přesunout do složky `releases/`."
+      },
+      {
+        "phase": 5,
+        "name": "Aktualizace README.md",
+        "action": "Přepsat hlavní README.md podle návrhu z předchozí komunikace, zajišťující jasný marketing, návod na instalaci a odstranění příliš osobních referencí (kromě obecného odkazu na projekt, ze kterého vzešel)."
+      }
+    ]
+  }
+}

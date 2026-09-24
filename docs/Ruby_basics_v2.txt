@@ -1,0 +1,204 @@
+📖 SketchUp 2024 Ruby Console Handbook (v2)
+Tento přehled obsahuje nejdůležitější a odladěné příkazy pro práci s metadaty, hromadné operace a export do JSON. Příkazy se zadávají do Ruby Console (Alt+F11).
+
+1. Základní orientace a výběr prvků
+Pro manipulaci v konzoli si obvykle nejprve uložíme vybraný prvek do proměnné ent.
+
+Příkaz	Popis
+model = Sketchup.active_model	Získá referenci na aktuální model.
+sel = model.selection	Získá aktuální výběr.
+ent = model.selection.first	Získá první vybraný objekt do proměnné ent.
+ent.name	Vypíše jméno entity.
+ent.typename	Typ entity (ComponentInstance, Group, Face…).
+ent.definition.name	Pokud jde o komponentu, vypíše název definice.
+ent.layer.name	Název Tagu (vrstvy) entity.
+ent.persistent_id	Jedinečné, nezměnitelné ID entity v rámci projektu.
+
+2. Práce s atributy (metadata) - Základy
+Příkaz / Konstrukce	Popis
+ent.set_attribute("slovnik", "klic", "hodnota")	Vytvoří/přepíše hodnotu atributu (slovník se sám založí).
+ent.get_attribute("slovnik", "klic")	Přečte hodnotu. Vrací nil, pokud neexistuje.
+ent.attribute_dictionaries	Vrátí objekt obsahující všechny slovníky (nebo nil).
+ent.attribute_dictionaries.nil?	Bezpečně zjistí, zda entita nemá vůbec žádná metadata.
+
+3. Komplexní úkoly (Skripty pro každodenní užití)
+Níže uvedené bloky kódu můžete rovnou zkopírovat a spustit v konzoli.
+
+A. Komplexní výpis metadat vybraného prvku
+Bezpečně projde všechny slovníky vybraného objektu a vypíše je formátovaně.
+
+ent = Sketchup.active_model.selection.first
+if ent && ent.attribute_dictionaries
+  puts "=== Metadata (ID: #{ent.persistent_id}, Typ: #{ent.typename}) ==="
+  ent.attribute_dictionaries.each do |dict|
+    puts "Slovník: [#{dict.name}]"
+    dict.each_pair { |k, v| puts "  #{k}: #{v}" }
+  end
+else
+  puts "Není vybrán žádný prvek nebo prvek neobsahuje žádná metadata."
+end
+
+B. Výpis unikátních názvů slovníků v celém modelu
+Projde všechny entity a vypíše, jaké struktury metadat (názvy slovníků) se v modelu celkově vyskytují.
+
+require 'set'
+slovniky = Set.new
+Sketchup.active_model.entities.each do |ent|
+  if ent.respond_to?(:attribute_dictionaries) && ent.attribute_dictionaries
+    ent.attribute_dictionaries.each { |dict| slovniky.add(dict.name) }
+  end
+end
+puts "Všechny unikátní slovníky v modelu: #{slovniky.to_a.join(', ')}"
+
+C. Bezpečné Smazání VŠECH metadat z vybraného prvku
+Ošetřeno proti smazání systémových slovníků (jako je např. SU_InstanceSet), které SketchUp chrání před výmazem.
+
+ent = Sketchup.active_model.selection.first
+if ent && ent.attribute_dictionaries
+  nazvy = ent.attribute_dictionaries.map(&:name) # Uložíme názvy před mazáním
+  nazvy.each do |nazev|
+    begin
+      ent.attribute_dictionaries.delete(nazev)
+      puts "✅ Smazán slovník: #{nazev}"
+    rescue => e
+      puts "⚠️ Nelze smazat slovník '#{nazev}': Systém chráněn (#{e.message})"
+    end
+  end
+  puts "🎉 Čištění dokončeno."
+else
+  puts "ℹ️ Vybraný prvek nemá žádná metadata nebo není nic vybráno."
+end
+
+Mazání jednotlivého key v metadatech: Pro odstranění pouze konkrétního klíče, např. AC_output_watts ze slovníku energy (aniž byste smazali celý slovník), použijte v konzoli SketchUp tento příkaz:
+
+Sketchup.active_model.selection.first.attribute_dictionary("energy", false)&.delete_key("AC_output_watts")
+
+Vysvětlení:
+attribute_dictionary("energy", false): Získá odkaz na slovník "energy" u vybraného prvku.
+&.: (Safe navigation operator) Zajistí, že pokud slovník neexistuje, příkaz selže "tiše" a nezpůsobí chybu.
+delete_key("AC_output_watts"): Metoda API SketchUpu, která odstraní pouze specifikovaný pár klíč-hodnota.
+
+D. Export metadat do JSON
+Vybere formátovaná data z aktuálního výběru a uloží je na disk.
+
+require 'json'
+
+def export_selected_to_json(path = "C:/temp/export.json")
+  sel = Sketchup.active_model.selection
+  return puts "Není co exportovat (výběr je prázdný)." if sel.empty?
+  
+  data = []
+  sel.each do |e|
+    bbox = e.bounds
+    metadata = {}
+    
+    # Bezpečné načtení slovníků (pouze pokud existují)
+    e.attribute_dictionaries&.each do |dict|
+      h = {}
+      dict.each_pair { |k,v| h[k] = v }
+      metadata[dict.name] = h unless h.empty?
+    end
+
+    data << {
+      id: e.persistent_id,
+      name: e.name,
+      type: e.typename,
+      tag: (e.layer.name rescue "Default"),
+      spatial: {
+        center: [bbox.center.x.to_f, bbox.center.y.to_f, bbox.center.z.to_f],
+        size: [bbox.width.to_f, bbox.depth.to_f, bbox.height.to_f]
+      },
+      metadata: metadata
+    }
+  end
+
+  json_str = JSON.pretty_generate(data)
+  File.write(path, json_str)
+  puts "✅ Úspěšně exportováno #{data.length} objektů do: #{path}"
+end
+
+# Spuštění funkce:
+export_selected_to_json
+
+4. Hromadné operace nad Modelem
+Použití .grep je nejrychlejší způsob, jak filtrovat entity (rychlejší než přes if e.typename == "...").
+
+Úkol	Příkaz (Kód)
+Zápis metadat do všech komponent	Sketchup.active_model.entities.grep(Sketchup::ComponentInstance).each { |comp| comp.set_attribute("zone", "type", "unknown") }
+Průchod pouze přes vybrané položky	Sketchup.active_model.selection.each { |e| puts e.name }
+Smazání určitého slovníku všem	Sketchup.active_model.entities.each { |e| e.attribute_dictionaries.delete("energy") if e.respond_to?(:attribute_dictionaries) && e.attribute_dictionaries }
+
+5. Master Modul: MetadataTools
+Tento modul sjednocuje všechny vaše funkce. Doporučený postup: Uložte tento kód jako MetadataTools.rb (např. na plochu nebo do složky s pluginy). Poté jej v konzoli načtěte pomocí: Sketchup.load("cesta/k/souboru/MetadataTools.rb").
+
+require 'set'
+
+module MetadataTools
+  # Interní pomocná metoda
+  def self.vypis(ent)
+    return puts "Entita neexistuje." unless ent
+    puts "=== [ID: #{ent.persistent_id}] #{ent.name.to_s.empty? ? ent.typename : ent.name} ==="
+    
+    if ent.attribute_dictionaries.nil?
+      puts "  -> Žádná metadata"
+      return
+    end
+
+    ent.attribute_dictionaries.each do |dict|
+      puts "  [#{dict.name}]"
+      dict.each_pair { |k, v| puts "    #{k}: #{v}" }
+    end
+  end
+
+  # Vypíše metadata zrovna vybraného objektu
+  def self.vypis_vyber
+    vypis(Sketchup.active_model.selection.first)
+  end
+
+  # Vypíše metadata ze všech entit, které nějaká mají
+  def self.vypis_vse
+    Sketchup.active_model.entities.each do |ent|
+      vypis(ent) if ent.respond_to?(:attribute_dictionaries) && !ent.attribute_dictionaries.nil?
+    end
+  end
+
+  # Bezpečně smaže VŠECHNA metadata vybraného objektu
+  def self.smaz_vyber
+    ent = Sketchup.active_model.selection.first
+    return puts "Nic není vybráno." unless ent
+    return puts "Žádná metadata ke smazání." if ent.attribute_dictionaries.nil?
+
+    nazvy = ent.attribute_dictionaries.map(&:name)
+    nazvy.each do |n|
+      begin
+        ent.attribute_dictionaries.delete(n)
+      rescue
+        # Ignorovat chráněné (systémové) slovníky
+      end
+    end
+    puts "Metadata z prvku byla smazána."
+  end
+
+  # Vytvoří testovací/ukázková metadata (Příklad custom funkce)
+  def self.tag_battery
+    ent = Sketchup.active_model.selection.first
+    return puts "Vyberte objekt!" unless ent
+    
+    ent.set_attribute("energy", "type", "battery")
+    ent.set_attribute("energy", "voltage", 24)
+    ent.set_attribute("energy", "capacity_ah", 100)
+    puts "Tagováno jako baterie."
+  end
+end
+
+# Příklad volání:
+# MetadataTools.vypis_vyber
+# MetadataTools.tag_battery
+# MetadataTools.smaz_vyber
+
+6. Časté chyby a jejich prevence
+Chyba v Ruby konzoli	Důvod a Řešení
+undefined local variable or method 'ent'	Zapomněl jsi definovat, co je to ent. Nejprve vlož do konzole: ent = Sketchup.active_model.selection.first
+undefined method 'set_attribute' for #<Sketchup::Edge...>	Hrany ani samotné vrcholy většinou metadata nepodporují tak dobře nebo ztratí význam. Zabal objekt do Group nebo Component.
+No such file or directory @ rb_sysopen - C:/temp/...	Pokoušíš se exportovat JSON do složky (zde C:\temp\), která neexistuje. Musíš složku ve Windows nejprve ručně vytvořit.
+NoMethodError: undefined method 'clear' for #<Sketchup::AttributeDictionaries>	Snažíš se použít .clear na slovníky. Objekt AttributeDictionaries z API to nepodporuje, musíš iterovat a použít metodu .delete(nazev_slovniku).

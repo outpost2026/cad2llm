@@ -6,8 +6,9 @@ Schema **v4** (2026-10) sjednocuje dva exportní kanály a doplňuje data, kter�
 předchozí verze neměly: `bbox_mm` min/max, `parent_uid`, rotace, tagy,
 attribute dictionaries. Detail: [`docs/SCHEMA_v4.md`](docs/SCHEMA_v4.md).
 
-Nad v4 staví **v5 F1** (aditivní): deterministická sémantika, normalizovaná
-validace a `brief` pro LLM. Detail: [`docs/DESIGN_v5.md`](docs/DESIGN_v5.md).
+Nad v4 staví **v5 (F1 + F2)** (aditivní): deterministická sémantika,
+normalizovaná validace, relace mezi objekty, volná podlaha a `brief` pro LLM.
+Detail: [`docs/DESIGN_v5.md`](docs/DESIGN_v5.md).
 
 * * *
 
@@ -56,8 +57,9 @@ python tools/cad2llm.py diff old.json new.json
 python tools/cad2llm.py enrich out.json out_v5.json
 ```
 
-`enrich` je F1 sémantické vrstvy v5: deterministické role/zóny/intent,
-normalizovaná validace a ~400znakový `brief` pro LLM. Schémata a návrh:
+`enrich` je sémantická vrstva v5: deterministické role/zóny/intent, normalizovaná
+validace, relace (contact / adjacency / opening_in / support / containment / proximity),
+volná podlaha s passages, volumes a ~560znakový `brief` pro LLM. Schémata a návrh:
 [`docs/DESIGN_v5.md`](docs/DESIGN_v5.md), [`docs/schema/`](docs/schema/).
 
 ## Quickstart — SketchUp extension
@@ -73,7 +75,7 @@ normalizovaná validace a ~400znakový `brief` pro LLM. Schémata a návrh:
 ## Testy
 
 ```powershell
-python -m unittest discover -s tests -v    # 30 testů (parse, matice, bbox, legacy, v5)
+python -m unittest discover -s tests -v    # 38 testů (parse, matice, bbox, legacy, v5)
 C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 40 checků (exporter bez SketchUpu)
 ```
 
@@ -120,7 +122,7 @@ cad2llm/
 ├── tools/
 │   ├── cad2llm.py                  ← CLI: convert | validate | summary | diff | enrich
 │   ├── cad2llm_core.py             ← DAE parser, schema v4, validace
-│   ├── cad2llm_v5.py               ← F1: sémantika, normalizace, brief
+│   ├── cad2llm_v5.py               ← F1+F2: sémantika, relace, metrics, brief
 │   └── cad2llm_rules.json          ← pravidla (name_pattern, clearance, overlaps)
 ├── src/
 │   ├── cad2llm_exporter.rb         ← loader + menu (Extensions → CAD2LLM)
@@ -133,7 +135,7 @@ cad2llm/
 ├── spec/                           ← Ruby testy + SketchUp stub (headless)
 ├── docs/
 │   ├── SCHEMA_v4.md                ← specifikace formátu
-│   ├── DESIGN_v5.md                ← návrh sémantické vrstvy (F1 hotová)
+│   ├── DESIGN_v5.md                ← návrh sémantické vrstvy (F1+F2 hotové)
 │   ├── schema/                     ← JSON Schemas v5 + příklady
 │   ├── METODIKA_SketchUp_LLM_v4.md
 │   ├── Metodika_cad2llm_postprocesing.md
@@ -167,6 +169,8 @@ cad2llm/
   oprava dvojité transformace u skupin, extension + menu, headless testy obou kanálů.
 - **2026-10-22** — **v5 F1**: deterministická sémantika (role/zóna/intent + evidence),
   normalizovaná validace, LLM brief, golden master 46 uzlů.
+- **2026-10-22** — **v5 F2**: relace (6 druhů, SNR filtry), volná podlaha 100mm rastr,
+  passages, volumes; 30 hran na reálném modelu, 38/38 testů.
 
 > Historické konzolové skripty v `src/_archive/console/` obsahují známou korupci
 > matic — nepoužívat.

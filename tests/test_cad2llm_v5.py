@@ -158,8 +158,87 @@ class TestV5MetricsAndBrief(unittest.TestCase):
         )
         self.assertEqual(self.out["validation"]["counts"]["suppressed"], 0)
 
-    def test_relations_empty_in_f1(self):
-        self.assertEqual(self.out["relations"], [])
+    def test_free_space_and_passages(self):
+        fs = self.out["metrics"]["free_space"]
+        self.assertEqual(fs["grid_mm"], 100)
+        self.assertEqual(fs["cells_total"], 966)
+        self.assertEqual(fs["cells_free"], 606)
+        self.assertAlmostEqual(fs["free_ratio"], 0.627, places=3)
+        self.assertEqual(fs["passages"][0]["between"], ["ID27", "ID15"])
+        self.assertAlmostEqual(fs["passages"][0]["width_mm"], 642.4, places=1)
+
+    def test_volumes_by_zone(self):
+        vz = self.out["metrics"]["volumes_m3"]["by_zone"]
+        self.assertEqual(set(vz), {"work", "sleep", "energy", "envelope", "dining"})
+        self.assertAlmostEqual(vz["energy"], 0.127, places=3)
+        self.assertAlmostEqual(vz["envelope"], 6.63, places=2)
+
+
+class TestV5Relations(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.out = v5.enrich(json.loads(EXAMPLE.read_text(encoding="utf-8")))
+        cls.rel = cls.out["relations"]
+
+    def kinds(self):
+        counts: dict = {}
+        for r in self.rel:
+            counts[r["kind"]] = counts.get(r["kind"], 0) + 1
+        return counts
+
+    def test_kind_counts(self):
+        self.assertEqual(len(self.rel), 30)
+        self.assertEqual(
+            self.kinds(),
+            {
+                "adjacency": 17,
+                "contact": 3,
+                "opening_in": 3,
+                "support": 5,
+                "containment": 1,
+                "proximity": 1,
+            },
+        )
+
+    def test_opening_in(self):
+        pairs = [(r["from"], r["to"]) for r in self.rel if r["kind"] == "opening_in"]
+        self.assertEqual(
+            pairs, [("ID171", "ID297"), ("ID183", "ID283"), ("ID191", "ID283")]
+        )
+
+    def test_proximity_uses_clearance_gap(self):
+        prox = [r for r in self.rel if r["kind"] == "proximity"]
+        self.assertEqual(len(prox), 1)
+        self.assertEqual({prox[0]["from"], prox[0]["to"]}, {"ID27", "ID15"})
+        self.assertAlmostEqual(prox[0]["gap_mm"], 642.4, places=1)
+
+    def test_containment_is_aggregated(self):
+        cont = [r for r in self.rel if r["kind"] == "containment"]
+        self.assertEqual(len(cont), 1)
+        self.assertEqual(cont[0]["from"], "ID239")
+        self.assertEqual(cont[0]["to"], "ID237")
+        self.assertEqual(cont[0]["evidence"]["detail"], "16 x battery inside ID237")
+
+    def test_adjacency_snr(self):
+        pairs = {(r["from"], r["to"]) for r in self.rel if r["kind"] == "adjacency"}
+        self.assertIn(("ID3", "ID53"), pairs)
+        self.assertNotIn(("ID123", "ID171"), pairs)
+        self.assertNotIn(("ID171", "ID183"), pairs)
+
+    def test_support_and_contact(self):
+        support = {(r["from"], r["to"]) for r in self.rel if r["kind"] == "support"}
+        self.assertIn(("ID115", "ID15"), support)
+        self.assertIn(("ID53", "ID237"), support)
+        contact = {(r["from"], r["to"]) for r in self.rel if r["kind"] == "contact"}
+        self.assertIn(("ID123", "ID15"), contact)
+        self.assertNotIn(("ID267", "ID15"), contact)
+
+    def test_ids_and_order_are_stable(self):
+        ids = [r["id"] for r in self.rel]
+        self.assertEqual(len(set(ids)), len(ids))
+        self.assertTrue(all(i.startswith("rel-") for i in ids))
+        keys = [(r["kind"], r["from"], r["to"]) for r in self.rel]
+        self.assertEqual(keys, sorted(keys))
 
 
 class TestV5Determinism(unittest.TestCase):
@@ -201,6 +280,7 @@ class TestV5Golden(unittest.TestCase):
             golden["metrics"],
         )
         self.assertEqual(out["validation"]["counts"], golden["validation"]["counts"])
+        self.assertEqual(out["relations"], golden["relations"])
 
 
 class TestV5Schema(unittest.TestCase):

@@ -1,10 +1,11 @@
-# CAD2LLM v5 — design (návrh, neimplementováno)
+# CAD2LLM v5 — design a stav implementace
 
 Datum: 2026-10-22 | Autor: outpost2026 | Účel: rozhodovací podklad pro implementaci v5
 
-Stav: **F0 hotová** (schémata + příklady, commit `69faa99`), **F1 hotová**
-(`tools/cad2llm_v5.py`, CLI `enrich`, golden master, 30/30 Python testů).
-F2–F4 jsou stále jen návrh. Machine-readable protějšky:
+Stav: **F0 hotová** (schémata + příklady, commit `69faa99`), **F1 hotová** a
+**F2 hotová** (`tools/cad2llm_v5.py`, CLI `enrich`, golden master, 38/38 Python testů,
+30 relací na reálném modelu, SNR filtry).
+F3–F4 jsou stále jen návrh. Machine-readable protějšky:
 
 - `docs/schema/cad2llm_v5.schema.json` — dokument v5
 - `docs/schema/cad2llm_rules_v2.schema.json` — epistemická pravidlová KB
@@ -261,11 +262,12 @@ ignoruje), konzument v5 nesmí tvrdit, že v4 dokument je v5.
 |---|---|---|
 | F0 | schémata + příklady (tento krok) | **HOTOVO** — JSONy validují, dokumenty existují |
 | F1 | facts + semantics + brief v Pythonu | **HOTOVO** — `enrich`, golden master, 46/46 rolí, 0 false positives |
-| F2 | relations + metrics (free_space, z_table) | deterministický výstup, test idempotence |
+| F2 | relations + metrics (free_space, z_table) | **HOTOVO** — 6 druhů relací, SNR filtry (30 hran), rastr 100 mm, passages, volumes |
 | F3 | rules v2 + suppressions | SNR: ≤ 3 varování/objekt, rejected pravidla v KB |
 | F4 | ops + round-trip do SketchUp | patch s expectations projde, model_hash sedí |
 
-Každá fáze je samostatně užitečná; F1 už dává LLM brief bez zbytku.
+Každá fáze je samostatně užitečná; F1 už dává LLM brief bez zbytku, F2 přidává
+topologii a volnou podlahu.
 
 ## 15. Otevřená rozhodnutí (pro uživatele)
 

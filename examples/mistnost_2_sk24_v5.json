@@ -4770,10 +4770,431 @@
     ],
     "suppressions": []
   },
-  "relations": [],
+  "relations": [
+    {
+      "id": "rel-ID123-ID61-adjacency",
+      "kind": "adjacency",
+      "from": "ID123",
+      "to": "ID61",
+      "gap_mm": 84.4,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 84.4 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID141-ID27-adjacency",
+      "kind": "adjacency",
+      "from": "ID141",
+      "to": "ID27",
+      "gap_mm": 80.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 80.0 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID223-ID27-adjacency",
+      "kind": "adjacency",
+      "from": "ID223",
+      "to": "ID27",
+      "gap_mm": 76.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 76.0 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID223-ID3-adjacency",
+      "kind": "adjacency",
+      "from": "ID223",
+      "to": "ID3",
+      "gap_mm": 40.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 40.0 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID235-ID252-adjacency",
+      "kind": "adjacency",
+      "from": "ID235",
+      "to": "ID252",
+      "gap_mm": 115.5,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 115.5 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID235-ID256-adjacency",
+      "kind": "adjacency",
+      "from": "ID235",
+      "to": "ID256",
+      "gap_mm": 186.6,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 186.6 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID235-ID265-adjacency",
+      "kind": "adjacency",
+      "from": "ID235",
+      "to": "ID265",
+      "gap_mm": 48.4,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 48.4 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID235-ID3-adjacency",
+      "kind": "adjacency",
+      "from": "ID235",
+      "to": "ID3",
+      "gap_mm": 64.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 64.0 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID235-ID79-adjacency",
+      "kind": "adjacency",
+      "from": "ID235",
+      "to": "ID79",
+      "gap_mm": 241.2,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 241.2 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID236-ID27-adjacency",
+      "kind": "adjacency",
+      "from": "ID236",
+      "to": "ID27",
+      "gap_mm": 128.1,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 128.1 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID267-ID27-adjacency",
+      "kind": "adjacency",
+      "from": "ID267",
+      "to": "ID27",
+      "gap_mm": 98.2,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 98.2 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID267-ID3-adjacency",
+      "kind": "adjacency",
+      "from": "ID267",
+      "to": "ID3",
+      "gap_mm": 62.2,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 62.2 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID27-ID297-adjacency",
+      "kind": "adjacency",
+      "from": "ID27",
+      "to": "ID297",
+      "gap_mm": 104.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 104.0 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID27-ID3-adjacency",
+      "kind": "adjacency",
+      "from": "ID27",
+      "to": "ID3",
+      "gap_mm": 218.4,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 218.4 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID27-ID53-adjacency",
+      "kind": "adjacency",
+      "from": "ID27",
+      "to": "ID53",
+      "gap_mm": 211.5,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 211.5 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID283-ID61-adjacency",
+      "kind": "adjacency",
+      "from": "ID283",
+      "to": "ID61",
+      "gap_mm": 108.4,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 108.4 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID3-ID53-adjacency",
+      "kind": "adjacency",
+      "from": "ID3",
+      "to": "ID53",
+      "gap_mm": 220.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_ADJACENCY_GAP",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "gap 220.0 mm in 30..250 mm band"
+      }
+    },
+    {
+      "id": "rel-ID123-ID15-contact",
+      "kind": "contact",
+      "from": "ID123",
+      "to": "ID15",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.99,
+      "rule_id": "R_CONTACT_BBOX",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "bbox touch gap 0.0 mm"
+      }
+    },
+    {
+      "id": "rel-ID155-ID61-contact",
+      "kind": "contact",
+      "from": "ID155",
+      "to": "ID61",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.99,
+      "rule_id": "R_CONTACT_BBOX",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "bbox touch gap 0.0 mm"
+      }
+    },
+    {
+      "id": "rel-ID223-ID103-contact",
+      "kind": "contact",
+      "from": "ID223",
+      "to": "ID103",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.99,
+      "rule_id": "R_CONTACT_BBOX",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "bbox touch gap 0.0 mm"
+      }
+    },
+    {
+      "id": "rel-ID239-ID237-containment",
+      "kind": "containment",
+      "from": "ID239",
+      "to": "ID237",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_CONTAINMENT_BBOX",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "16 x battery inside ID237"
+      }
+    },
+    {
+      "id": "rel-ID171-ID297-opening_in",
+      "kind": "opening_in",
+      "from": "ID171",
+      "to": "ID297",
+      "gap_mm": 60.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_OPENING_IN_ENVELOPE",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "ID171 plane yz in envelope ID297"
+      }
+    },
+    {
+      "id": "rel-ID183-ID283-opening_in",
+      "kind": "opening_in",
+      "from": "ID183",
+      "to": "ID283",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_OPENING_IN_ENVELOPE",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "ID183 plane xz in envelope ID283"
+      }
+    },
+    {
+      "id": "rel-ID191-ID283-opening_in",
+      "kind": "opening_in",
+      "from": "ID191",
+      "to": "ID283",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_OPENING_IN_ENVELOPE",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "ID191 plane xz in envelope ID283"
+      }
+    },
+    {
+      "id": "rel-ID27-ID15-proximity",
+      "kind": "proximity",
+      "from": "ID27",
+      "to": "ID15",
+      "gap_mm": 642.4,
+      "overlap_mm3": null,
+      "confidence": 0.95,
+      "rule_id": "R_CLEARANCE_MIN",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "clearance rule: min 500 mm, ok=True"
+      }
+    },
+    {
+      "id": "rel-ID115-ID15-support",
+      "kind": "support",
+      "from": "ID115",
+      "to": "ID15",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.95,
+      "rule_id": "R_SUPPORT_STACK",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "z stack: ID115 top = ID15 bottom"
+      }
+    },
+    {
+      "id": "rel-ID115-ID27-support",
+      "kind": "support",
+      "from": "ID115",
+      "to": "ID27",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.95,
+      "rule_id": "R_SUPPORT_STACK",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "z stack: ID115 top = ID27 bottom"
+      }
+    },
+    {
+      "id": "rel-ID115-ID61-support",
+      "kind": "support",
+      "from": "ID115",
+      "to": "ID61",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.95,
+      "rule_id": "R_SUPPORT_STACK",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "z stack: ID115 top = ID61 bottom"
+      }
+    },
+    {
+      "id": "rel-ID115-ID79-support",
+      "kind": "support",
+      "from": "ID115",
+      "to": "ID79",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.95,
+      "rule_id": "R_SUPPORT_STACK",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "z stack: ID115 top = ID79 bottom"
+      }
+    },
+    {
+      "id": "rel-ID53-ID237-support",
+      "kind": "support",
+      "from": "ID53",
+      "to": "ID237",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.95,
+      "rule_id": "R_SUPPORT_STACK",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "z stack: ID53 top = ID237 bottom"
+      }
+    }
+  ],
   "metrics": {
     "basis": "full",
-    "method": "envelope = bbox union of wall/insulation/floor/ceiling/roof; floor_area = footprint of role=floor; clear_height = ceiling z_min - floor z_max",
+    "method": "envelope = bbox union of wall/insulation/floor/ceiling/roof; floor_area = footprint of role=floor; clear_height = ceiling z_min - floor z_max; free_space = 100 mm raster over role=floor, any solid except floor/ceiling/roof/insulation blocks a cell; passages = rule-covered clearance pairs",
     "floor_area_m2": 9.31,
     "clear_height_mm": 1990.0,
     "envelope_mm": {
@@ -5105,6 +5526,33 @@
         "height": 80.0
       }
     ],
+    "free_space": {
+      "grid_mm": 100.0,
+      "cells_total": 966,
+      "cells_free": 606,
+      "free_ratio": 0.627,
+      "occupied_area_m2": 3.6,
+      "passages": [
+        {
+          "name": "stove-bed",
+          "width_mm": 642.4,
+          "between": [
+            "ID27",
+            "ID15"
+          ]
+        }
+      ]
+    },
+    "volumes_m3": {
+      "by_zone": {
+        "work": 0.357,
+        "sleep": 0.498,
+        "energy": 0.127,
+        "envelope": 6.63,
+        "dining": 0.03
+      },
+      "note": "bbox sum; containers include children"
+    },
     "clearances": [
       {
         "a": "ID27",
@@ -5123,7 +5571,7 @@
   },
   "brief": {
     "version": "1.0",
-    "markdown": "# Brief: mistnost_2_sk24\n\n- Envelope 4688 x 2211.7 mm, height 2316 mm; footprint 9.31 m2, clear height 1990 mm.\n- Channel: dae. Nodes: 46 (bbox 46); errors 0, warnings 0.\n- Unavailable in this channel: tags, metadata_dictionaries, persistent_ids, gps.\n\n## Clearances\n- ID27 / ID15: gap 642.4 mm (min 500 mm) - OK\n\n## Findings: 0\n- No critical or warning issues.\n",
+    "markdown": "# Brief: mistnost_2_sk24\n\n- Envelope 4688 x 2211.7 mm, height 2316 mm; footprint 9.31 m2, clear height 1990 mm.\n- Channel: dae. Nodes: 46 (bbox 46); errors 0, warnings 0.\n- Unavailable in this channel: tags, metadata_dictionaries, persistent_ids, gps.\n- Free floor: 606 of 966 cells (63%) at 100 mm grid.\n- Narrowest passage: 642.4 mm (stove-bed).\n- Topology: 30 relations (adjacency 17, contact 3, containment 1, opening_in 3, proximity 1, support 5).\n\n## Clearances\n- ID27 / ID15: gap 642.4 mm (min 500 mm) - OK\n\n## Findings: 0\n- No critical or warning issues.\n",
     "facts": {
       "dimensions_mm": {
         "x": 4688.0,
@@ -5132,6 +5580,9 @@
       },
       "floor_area_m2": 9.31,
       "clear_height_mm": 1990.0,
+      "free_ratio": 0.627,
+      "narrowest_passage_mm": 642.4,
+      "relations": 30,
       "nodes": 46,
       "with_bbox": 46,
       "errors": 0,

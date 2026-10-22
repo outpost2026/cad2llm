@@ -13,6 +13,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import math
 import re
 import unicodedata
 from pathlib import Path
@@ -191,6 +192,273 @@ def _lookup_uid(nodes: list, name: str) -> str | None:
     return None
 
 
+# --------------------------------------------------------------------------
+# F2: relations
+# --------------------------------------------------------------------------
+OPENING_ROLES = {"window", "door", "opening"}
+ARTIFACT_ROLES = {"void", "boundary", "marker"}
+EXCLUDE_OCCUPANCY = {
+    "floor",
+    "ceiling",
+    "roof",
+    "insulation",
+    "boundary",
+    "void",
+    "marker",
+}
+
+
+def _gap(box_a: dict, box_b: dict) -> float:
+    d2 = 0.0
+    for ax in "xyz":
+        d = max(
+            0.0,
+            box_b["min"][ax] - box_a["max"][ax],
+            box_a["min"][ax] - box_b["max"][ax],
+        )
+        d2 += d * d
+    return math.sqrt(d2)
+
+
+def _overlap_len(a0, a1, b0, b1) -> float:
+    return max(0.0, min(a1, b1) - max(a0, b0))
+
+
+def _volume(box: dict) -> float:
+    return (
+        max(0.0, box["max"]["x"] - box["min"]["x"])
+        * max(0.0, box["max"]["y"] - box["min"]["y"])
+        * max(0.0, box["max"]["z"] - box["min"]["z"])
+    )
+
+
+def _inside(inner: dict, outer: dict, tol: float = 1.0) -> bool:
+    return all(
+        inner["min"][ax] >= outer["min"][ax] - tol
+        and inner["max"][ax] <= outer["max"][ax] + tol
+        for ax in "xyz"
+    )
+
+
+def _ancestor(a: dict, b: dict) -> bool:
+    pa = a.get("hierarchy_path") or []
+    pb = b.get("hierarchy_path") or []
+    return pa[: len(pb)] == pb or pb[: len(pa)] == pa
+
+
+def _role(n: dict) -> str | None:
+    return (n.get("semantics") or {}).get("role")
+
+
+def _intent(n: dict) -> str | None:
+    return (n.get("semantics") or {}).get("intent")
+
+
+def _plane_overlap(a: dict, b: dict, axes: str) -> float:
+    return _overlap_len(
+        a["min"][axes[0]], a["max"][axes[0]], b["min"][axes[0]], b["max"][axes[0]]
+    ) * _overlap_len(
+        a["min"][axes[1]], a["max"][axes[1]], b["min"][axes[1]], b["max"][axes[1]]
+    )
+
+
+def build_relations(nodes: list, clearances: list) -> list:
+    solids = [n for n in nodes if _bbox(n)]
+    by_uid = {n["uid"]: n for n in solids}
+    rels: list = []
+    seen: set = set()
+    opening_pairs: set = set()
+
+    def add(kind, frm, to, gap, conf, intent, rule, detail, overlap=None):
+        key = (kind, frm, to)
+        if key in seen:
+            return
+        seen.add(key)
+        rel = {
+            "id": f"rel-{frm}-{to}-{kind}",
+            "kind": kind,
+            "from": frm,
+            "to": to,
+            "gap_mm": None if gap is None else round(gap, 1),
+            "overlap_mm3": None if overlap is None else round(overlap, 1),
+            "confidence": conf,
+            "rule_id": rule,
+            "intent": intent,
+            "evidence": {"detail": detail},
+        }
+        rels.append(rel)
+
+    # opening_in: thin slab inside/next to an envelope plane (wall, insulation)
+    for op in solids:
+        if _role(op) not in OPENING_ROLES:
+            continue
+        ob = _bbox(op)
+        size = (op.get("spatial") or {}).get("size_mm") or {}
+        thin_axis = min("xyz", key=lambda ax: size.get(ax, 0))
+        if size.get(thin_axis, 0) > 50.0:
+            continue
+        plane = "".join(ax for ax in "xyz" if ax != thin_axis)
+        best = None
+        for env in solids:
+            if _role(env) not in STRUCTURAL or env is op or _ancestor(op, env):
+                continue
+            eb = _bbox(env)
+            g = _gap(ob, eb)
+            area = _plane_overlap(ob, eb, plane)
+            if g > 150.0 or area <= 0.0:
+                continue
+            score = (area, -g)
+            if best is None or score > best[0]:
+                best = (score, env, g)
+        if best is not None:
+            _, env, g = best
+            opening_pairs.add(frozenset((op["uid"], env["uid"])))
+            add(
+                "opening_in",
+                op["uid"],
+                env["uid"],
+                g,
+                0.9,
+                "CONSTRUCTION",
+                "R_OPENING_IN_ENVELOPE",
+                f"{op['uid']} plane {plane} in envelope {env['uid']}",
+            )
+
+    contained = {
+        n["uid"]
+        for n in solids
+        if any(
+            _role(m) not in ARTIFACT_ROLES
+            and m is not n
+            and _volume(_bbox(m)) > _volume(_bbox(n))
+            and _inside(_bbox(n), _bbox(m))
+            for m in solids
+        )
+    }
+
+    uids = sorted(by_uid)
+    containments: list = []
+    for i, ua in enumerate(uids):
+        for ub in uids[i + 1 :]:
+            a, b = by_uid[ua], by_uid[ub]
+            ba, bb = _bbox(a), _bbox(b)
+            ra, rb = _role(a), _role(b)
+            pair = frozenset((ua, ub))
+            g = _gap(ba, bb)
+            ancestor = _ancestor(a, b)
+
+            if pair not in opening_pairs and not ancestor:
+                structural_a, structural_b = ra in STRUCTURAL, rb in STRUCTURAL
+                if structural_a != structural_b:
+                    structural = a if structural_a else b
+                    other = b if structural_a else a
+                    if (
+                        _role(structural) in {"wall", "beam"}
+                        and _role(other) not in ARTIFACT_ROLES | {"battery"}
+                        and g <= 0.5
+                    ):
+                        add(
+                            "contact",
+                            structural["uid"],
+                            other["uid"],
+                            g,
+                            0.99,
+                            "CONSTRUCTION"
+                            if _intent(other) == "CONSTRUCTION"
+                            else "DESIGN_DECISION",
+                            "R_CONTACT_BBOX",
+                            f"bbox touch gap {round(g, 1)} mm",
+                        )
+
+                overlap_xy = _plane_overlap(ba, bb, "xy")
+                if overlap_xy > 0.0:
+                    for lower, upper in ((a, b), (b, a)):
+                        if _role(upper) in STRUCTURAL or _role(upper) in ARTIFACT_ROLES:
+                            continue
+                        if lower["uid"] in contained or upper["uid"] in contained:
+                            continue
+                        dz = _bbox(upper)["min"]["z"] - _bbox(lower)["max"]["z"]
+                        if 0.0 <= dz <= 1.0:
+                            add(
+                                "support",
+                                lower["uid"],
+                                upper["uid"],
+                                0.0,
+                                0.95,
+                                "CONSTRUCTION",
+                                "R_SUPPORT_STACK",
+                                f"z stack: {lower['uid']} top = {upper['uid']} bottom",
+                            )
+
+                if (
+                    30.0 <= g <= 250.0
+                    and ra not in ARTIFACT_ROLES | OPENING_ROLES
+                    and rb not in ARTIFACT_ROLES | OPENING_ROLES
+                    and not (ra in STRUCTURAL and rb in STRUCTURAL)
+                    and not (ra == "battery" and rb == "battery")
+                    and not (
+                        _intent(a) == "CONSTRUCTION" and _intent(b) == "CONSTRUCTION"
+                    )
+                ):
+                    add(
+                        "adjacency",
+                        ua,
+                        ub,
+                        g,
+                        0.9,
+                        "DESIGN_DECISION",
+                        "R_ADJACENCY_GAP",
+                        f"gap {round(g, 1)} mm in 30..250 mm band",
+                    )
+
+            if pair not in opening_pairs:
+                va, vb = _volume(ba), _volume(bb)
+                if va > 0 and vb > 0:
+                    inner, outer = (a, b) if va < vb else (b, a)
+                    if (
+                        _role(inner) not in STRUCTURAL | ARTIFACT_ROLES
+                        and _role(outer) not in STRUCTURAL | ARTIFACT_ROLES
+                        and _inside(_bbox(inner), _bbox(outer))
+                        and _volume(_bbox(inner)) / _volume(_bbox(outer)) <= 0.95
+                    ):
+                        containments.append((inner, outer))
+
+    groups: dict = {}
+    for inner, outer in containments:
+        groups.setdefault((outer["uid"], _role(inner)), []).append(inner["uid"])
+    for (outer_uid, label), members in sorted(groups.items()):
+        members.sort()
+        rep = by_uid[members[0]]
+        count = len(members)
+        add(
+            "containment",
+            members[0],
+            outer_uid,
+            _gap(_bbox(rep), _bbox(by_uid[outer_uid])),
+            0.9,
+            "CONSTRUCTION" if _intent(rep) == "CONSTRUCTION" else "DESIGN_DECISION",
+            "R_CONTAINMENT_BBOX",
+            f"{count} x {label} inside {outer_uid}",
+        )
+
+    for c in clearances:
+        if c.get("gap_mm") is None:
+            continue
+        add(
+            "proximity",
+            c["a"],
+            c["b"],
+            float(c["gap_mm"]),
+            0.95,
+            "DESIGN_DECISION",
+            c.get("rule_id", "R_CLEARANCE_MIN"),
+            f"clearance rule: min {c.get('min_mm')} mm, ok={c.get('ok')}",
+        )
+
+    rels.sort(key=lambda r: (r["kind"], r["from"], r["to"]))
+    return rels
+
+
 def normalize_validation(doc: dict) -> dict:
     nodes = doc.get("nodes", [])
     src = doc.get("validation") or {}
@@ -263,6 +531,71 @@ def normalize_validation(doc: dict) -> dict:
     }
 
 
+def _free_space(nodes: list, grid: float = 100.0) -> dict:
+    role = lambda n: (n.get("semantics") or {}).get("role")  # noqa: E731
+    intent = lambda n: (n.get("semantics") or {}).get("intent")  # noqa: E731
+
+    floor_box = _union([_bbox(n) for n in nodes if role(n) == "floor" and _bbox(n)])
+    if floor_box is None:
+        floor_box = _union(
+            [_bbox(n) for n in nodes if _bbox(n) and role(n) not in EXCLUDE_OCCUPANCY]
+        )
+    if floor_box is None:
+        return {
+            "grid_mm": grid,
+            "cells_total": 0,
+            "cells_free": 0,
+            "free_ratio": 0.0,
+            "occupied_area_m2": 0.0,
+            "passages": [],
+        }
+
+    x0, y0 = floor_box["min"]["x"], floor_box["min"]["y"]
+    dx = floor_box["max"]["x"] - x0
+    dy = floor_box["max"]["y"] - y0
+    nx = max(1, math.ceil(dx / grid))
+    ny = max(1, math.ceil(dy / grid))
+
+    obstacles = []
+    for n in nodes:
+        b = _bbox(n)
+        if not b or role(n) in EXCLUDE_OCCUPANCY or intent(n) == "ARTIFACT":
+            continue
+        obstacles.append((b["min"]["x"], b["max"]["x"], b["min"]["y"], b["max"]["y"]))
+
+    occupied = 0
+    for i in range(nx):
+        cx = x0 + (i + 0.5) * grid
+        for j in range(ny):
+            cy = y0 + (j + 0.5) * grid
+            for mnx, mxx, mny, mxy in obstacles:
+                if mnx <= cx <= mxx and mny <= cy <= mxy:
+                    occupied += 1
+                    break
+
+    total = nx * ny
+    free = total - occupied
+    return {
+        "grid_mm": grid,
+        "cells_total": total,
+        "cells_free": free,
+        "free_ratio": round(free / total, 3),
+        "occupied_area_m2": round(occupied * (grid / 1000.0) ** 2, 2),
+    }
+
+
+def _volumes(nodes: list) -> dict:
+    by_zone: dict = {}
+    for n in nodes:
+        if (n.get("semantics") or {}).get("intent") == "ARTIFACT" or not _bbox(n):
+            continue
+        zone = (n.get("semantics") or {}).get("zone") or "unknown"
+        by_zone[zone] = round(
+            by_zone.get(zone, 0.0) + _volume(_bbox(n)) / 1_000_000_000.0, 3
+        )
+    return {"by_zone": by_zone, "note": "bbox sum; containers include children"}
+
+
 def build_metrics(doc: dict, validation: dict) -> dict:
     nodes = doc.get("nodes", [])
     by_role = {}
@@ -302,16 +635,39 @@ def build_metrics(doc: dict, validation: dict) -> dict:
         wall_tops = [_bbox(n)["max"]["z"] for n in by_role.get("wall", [])]
         clear_height = round(min(wall_tops), 1) if wall_tops else envelope["z"]
 
+    clearances = validation.pop("_clearances")
+    fs = _free_space(nodes)
+    by_uid = {n["uid"]: n for n in nodes}
+    passages = []
+    for c in clearances:
+        if c.get("gap_mm") is None:
+            continue
+        ra = (by_uid[c["a"]]["semantics"] or {}).get("role")
+        rb = (by_uid[c["b"]]["semantics"] or {}).get("role")
+        passages.append(
+            {
+                "name": f"{ra}-{rb}",
+                "width_mm": c["gap_mm"],
+                "between": [c["a"], c["b"]],
+            }
+        )
+    passages.sort(key=lambda p: (p["width_mm"], p["name"]))
+    fs["passages"] = passages
+
     return {
         "basis": "full",
         "method": "envelope = bbox union of wall/insulation/floor/ceiling/roof; "
         "floor_area = footprint of role=floor; "
-        "clear_height = ceiling z_min - floor z_max",
+        "clear_height = ceiling z_min - floor z_max; "
+        "free_space = 100 mm raster over role=floor, any solid except floor/ceiling/"
+        "roof/insulation blocks a cell; passages = rule-covered clearance pairs",
         "floor_area_m2": floor_area,
         "clear_height_mm": clear_height,
         "envelope_mm": envelope,
         "z_table": validation.pop("_z_table"),
-        "clearances": validation.pop("_clearances"),
+        "free_space": fs,
+        "volumes_m3": _volumes(nodes),
+        "clearances": clearances,
         "energy": {
             "kwh_nominal": None,
             "peak_load_kw": None,
@@ -326,12 +682,13 @@ def _fmt(v) -> str:
     return str(v)
 
 
-def build_brief(doc: dict, metrics: dict) -> dict:
+def build_brief(doc: dict, metrics: dict, relations: list | None = None) -> dict:
     md = doc.get("project_metadata") or {}
     caps = md.get("capabilities") or {}
     v = doc.get("validation") or {}
     counts = v.get("counts") or {}
     env = metrics.get("envelope_mm") or {}
+    fs = metrics.get("free_space") or {}
     missing = [
         k
         for k in ("tags", "metadata_dictionaries", "persistent_ids", "gps")
@@ -351,6 +708,23 @@ def build_brief(doc: dict, metrics: dict) -> dict:
     )
     if missing:
         lines.append(f"- Unavailable in this channel: {', '.join(missing)}.")
+    if fs.get("cells_total"):
+        lines.append(
+            f"- Free floor: {fs.get('cells_free')} of {fs.get('cells_total')} cells "
+            f"({fs.get('free_ratio', 0):.0%}) at {_fmt(fs.get('grid_mm', 0))} mm grid."
+        )
+        passages = fs.get("passages") or []
+        if passages:
+            p = passages[0]
+            lines.append(
+                f"- Narrowest passage: {_fmt(p['width_mm'])} mm ({p['name']})."
+            )
+    if relations:
+        kinds: dict = {}
+        for r in relations:
+            kinds[r["kind"]] = kinds.get(r["kind"], 0) + 1
+        summary = ", ".join(f"{k} {kinds[k]}" for k in sorted(kinds))
+        lines.append(f"- Topology: {len(relations)} relations ({summary}).")
 
     clearances = metrics.get("clearances") or []
     if clearances:
@@ -391,6 +765,11 @@ def build_brief(doc: dict, metrics: dict) -> dict:
             },
             "floor_area_m2": metrics.get("floor_area_m2", 0),
             "clear_height_mm": metrics.get("clear_height_mm", 0),
+            "free_ratio": fs.get("free_ratio"),
+            "narrowest_passage_mm": (
+                fs.get("passages")[0]["width_mm"] if fs.get("passages") else None
+            ),
+            "relations": len(relations or []),
             "nodes": counts.get("nodes", 0),
             "with_bbox": counts.get("with_bbox", 0),
             "errors": counts.get("errors", 0),
@@ -434,9 +813,10 @@ def enrich(doc: dict, source_hash: str | None = None, basis: str = "full") -> di
     out["relations"] = []
     validation = normalize_validation(out)
     out["validation"] = validation
+    out["relations"] = build_relations(out["nodes"], validation["_clearances"])
     out["metrics"] = build_metrics(out, validation)
     out["metrics"]["basis"] = basis
-    out["brief"] = build_brief(out, out["metrics"])
+    out["brief"] = build_brief(out, out["metrics"], out["relations"])
     return out
 
 

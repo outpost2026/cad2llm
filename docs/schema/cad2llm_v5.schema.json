@@ -1,0 +1,346 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/outpost2026/cad2llm/schema/v5/cad2llm_v5.schema.json",
+  "title": "CAD2LLM document v5",
+  "description": "Deterministic CAD -> LLM document: facts (nodes), semantics, relations, metrics, validation, brief. Units mm, Z-up. Additive over v4.",
+  "type": "object",
+  "required": ["schema_version", "project_metadata", "nodes", "relations", "metrics", "validation"],
+  "properties": {
+    "schema_version": { "const": "5.0" },
+    "project_metadata": { "$ref": "#/$defs/project_metadata" },
+    "nodes": { "type": "array", "items": { "$ref": "#/$defs/node" } },
+    "relations": { "type": "array", "items": { "$ref": "#/$defs/relation" } },
+    "metrics": { "$ref": "#/$defs/metrics" },
+    "validation": { "$ref": "#/$defs/validation" },
+    "brief": { "$ref": "#/$defs/brief" },
+    "ops": { "type": "array", "items": { "$ref": "#/$defs/op" } }
+  },
+  "$defs": {
+    "vec3": {
+      "type": "object",
+      "required": ["x", "y", "z"],
+      "properties": { "x": { "type": "number" }, "y": { "type": "number" }, "z": { "type": "number" } }
+    },
+    "bbox": {
+      "type": "object",
+      "required": ["min", "max"],
+      "properties": { "min": { "$ref": "#/$defs/vec3" }, "max": { "$ref": "#/$defs/vec3" } }
+    },
+    "project_metadata": {
+      "type": "object",
+      "required": ["name", "export_date", "units", "up_axis", "source", "capabilities"],
+      "properties": {
+        "name": { "type": "string" },
+        "export_date": { "type": "string", "format": "date-time" },
+        "units": { "const": "mm" },
+        "up_axis": { "const": "Z_UP" },
+        "global_origin_gps": {
+          "type": ["array", "null"],
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "source": {
+          "type": "object",
+          "required": ["channel", "file"],
+          "properties": {
+            "channel": { "enum": ["sketchup", "dae"] },
+            "file": { "type": "string" },
+            "model_path": { "type": ["string", "null"] },
+            "sketchup_version": { "type": ["string", "null"] },
+            "model_hash": { "type": ["string", "null"], "description": "sha256 of the source model/export for provenance" }
+          }
+        },
+        "capabilities": {
+          "type": "object",
+          "required": ["hierarchy", "bbox_mm", "rotation", "tags", "metadata_dictionaries", "persistent_ids", "gps"],
+          "properties": {
+            "hierarchy": { "type": "boolean" },
+            "bbox_mm": { "type": "boolean" },
+            "rotation": { "type": "boolean" },
+            "tags": { "type": "boolean" },
+            "metadata_dictionaries": { "type": "boolean" },
+            "persistent_ids": { "type": "boolean" },
+            "gps": { "type": "boolean" }
+          }
+        },
+        "excerpt": {
+          "type": ["object", "null"],
+          "description": "Set when the document is a curated subset of a larger export",
+          "properties": { "of": { "type": "string" }, "note": { "type": "string" } }
+        }
+      }
+    },
+    "node": {
+      "type": "object",
+      "required": ["uid", "name", "entity_type", "spatial", "semantics"],
+      "properties": {
+        "uid": { "type": "string", "minLength": 1 },
+        "persistent_id": { "type": ["integer", "null"] },
+        "name": { "type": "string" },
+        "definition_name": { "type": ["string", "null"] },
+        "entity_type": { "enum": ["group", "component", "node"] },
+        "tag": { "type": ["string", "null"] },
+        "hierarchy_path": { "type": "array", "items": { "type": "string" } },
+        "parent_uid": { "type": ["string", "null"] },
+        "spatial": {
+          "type": "object",
+          "required": ["origin_mm", "bbox_mm", "size_mm", "center_mm", "rotation_deg", "matrix_4x4"],
+          "properties": {
+            "origin_mm": { "$ref": "#/$defs/vec3" },
+            "bbox_mm": { "$ref": "#/$defs/bbox" },
+            "size_mm": { "$ref": "#/$defs/vec3" },
+            "center_mm": { "$ref": "#/$defs/vec3" },
+            "rotation_deg": { "$ref": "#/$defs/vec3" },
+            "quaternion": {
+              "type": "object",
+              "properties": { "w": { "type": "number" }, "x": { "type": "number" }, "y": { "type": "number" }, "z": { "type": "number" } }
+            },
+            "scale": { "$ref": "#/$defs/vec3" },
+            "matrix_4x4": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "type": "number" } }
+            }
+          }
+        },
+        "semantics": {
+          "type": "object",
+          "required": ["role", "zone", "intent", "confidence"],
+          "properties": {
+            "role": {
+              "enum": [
+                "wall", "window", "door", "opening", "floor", "ceiling", "roof",
+                "insulation", "beam", "truss", "furniture", "bed", "table", "worktop",
+                "stove", "appliance", "battery", "inverter", "storage", "circulation",
+                "boundary", "void", "marker", "unknown"
+              ]
+            },
+            "zone": {
+              "enum": ["entry", "sleep", "dining", "work", "energy", "tech", "storage", "structure", "envelope", "outside", "unknown", null]
+            },
+            "intent": { "enum": ["ARTIFACT", "CONSTRUCTION", "DESIGN_DECISION", "DEFECT", "UNKNOWN"] },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["rule_id", "rule_class"],
+                "properties": {
+                  "rule_id": { "type": "string" },
+                  "rule_class": { "enum": ["CLASS_A", "CLASS_B", "CLASS_C", "CLASS_D"] },
+                  "support_n": { "type": ["integer", "null"] },
+                  "detail": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "metadata": { "type": "object", "description": "attribute dictionaries (SketchUp channel only)" }
+      }
+    },
+    "relation": {
+      "type": "object",
+      "required": ["id", "kind", "from", "to", "confidence"],
+      "properties": {
+        "id": { "type": "string" },
+        "kind": { "enum": ["contact", "containment", "opening_in", "support", "adjacency", "proximity"] },
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "gap_mm": { "type": ["number", "null"] },
+        "overlap_mm3": { "type": ["number", "null"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "rule_id": { "type": "string" },
+        "intent": { "enum": ["ARTIFACT", "CONSTRUCTION", "DESIGN_DECISION", "DEFECT", "UNKNOWN"] },
+        "evidence": { "type": "object" }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["floor_area_m2", "clear_height_mm", "z_table"],
+      "properties": {
+        "basis": { "enum": ["full", "excerpt"] },
+        "floor_area_m2": { "type": "number" },
+        "occupied_area_m2": { "type": "number" },
+        "clear_height_mm": { "type": "number" },
+        "envelope_mm": { "$ref": "#/$defs/vec3" },
+        "z_table": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["uid", "name", "z_min", "z_max", "height"],
+            "properties": {
+              "uid": { "type": "string" },
+              "name": { "type": "string" },
+              "z_min": { "type": "number" },
+              "z_max": { "type": "number" },
+              "height": { "type": "number" }
+            }
+          }
+        },
+        "free_space": {
+          "type": "object",
+          "required": ["grid_mm", "cells_total", "cells_free"],
+          "properties": {
+            "grid_mm": { "type": "number" },
+            "cells_total": { "type": "integer" },
+            "cells_free": { "type": "integer" },
+            "free_ratio": { "type": "number" },
+            "passages": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name", "width_mm", "between"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "width_mm": { "type": "number" },
+                  "between": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 2 }
+                }
+              }
+            }
+          }
+        },
+        "volumes_m3": { "type": "object" },
+        "energy": {
+          "type": "object",
+          "properties": {
+            "kwh_nominal": { "type": ["number", "null"] },
+            "peak_load_kw": { "type": ["number", "null"] },
+            "notes": { "type": "string" }
+          }
+        },
+        "clearances": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["a", "b", "gap_mm", "min_mm", "ok"],
+            "properties": {
+              "a": { "type": "string" },
+              "b": { "type": "string" },
+              "gap_mm": { "type": ["number", "null"] },
+              "min_mm": { "type": "number" },
+              "ok": { "type": "boolean" },
+              "rule_id": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["checked_at", "counts", "issues"],
+      "properties": {
+        "checked_at": { "type": "string", "format": "date-time" },
+        "rules_version": { "type": "string" },
+        "counts": {
+          "type": "object",
+          "required": ["nodes", "with_bbox", "errors", "warnings", "critical", "suppressed"],
+          "properties": {
+            "nodes": { "type": "integer" },
+            "with_bbox": { "type": "integer" },
+            "errors": { "type": "integer" },
+            "warnings": { "type": "integer" },
+            "critical": { "type": "integer" },
+            "info": { "type": "integer" },
+            "suppressed": { "type": "integer" }
+          }
+        },
+        "issues": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
+        "suppressions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["code", "count", "reason"],
+            "properties": {
+              "code": { "type": "string" },
+              "count": { "type": "integer" },
+              "reason": { "type": "string" },
+              "rule_id": { "type": "string" },
+              "rule_class": { "enum": ["CLASS_A", "CLASS_B", "CLASS_C", "CLASS_D"] }
+            }
+          }
+        }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "required": ["code", "severity", "rule_id", "rule_class", "confidence", "message", "traceable_context"],
+      "properties": {
+        "code": { "type": "string" },
+        "severity": { "enum": ["INFO", "WARNING", "CRITICAL"] },
+        "rule_id": { "type": "string" },
+        "rule_class": { "enum": ["CLASS_A", "CLASS_B", "CLASS_C", "CLASS_D"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "message": { "type": "string" },
+        "intent": { "enum": ["ARTIFACT", "CONSTRUCTION", "DESIGN_DECISION", "DEFECT", "UNKNOWN"] },
+        "traceable_context": {
+          "type": "object",
+          "required": ["uids"],
+          "properties": {
+            "uids": { "type": "array", "items": { "type": "string" } },
+            "path": { "type": "array", "items": { "type": "string" } },
+            "values": { "type": "object" }
+          }
+        }
+      }
+    },
+    "brief": {
+      "type": "object",
+      "required": ["version", "markdown", "facts", "top_findings"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "markdown": { "type": "string", "maxLength": 4000 },
+        "facts": { "type": "object" },
+        "top_findings": {
+          "type": "array",
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "required": ["code", "severity", "message"],
+            "properties": {
+              "code": { "type": "string" },
+              "severity": { "enum": ["INFO", "WARNING", "CRITICAL"] },
+              "uid": { "type": ["string", "null"] },
+              "message": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "op": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["op", "uid", "vector_mm"],
+          "properties": { "op": { "const": "move" }, "uid": { "type": "string" }, "vector_mm": { "$ref": "#/$defs/vec3" } }
+        },
+        {
+          "type": "object",
+          "required": ["op", "uid", "size_mm"],
+          "properties": { "op": { "const": "resize" }, "uid": { "type": "string" }, "size_mm": { "$ref": "#/$defs/vec3" } }
+        },
+        {
+          "type": "object",
+          "required": ["op", "definition", "transform_4x4"],
+          "properties": { "op": { "const": "add" }, "definition": { "type": "string" }, "transform_4x4": { "type": "array" } }
+        },
+        {
+          "type": "object",
+          "required": ["op", "uid"],
+          "properties": { "op": { "const": "remove" }, "uid": { "type": "string" } }
+        },
+        {
+          "type": "object",
+          "required": ["op", "uid", "dict", "pairs"],
+          "properties": {
+            "op": { "const": "set_metadata" },
+            "uid": { "type": "string" },
+            "dict": { "type": "string" },
+            "pairs": { "type": "object" }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/outpost2026/cad2llm/schema/v5/cad2llm_rules_v2.schema.json",
+  "title": "CAD2LLM rules KB v2",
+  "description": "Epistemic rule base: every rule carries provenance, class, confidence and support_n. Rules are data, not code.",
+  "type": "object",
+  "required": ["version", "rules"],
+  "properties": {
+    "version": { "const": "2.0" },
+    "name": { "type": "string" },
+    "updated": { "type": "string", "format": "date" },
+    "rules": { "type": "array", "items": { "$ref": "#/$defs/rule" } },
+    "suppressions": { "type": "array", "items": { "$ref": "#/$defs/suppression" } }
+  },
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "required": ["rule_id", "description", "source", "confidence", "validation_status", "rule_class", "support_n"],
+      "properties": {
+        "rule_id": { "type": "string", "pattern": "^R_[A-Z0-9_]+$" },
+        "description": { "type": "string" },
+        "source": { "type": "string", "description": "human or document the rule came from, e.g. 'operator Wynnwood 2026-04' or 'CNS 73 4201'" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "validation_status": { "enum": ["accepted", "conditional", "rejected", "unknown"] },
+        "rule_class": { "enum": ["CLASS_A", "CLASS_B", "CLASS_C", "CLASS_D"] },
+        "support_n": { "type": "integer", "minimum": 0, "description": "how many independent models/cases the rule was verified on" },
+        "supersedes": { "type": ["string", "null"] }
+      }
+    },
+    "selector": {
+      "type": "object",
+      "description": "coarse pre-filter of nodes the rule applies to",
+      "properties": {
+        "role": { "type": "array", "items": { "type": "string" } },
+        "zone": { "type": "array", "items": { "type": "string" } },
+        "entity_type": { "type": "array", "items": { "enum": ["group", "component", "node"] } },
+        "name_regex": { "type": "string" },
+        "tag_regex": { "type": "string" },
+        "min_size_mm": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "predicate": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["all"],
+          "properties": { "all": { "type": "array", "items": { "$ref": "#/$defs/predicate" } } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["any"],
+          "properties": { "any": { "type": "array", "items": { "$ref": "#/$defs/predicate" } } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["not"],
+          "properties": { "not": { "$ref": "#/$defs/predicate" } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["fact", "op"],
+          "properties": {
+            "fact": { "type": "string", "description": "e.g. gap_mm, overlap_ratio, size_mm.x, z_min, role, zone, exists, count, unique_count" },
+            "op": { "enum": ["eq", "ne", "lt", "lte", "gt", "gte", "in", "matches", "exists"] },
+            "value": {}
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "assertion": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "clearance_min",
+            "size_range",
+            "must_exist",
+            "must_be_unique",
+            "no_overlap_unless",
+            "within_bounds",
+            "z_overlap",
+            "catalog_match",
+            "equal_across_group",
+            "custom"
+          ]
+        },
+        "params": { "type": "object" }
+      }
+    },
+    "violation": {
+      "type": "object",
+      "required": ["code", "severity", "message_template"],
+      "properties": {
+        "code": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+        "severity": { "enum": ["INFO", "WARNING", "CRITICAL"] },
+        "message_template": { "type": "string", "description": "placeholders: {a}, {b}, {gap_mm}, {min_mm}, {size_mm}, {uid}, {value}" },
+        "intent": { "enum": ["ARTIFACT", "CONSTRUCTION", "DESIGN_DECISION", "DEFECT", "UNKNOWN"] }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": ["metadata", "assert", "on_violation"],
+      "properties": {
+        "metadata": { "$ref": "#/$defs/metadata" },
+        "scope": { "$ref": "#/$defs/selector" },
+        "when": { "$ref": "#/$defs/predicate" },
+        "assert": { "$ref": "#/$defs/assertion" },
+        "on_violation": { "$ref": "#/$defs/violation" },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "suppression": {
+      "type": "object",
+      "required": ["id", "reason", "applies_to"],
+      "properties": {
+        "id": { "type": "string" },
+        "reason": { "type": "string" },
+        "rule_class": { "enum": ["CLASS_A", "CLASS_B", "CLASS_C", "CLASS_D"] },
+        "applies_to": { "type": "array", "items": { "type": "string" } },
+        "when": { "$ref": "#/$defs/predicate" },
+        "expires": { "type": ["string", "null"], "format": "date" }
+      }
+    }
+  }
+}

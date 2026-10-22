@@ -1,0 +1,1470 @@
+{
+  "schema_version": "5.0",
+  "project_metadata": {
+    "name": "mistnost_2_sk24",
+    "export_date": "2026-10-22T12:00:00Z",
+    "units": "mm",
+    "up_axis": "Z_UP",
+    "global_origin_gps": null,
+    "source": {
+      "channel": "dae",
+      "file": "mistnost_2_sk24.dae",
+      "model_path": "C:/Users/PC/Documents/Sketchup2016/mistnost_2_sk24.dae",
+      "sketchup_version": null,
+      "model_hash": null
+    },
+    "capabilities": {
+      "hierarchy": true,
+      "bbox_mm": true,
+      "rotation": true,
+      "tags": false,
+      "metadata_dictionaries": false,
+      "persistent_ids": false,
+      "gps": false
+    },
+    "excerpt": {
+      "of": "examples/mistnost_2_sk24_v4.json",
+      "note": "11 of 46 nodes: bed, stove, worktop, battery base, 3 windows, wall core, 2 insulation slabs, entry void"
+    }
+  },
+  "nodes": [
+    {
+      "uid": "ID15",
+      "persistent_id": null,
+      "name": "Bed_01_mattres_with_light_frame",
+      "definition_name": "sleep_zone",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "Bed_01_mattres_with_light_frame"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 2495.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2495.0001
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2495.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4495.0,
+            "y": 970.0,
+            "z": 180.0
+          }
+        },
+        "size_mm": {
+          "x": 2000.0,
+          "y": 970.0,
+          "z": 180.0
+        },
+        "center_mm": {
+          "x": 3495.0,
+          "y": 485.0,
+          "z": 90.0
+        }
+      },
+      "semantics": {
+        "role": "bed",
+        "zone": "sleep",
+        "intent": "DESIGN_DECISION",
+        "confidence": 0.95,
+        "evidence": [
+          {
+            "rule_id": "R_NAME_ROLE_BED",
+            "rule_class": "CLASS_B",
+            "support_n": 1,
+            "detail": "name prefix Bed_ + bbox 2000x970x180 mm"
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID27",
+      "persistent_id": null,
+      "name": "Kamna_Priti_mini_D_zone_bed_energy_wall_primary_wood_fuel",
+      "definition_name": "stove_main",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "Kamna_Priti_mini_D_zone_bed_energy_wall_primary_wood_fuel"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 3988.529,
+          "y": 1612.4,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            0.8989,
+            0.0,
+            0.0,
+            3988.529
+          ],
+          [
+            0.0,
+            0.82,
+            0.0,
+            1612.3999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 0.8989,
+          "y": 0.82,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 3988.529,
+            "y": 1612.4,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4420.001,
+            "y": 1924.0,
+            "z": 680.0
+          }
+        },
+        "size_mm": {
+          "x": 431.472,
+          "y": 311.6,
+          "z": 680.0
+        },
+        "center_mm": {
+          "x": 4204.265,
+          "y": 1768.2,
+          "z": 340.0
+        }
+      },
+      "semantics": {
+        "role": "stove",
+        "zone": "sleep",
+        "intent": "DESIGN_DECISION",
+        "confidence": 0.93,
+        "evidence": [
+          {
+            "rule_id": "R_NAME_ROLE_STOVE",
+            "rule_class": "CLASS_B",
+            "support_n": 1,
+            "detail": "name prefix Kamna + bbox 431x312x680 mm"
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID3",
+      "persistent_id": null,
+      "name": "Worktop__01_hlavní_pracovni_plocha_dřevěná",
+      "definition_name": "worktop_user",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "Worktop__01_hlavní_pracovni_plocha_dřevěná"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1520.0,
+          "y": 1760.0,
+          "z": 745.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1520.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1760.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            745.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 1520.0,
+            "y": 1760.0,
+            "z": 745.0
+          },
+          "max": {
+            "x": 3780.0,
+            "y": 1960.0,
+            "z": 795.0
+          }
+        },
+        "size_mm": {
+          "x": 2260.0,
+          "y": 200.0,
+          "z": 50.0
+        },
+        "center_mm": {
+          "x": 2650.0,
+          "y": 1860.0,
+          "z": 770.0
+        }
+      },
+      "semantics": {
+        "role": "worktop",
+        "zone": "work",
+        "intent": "DESIGN_DECISION",
+        "confidence": 0.92,
+        "evidence": [
+          {
+            "rule_id": "R_NAME_ROLE_WORKTOP",
+            "rule_class": "CLASS_B",
+            "support_n": 1,
+            "detail": "name Worktop + slab z 745..795 mm"
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID53",
+      "persistent_id": null,
+      "name": "LFP_main_base",
+      "definition_name": "lfp_main_worktop_policka_na_main_battery",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_main_base"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1690.0,
+          "y": 1760.0,
+          "z": 490.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1689.9999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1760.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            490.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 1690.0,
+            "y": 1760.0,
+            "z": 490.0
+          },
+          "max": {
+            "x": 3777.0,
+            "y": 2000.0,
+            "z": 525.0
+          }
+        },
+        "size_mm": {
+          "x": 2087.0,
+          "y": 240.0,
+          "z": 35.0
+        },
+        "center_mm": {
+          "x": 2733.5,
+          "y": 1880.0,
+          "z": 507.5
+        }
+      },
+      "semantics": {
+        "role": "storage",
+        "zone": "energy",
+        "intent": "DESIGN_DECISION",
+        "confidence": 0.85,
+        "evidence": [
+          {
+            "rule_id": "R_CATALOG_BATTERY_PART",
+            "rule_class": "CLASS_C",
+            "support_n": 1,
+            "detail": "LFP base, 35 mm slab at z 490..525 mm"
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID183",
+      "persistent_id": null,
+      "name": "windows_západní_dvojokno_bez_rámu_zone_sleeping",
+      "definition_name": "windos_south_west",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "windows_západní_dvojokno_bez_rámu_zone_sleeping"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.001,
+          "y": -93.0,
+          "z": 561.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0012
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -93.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            560.9999
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 3245.001,
+            "y": -93.0,
+            "z": 561.0
+          },
+          "max": {
+            "x": 4500.001,
+            "y": -73.0,
+            "z": 1831.0
+          }
+        },
+        "size_mm": {
+          "x": 1255.0,
+          "y": 20.0,
+          "z": 1270.0
+        },
+        "center_mm": {
+          "x": 3872.501,
+          "y": -83.0,
+          "z": 1196.0
+        }
+      },
+      "semantics": {
+        "role": "window",
+        "zone": "sleep",
+        "intent": "DESIGN_DECISION",
+        "confidence": 0.96,
+        "evidence": [
+          {
+            "rule_id": "R_GEOM_OPENING",
+            "rule_class": "CLASS_A",
+            "support_n": 1,
+            "detail": "thin slab 20 mm in envelope plane, z 561..1831"
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID191",
+      "persistent_id": null,
+      "name": "windows_západní_dvojokno_bez_rámu_zóna_dinning_dump",
+      "definition_name": "window_west",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "windows_západní_dvojokno_bez_rámu_zóna_dinning_dump"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1575.194,
+          "y": -90.0,
+          "z": 590.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            1575.1945
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -90.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            590.0001
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 329.834,
+            "y": -90.0,
+            "z": 590.0
+          },
+          "max": {
+            "x": 1575.194,
+            "y": -70.0,
+            "z": 1811.356
+          }
+        },
+        "size_mm": {
+          "x": 1245.361,
+          "y": 20.0,
+          "z": 1221.356
+        },
+        "center_mm": {
+          "x": 952.514,
+          "y": -80.0,
+          "z": 1200.678
+        }
+      },
+      "semantics": {
+        "role": "window",
+        "zone": "dining",
+        "intent": "DESIGN_DECISION",
+        "confidence": 0.96,
+        "evidence": [
+          {
+            "rule_id": "R_GEOM_OPENING",
+            "rule_class": "CLASS_A",
+            "support_n": 1,
+            "detail": "thin slab 20 mm in envelope plane, z 590..1811"
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID171",
+      "persistent_id": null,
+      "name": "windows_jižní_dvojokno_bez_rámu_zone_sleeping_stove",
+      "definition_name": "window_south",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "windows_jižní_dvojokno_bez_rámu_zone_sleeping_stove"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4653.999,
+          "y": 45.0,
+          "z": 600.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4653.9988
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            45.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            600.0001
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 4653.999,
+            "y": 45.0,
+            "z": 600.0
+          },
+          "max": {
+            "x": 4673.999,
+            "y": 1181.361,
+            "z": 1750.356
+          }
+        },
+        "size_mm": {
+          "x": 20.0,
+          "y": 1136.361,
+          "z": 1150.356
+        },
+        "center_mm": {
+          "x": 4663.999,
+          "y": 613.18,
+          "z": 1175.178
+        }
+      },
+      "semantics": {
+        "role": "window",
+        "zone": "sleep",
+        "intent": "DESIGN_DECISION",
+        "confidence": 0.9,
+        "evidence": [
+          {
+            "rule_id": "R_GEOM_OPENING",
+            "rule_class": "CLASS_A",
+            "support_n": 1,
+            "detail": "thin slab 20 mm in envelope plane, z 600..1750"
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID283",
+      "persistent_id": null,
+      "name": "izolace_minerální_7cm_západní_stěna",
+      "definition_name": "insulation_wall_west_7_cm",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "izolace_minerální_7cm_západní_stěna"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.001,
+          "y": -94.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0012
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -94.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": -94.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4500.001,
+            "y": -24.0,
+            "z": 1990.0
+          }
+        },
+        "size_mm": {
+          "x": 4500.001,
+          "y": 70.0,
+          "z": 1990.0
+        },
+        "center_mm": {
+          "x": 2250.001,
+          "y": -59.0,
+          "z": 995.0
+        }
+      },
+      "semantics": {
+        "role": "insulation",
+        "zone": "envelope",
+        "intent": "CONSTRUCTION",
+        "confidence": 0.98,
+        "evidence": [
+          {
+            "rule_id": "R_NAME_ROLE_INSULATION",
+            "rule_class": "CLASS_B",
+            "support_n": 1,
+            "detail": "name izolace + 70 mm slab"
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID297",
+      "persistent_id": null,
+      "name": "izolace_minerální_7cm_jižní_stěna",
+      "definition_name": "insulation_wall_south_7_cm",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "izolace_minerální_7cm_jižní_stěna"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4593.999,
+          "y": -0.0,
+          "z": -0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4593.9989
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 4523.999,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4593.999,
+            "y": 2000.0,
+            "z": 2090.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 2000.0,
+          "z": 2090.0
+        },
+        "center_mm": {
+          "x": 4558.999,
+          "y": 1000.0,
+          "z": 1045.0
+        }
+      },
+      "semantics": {
+        "role": "insulation",
+        "zone": "envelope",
+        "intent": "CONSTRUCTION",
+        "confidence": 0.98,
+        "evidence": [
+          {
+            "rule_id": "R_NAME_ROLE_INSULATION",
+            "rule_class": "CLASS_B",
+            "support_n": 1,
+            "detail": "name izolace + 70 mm slab"
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID123",
+      "persistent_id": null,
+      "name": "wall_vnitřní_west_wooden_prostupy_pro_okna_zone_bed",
+      "definition_name": "wall_inner_west_wooden_windows_openings",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "wall_vnitřní_west_wooden_prostupy_pro_okna_zone_bed"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.001,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0012
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": -24.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4500.001,
+            "y": 0.0,
+            "z": 1990.0
+          }
+        },
+        "size_mm": {
+          "x": 4500.001,
+          "y": 24.0,
+          "z": 1990.0
+        },
+        "center_mm": {
+          "x": 2250.001,
+          "y": -12.0,
+          "z": 995.0
+        }
+      },
+      "semantics": {
+        "role": "wall",
+        "zone": "envelope",
+        "intent": "CONSTRUCTION",
+        "confidence": 0.98,
+        "evidence": [
+          {
+            "rule_id": "R_NAME_ROLE_WALL",
+            "rule_class": "CLASS_B",
+            "support_n": 1,
+            "detail": "24 mm core slab y -24..0, z 0..1990"
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID215",
+      "persistent_id": null,
+      "name": "void_entry_point",
+      "definition_name": "Entry_opening_raw_frame_east_wall",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "void_entry_point"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1695.0,
+          "y": 2000.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            1694.9999
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2000.0001
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 45.0,
+            "y": 2000.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 1695.0,
+            "y": 2000.0,
+            "z": 1994.528
+          }
+        },
+        "size_mm": {
+          "x": 1650.0,
+          "y": 0.0,
+          "z": 1994.528
+        },
+        "center_mm": {
+          "x": 870.0,
+          "y": 2000.0,
+          "z": 997.264
+        }
+      },
+      "semantics": {
+        "role": "void",
+        "zone": "entry",
+        "intent": "ARTIFACT",
+        "confidence": 0.9,
+        "evidence": [
+          {
+            "rule_id": "R_GEOM_ZERO_THICKNESS",
+            "rule_class": "CLASS_A",
+            "support_n": 1,
+            "detail": "size.y == 0 mm: plane marker, not a body"
+          }
+        ]
+      },
+      "metadata": {}
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-001",
+      "kind": "contact",
+      "from": "ID15",
+      "to": "ID123",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.99,
+      "rule_id": "R_CONTACT_ENVELOPE",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "axis": "y",
+        "detail": "bed y_min 0.0 == wall core y_max 0.0"
+      }
+    },
+    {
+      "id": "rel-002",
+      "kind": "opening_in",
+      "from": "ID183",
+      "to": "ID283",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_OPENING_IN_ENVELOPE",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "window slab y -93..-73 inside wall slab y -94..-24"
+      }
+    },
+    {
+      "id": "rel-003",
+      "kind": "opening_in",
+      "from": "ID191",
+      "to": "ID283",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_OPENING_IN_ENVELOPE",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "window slab y -90..-70 inside wall slab y -94..-24"
+      }
+    },
+    {
+      "id": "rel-004",
+      "kind": "opening_in",
+      "from": "ID171",
+      "to": "ID297",
+      "gap_mm": 0.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_OPENING_IN_ENVELOPE",
+      "intent": "CONSTRUCTION",
+      "evidence": {
+        "detail": "window slab x 4654..4674 vs wall slab x 4524..4594: outward mounted"
+      }
+    },
+    {
+      "id": "rel-005",
+      "kind": "proximity",
+      "from": "ID27",
+      "to": "ID15",
+      "gap_mm": 642.4,
+      "overlap_mm3": null,
+      "confidence": 0.95,
+      "rule_id": "R_CLEARANCE_STOVE_BED",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "min_mm": 500,
+        "ok": true
+      }
+    },
+    {
+      "id": "rel-006",
+      "kind": "proximity",
+      "from": "ID27",
+      "to": "ID297",
+      "gap_mm": 104.0,
+      "overlap_mm3": null,
+      "confidence": 0.8,
+      "rule_id": "R_CLEARANCE_STOVE_WALL",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "104 mm from insulation face, 80 mm from wall core; heat shield assumed"
+      }
+    },
+    {
+      "id": "rel-007",
+      "kind": "adjacency",
+      "from": "ID53",
+      "to": "ID3",
+      "gap_mm": 220.0,
+      "overlap_mm3": null,
+      "confidence": 0.9,
+      "rule_id": "R_STACK_ADJACENCY",
+      "intent": "DESIGN_DECISION",
+      "evidence": {
+        "detail": "base top z 525, worktop bottom z 745: 220 mm service gap"
+      }
+    }
+  ],
+  "metrics": {
+    "basis": "excerpt",
+    "floor_area_m2": 9.0,
+    "clear_height_mm": 1990.0,
+    "envelope_mm": {
+      "x": 4688.0,
+      "y": 2176.0,
+      "z": 2316.0
+    },
+    "z_table": [
+      {
+        "uid": "ID15",
+        "name": "Bed_01_mattres_with_light_frame",
+        "z_min": 0.0,
+        "z_max": 180.0,
+        "height": 180.0
+      },
+      {
+        "uid": "ID27",
+        "name": "Kamna_Priti_mini_D_zone_bed_energy_wall_primary_wood_fuel",
+        "z_min": 0.0,
+        "z_max": 680.0,
+        "height": 680.0
+      },
+      {
+        "uid": "ID283",
+        "name": "izolace_minerální_7cm_západní_stěna",
+        "z_min": 0.0,
+        "z_max": 1990.0,
+        "height": 1990.0
+      },
+      {
+        "uid": "ID123",
+        "name": "wall_vnitřní_west_wooden_prostupy_pro_okna_zone_bed",
+        "z_min": 0.0,
+        "z_max": 1990.0,
+        "height": 1990.0
+      },
+      {
+        "uid": "ID215",
+        "name": "void_entry_point",
+        "z_min": 0.0,
+        "z_max": 1994.528,
+        "height": 1994.528
+      },
+      {
+        "uid": "ID297",
+        "name": "izolace_minerální_7cm_jižní_stěna",
+        "z_min": 0.0,
+        "z_max": 2090.0,
+        "height": 2090.0
+      },
+      {
+        "uid": "ID53",
+        "name": "LFP_main_base",
+        "z_min": 490.0,
+        "z_max": 525.0,
+        "height": 35.0
+      },
+      {
+        "uid": "ID183",
+        "name": "windows_západní_dvojokno_bez_rámu_zone_sleeping",
+        "z_min": 561.0,
+        "z_max": 1831.0,
+        "height": 1270.0
+      },
+      {
+        "uid": "ID191",
+        "name": "windows_západní_dvojokno_bez_rámu_zóna_dinning_dump",
+        "z_min": 590.0,
+        "z_max": 1811.356,
+        "height": 1221.356
+      },
+      {
+        "uid": "ID171",
+        "name": "windows_jižní_dvojokno_bez_rámu_zone_sleeping_stove",
+        "z_min": 600.0,
+        "z_max": 1750.356,
+        "height": 1150.356
+      },
+      {
+        "uid": "ID3",
+        "name": "Worktop__01_hlavní_pracovni_plocha_dřevěná",
+        "z_min": 745.0,
+        "z_max": 795.0,
+        "height": 50.0
+      }
+    ],
+    "free_space": {
+      "grid_mm": 100,
+      "cells_total": 900,
+      "cells_free": 693,
+      "free_ratio": 0.77,
+      "passages": [
+        {
+          "name": "bed-worktop",
+          "width_mm": 790.0,
+          "between": [
+            "ID15",
+            "ID3"
+          ]
+        },
+        {
+          "name": "stove-bed",
+          "width_mm": 642.4,
+          "between": [
+            "ID27",
+            "ID15"
+          ]
+        }
+      ]
+    },
+    "clearances": [
+      {
+        "a": "ID27",
+        "b": "ID15",
+        "gap_mm": 642.4,
+        "min_mm": 500,
+        "ok": true,
+        "rule_id": "R_CLEARANCE_STOVE_BED"
+      }
+    ],
+    "energy": {
+      "kwh_nominal": null,
+      "peak_load_kw": null,
+      "notes": "DAE channel: no attribute dictionaries, not derivable"
+    }
+  },
+  "validation": {
+    "checked_at": "2026-10-22T12:00:00Z",
+    "rules_version": "2.0",
+    "counts": {
+      "nodes": 11,
+      "with_bbox": 11,
+      "errors": 0,
+      "warnings": 2,
+      "critical": 0,
+      "info": 1,
+      "suppressed": 19
+    },
+    "issues": [
+      {
+        "code": "WINDOW_SILL_MISMATCH",
+        "severity": "WARNING",
+        "rule_id": "R_OPENING_CONSISTENCY",
+        "rule_class": "CLASS_C",
+        "confidence": 0.7,
+        "message": "Both west windows should share sill/head: 561 vs 590 mm (d 29) and 1831 vs 1811 mm (d 20)",
+        "intent": "DEFECT",
+        "traceable_context": {
+          "uids": [
+            "ID183",
+            "ID191"
+          ],
+          "values": {
+            "sill_mm": [
+              561.0,
+              590.0
+            ],
+            "head_mm": [
+              1831.0,
+              1811.0
+            ],
+            "delta_mm": [
+              29.0,
+              20.0
+            ]
+          }
+        }
+      },
+      {
+        "code": "MISSING_DOOR_LEAF",
+        "severity": "WARNING",
+        "rule_id": "R_MUST_EXIST_DOOR",
+        "rule_class": "CLASS_C",
+        "confidence": 0.6,
+        "message": "Entry void 1650 x 1995 mm exists but no door leaf entity was found",
+        "intent": "DEFECT",
+        "traceable_context": {
+          "uids": [
+            "ID215"
+          ],
+          "values": {
+            "opening_w_mm": 1650.0,
+            "opening_h_mm": 1994.5
+          }
+        }
+      },
+      {
+        "code": "ZERO_THICKNESS_PLANE",
+        "severity": "INFO",
+        "rule_id": "R_GEOM_ZERO_THICKNESS",
+        "rule_class": "CLASS_A",
+        "confidence": 0.99,
+        "message": "void_entry_point is a plane marker (0 mm in Y), not a solid",
+        "intent": "ARTIFACT",
+        "traceable_context": {
+          "uids": [
+            "ID215"
+          ],
+          "values": {
+            "size_y_mm": 0.0
+          }
+        }
+      }
+    ],
+    "suppressions": [
+      {
+        "code": "CONSTRUCTION_OVERLAP",
+        "count": 19,
+        "reason": "19 intersections are insulation/structure sandwiches and intentional contacts; no real collision",
+        "rule_id": "R_SUPPRESS_SANDWICH",
+        "rule_class": "CLASS_B"
+      }
+    ]
+  },
+  "brief": {
+    "version": "1.0",
+    "markdown": "# Brief: mistnost_2_sk24 (excerpt)\n- Interior 4500 x 2000 mm, clear height 1990 mm; envelope 4688 x 2176 x 2316 mm.\n- Channel DAE: no tags, metadata dictionaries, GPS, persistent IDs (see capabilities).\n- Layout: entry void 1650 mm on the east wall -> table (north) -> technical counter (base 2087x240, worktop 2260x200, inverter above) -> bed 2000x970 (sleep zone) -> stove in SE corner.\n- Passages: bed-worktop 790 mm, stove-bed 642 mm (limit 500 -> OK).\n- Found: west windows inconsistent (sill 561 vs 590, head 1831 vs 1811); door leaf not modelled; entry void is a zero-thickness marker (artifact).\n- Suppressed: 19 construction overlaps (insulation, window frames, 2 mm contact). Not defects.\n- Missing data: door, chimney/flue, wiring, materials, energy dictionary.\n",
+    "facts": {
+      "dimensions_mm": {
+        "x": 4500,
+        "y": 2000,
+        "z": 1990
+      },
+      "floor_area_m2": 9.0,
+      "narrowest_passage_mm": 642.4,
+      "nodes": 11,
+      "full_export_nodes": 46,
+      "channel": "dae",
+      "missing_capabilities": [
+        "tags",
+        "metadata_dictionaries",
+        "persistent_ids",
+        "gps"
+      ]
+    },
+    "top_findings": [
+      {
+        "code": "WINDOW_SILL_MISMATCH",
+        "severity": "WARNING",
+        "uid": "ID183",
+        "message": "West windows differ by 20-29 mm in sill/head"
+      },
+      {
+        "code": "MISSING_DOOR_LEAF",
+        "severity": "WARNING",
+        "uid": "ID215",
+        "message": "Entry void has no door leaf entity"
+      },
+      {
+        "code": "ZERO_THICKNESS_PLANE",
+        "severity": "INFO",
+        "uid": "ID215",
+        "message": "Entry marker is a plane, not a solid"
+      }
+    ]
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "version": "2.0",
+  "name": "CAD2LLM rules KB",
+  "updated": "2026-10-22",
+  "rules": [
+    {
+      "metadata": {
+        "rule_id": "R_CLEARANCE_STOVE_BED",
+        "description": "Kamna vs. postel: minimalne 500 mm (salave teplo vs. lůžkoviny)",
+        "source": "Outpost rule of thumb (uzivatel, 2026-04)",
+        "confidence": 0.8,
+        "validation_status": "accepted",
+        "rule_class": "CLASS_B",
+        "support_n": 1
+      },
+      "scope": { "role": ["stove", "bed"] },
+      "assert": { "kind": "clearance_min", "params": { "min_mm": 500 } },
+      "on_violation": {
+        "code": "CLEARANCE_VIOLATION",
+        "severity": "WARNING",
+        "message_template": "{a} vs {b}: gap {gap_mm} mm < {min_mm} mm",
+        "intent": "DEFECT"
+      }
+    },
+    {
+      "metadata": {
+        "rule_id": "R_OPENING_CONSISTENCY",
+        "description": "Okna ve stejne zone maji mit shodny parapet i nadprazi (tolerance 5 mm)",
+        "source": "observace mistnost_2, 2026-10-22",
+        "confidence": 0.7,
+        "validation_status": "conditional",
+        "rule_class": "CLASS_C",
+        "support_n": 1
+      },
+      "scope": { "role": ["window"] },
+      "assert": {
+        "kind": "equal_across_group",
+        "params": { "group_by": "zone", "fields": ["sill_mm", "head_mm"], "tolerance_mm": 5 }
+      },
+      "on_violation": {
+        "code": "WINDOW_SILL_MISMATCH",
+        "severity": "WARNING",
+        "message_template": "{a} vs {b}: parapet/nadprazi se lisi o {delta_mm} mm",
+        "intent": "DEFECT"
+      }
+    },
+    {
+      "metadata": {
+        "rule_id": "R_MUST_EXIST_DOOR",
+        "description": "Vstupni otvor v zone entry musi mit kridlo nebo ramecek",
+        "source": "uzivatel, 2026-10-22",
+        "confidence": 0.6,
+        "validation_status": "conditional",
+        "rule_class": "CLASS_C",
+        "support_n": 1
+      },
+      "scope": { "zone": ["entry"] },
+      "assert": {
+        "kind": "must_exist",
+        "params": { "role": "door", "where": { "zone": "entry" } }
+      },
+      "on_violation": {
+        "code": "MISSING_DOOR_LEAF",
+        "severity": "WARNING",
+        "message_template": "Otvor {a} existuje, ale kridlo dveri nebylo nalezeno",
+        "intent": "DEFECT"
+      }
+    },
+    {
+      "metadata": {
+        "rule_id": "R_GEOM_ZERO_THICKNESS",
+        "description": "Teleso musi mit ve vsech osach nenulovy rozmer; nulova tloustka = marker",
+        "source": "geometricka invariant",
+        "confidence": 0.99,
+        "validation_status": "accepted",
+        "rule_class": "CLASS_A",
+        "support_n": 3
+      },
+      "assert": { "kind": "size_range", "params": { "min_mm": 1.0 } },
+      "on_violation": {
+        "code": "ZERO_THICKNESS_PLANE",
+        "severity": "INFO",
+        "message_template": "{a}: degenerate size {size_mm}",
+        "intent": "ARTIFACT"
+      }
+    },
+    {
+      "metadata": {
+        "rule_id": "R_CATALOG_WORKTOP",
+        "description": "Pracovni deska ma lezet v pasmu 700-900 mm nad podlahou",
+        "source": "katalog ergonomie (Outpost)",
+        "confidence": 0.9,
+        "validation_status": "accepted",
+        "rule_class": "CLASS_B",
+        "support_n": 1
+      },
+      "scope": { "role": ["worktop"] },
+      "assert": {
+        "kind": "size_range",
+        "params": { "axis": "z_min", "min_mm": 700, "max_mm": 900 }
+      },
+      "on_violation": {
+        "code": "CATALOG_DEVIATION",
+        "severity": "WARNING",
+        "message_template": "{a}: vyska {value} mm mimo 700-900 mm",
+        "intent": "DEFECT"
+      }
+    },
+    {
+      "metadata": {
+        "rule_id": "R_CLEARANCE_ALL_WALLS",
+        "description": "Odstup vsech objektu od vsech sten min 200 mm",
+        "source": "prvni pokus, 2026-10-22",
+        "confidence": 0.3,
+        "validation_status": "rejected",
+        "rule_class": "CLASS_C",
+        "support_n": 0
+      },
+      "scope": { "role": ["stove", "bed", "table", "worktop"] },
+      "assert": { "kind": "clearance_min", "params": { "min_mm": 200, "against_role": "wall" } },
+      "on_violation": {
+        "code": "CLEARANCE_VIOLATION",
+        "severity": "INFO",
+        "message_template": "{a} vs {b}: gap {gap_mm} mm < {min_mm} mm",
+        "intent": "UNKNOWN"
+      }
+    }
+  ],
+  "suppressions": [
+    {
+      "id": "S_CONSTRUCTION_OVERLAP",
+      "reason": "Prekryvy izolace/konstrukce a dotyky nabytku se stenou jsou zamerne, ne kolize",
+      "rule_class": "CLASS_B",
+      "applies_to": ["CONSTRUCTION_OVERLAP"],
+      "when": { "fact": "role", "op": "in", "value": ["insulation", "wall", "ceiling", "floor", "beam", "truss", "window"] },
+      "expires": null
+    },
+    {
+      "id": "S_ARTIFACT_VOID",
+      "reason": "Nulove plochy (void/marker) se reportuji jako INFO, nikdy WARNING",
+      "rule_class": "CLASS_A",
+      "applies_to": ["ZERO_THICKNESS_PLANE"],
+      "when": { "fact": "intent", "op": "eq", "value": "ARTIFACT" },
+      "expires": null
+    }
+  ]
+}

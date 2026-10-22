@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "base_model_hash": "sha256:replace-with-source.model_hash",
+  "dry_run": true,
+  "ops": [
+    { "op": "move", "uid": "ID27", "vector_mm": { "x": -100, "y": 0, "z": 0 } },
+    { "op": "set_metadata", "uid": "ID15", "dict": "zone", "pairs": { "zone": "sleep", "priority": "primary" } }
+  ],
+  "expectations": [
+    { "kind": "gap_at_least", "uid": "ID27", "code": "R_CLEARANCE_STOVE_BED", "value_mm": 500 },
+    { "kind": "no_new_issues" }
+  ]
+}

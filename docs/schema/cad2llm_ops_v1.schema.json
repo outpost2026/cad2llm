@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/outpost2026/cad2llm/schema/v5/cad2llm_ops_v1.schema.json",
+  "title": "CAD2LLM ops patch v1",
+  "description": "Round-trip edit contract: LLM emits parameters, the deterministic layer applies and validates them. Never coordinates computed by the LLM.",
+  "type": "object",
+  "required": ["version", "base_model_hash", "ops"],
+  "properties": {
+    "version": { "const": "1.0" },
+    "base_model_hash": { "type": "string", "description": "must match source.model_hash of the document the patch is applied to" },
+    "dry_run": { "type": "boolean", "default": true },
+    "ops": { "type": "array", "items": { "$ref": "#/$defs/op" } },
+    "expectations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind"],
+        "properties": {
+          "kind": { "enum": ["bbox_unchanged", "issue_resolved", "no_new_issues", "gap_at_least", "gap_at_most"] },
+          "uid": { "type": ["string", "null"] },
+          "code": { "type": ["string", "null"] },
+          "value_mm": { "type": ["number", "null"] }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "vec3": {
+      "type": "object",
+      "required": ["x", "y", "z"],
+      "properties": { "x": { "type": "number" }, "y": { "type": "number" }, "z": { "type": "number" } }
+    },
+    "op": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["op", "uid", "vector_mm"],
+          "properties": { "op": { "const": "move" }, "uid": { "type": "string" }, "vector_mm": { "$ref": "#/$defs/vec3" } }
+        },
+        {
+          "type": "object",
+          "required": ["op", "uid", "size_mm"],
+          "properties": { "op": { "const": "resize" }, "uid": { "type": "string" }, "size_mm": { "$ref": "#/$defs/vec3" } }
+        },
+        {
+          "type": "object",
+          "required": ["op", "definition", "transform_4x4"],
+          "properties": { "op": { "const": "add" }, "definition": { "type": "string" }, "transform_4x4": { "type": "array" } }
+        },
+        {
+          "type": "object",
+          "required": ["op", "uid"],
+          "properties": { "op": { "const": "remove" }, "uid": { "type": "string" } }
+        },
+        {
+          "type": "object",
+          "required": ["op", "uid", "dict", "pairs"],
+          "properties": {
+            "op": { "const": "set_metadata" },
+            "uid": { "type": "string" },
+            "dict": { "type": "string" },
+            "pairs": { "type": "object" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["op", "uid", "tag"],
+          "properties": { "op": { "const": "set_tag" }, "uid": { "type": "string" }, "tag": { "type": "string" } }
+        }
+      ]
+    }
+  }
+}

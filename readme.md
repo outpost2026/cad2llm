@@ -1,172 +1,167 @@
 # Propojení dvou světů (CAD + LLM)
 
-> **Deterministická pipeline: fyzické měření → SketchUp 2016 → COLLADA (.dae) → sémantický JSON → LLM analýza bez halucinací.**
+> **Deterministická pipeline: fyzické měření → SketchUp → COLLADA (.dae) → sémantický JSON → LLM analýza bez halucinací.**
+
+Schema **v4** (2026-10) sjednocuje dva exportní kanály a doplňuje data, která
+předchozí verze neměly: `bbox_mm` min/max, `parent_uid`, rotace, tagy,
+attribute dictionaries. Detail: [`docs/SCHEMA_v4.md`](docs/SCHEMA_v4.md).
 
 * * *
 
-## Problém - jak zkombinovat moderní LLM s 3D modely “na koleně”
+## Problém — jak zkombinovat LLM s 3D modely „na koleně"
 
 LLM halucinuje při prostorové analýze CAD modelů — a to i když dostane „správný" formát.
 
-Workflow vývoje prošel 4 fázemi:
+| Fáze | Postup | Výsledek |
+|---|---|---|
+| 1 | Export 2D obrázku + narativní text | rady správné, ale na špatném místě |
+| 2 | Raw `.dae` přímo do LLM | rétoricky spokojené, čísla vymyšlená |
+| 3 | Počítat ručně | zamítnuto — automatizace je priorita |
+| 4 | **Deterministický preprocessing** | JSON s mm a bounding boxy → analýza sedí |
 
-1.  **Export 2D + narativní text** (obrázek z SketchUpu, jakýkoliv 2D image) → LLM radilo správně, ale na špatném místě. Bez přesných souřadnic jsou rady obecné a nepoužitelné.
-    
-2.  **Export .dae přímo do LLM** → LLM rétoricky spokojeno, chválí formát. Analýza přesto halucinuje rozměry a polohy. Stop stav.
-    
-3.  **AI je zde k ničemu, je to lepší celé propočítat ručně** - zamítnuto, automatizace je priorita, když to nejde přímo, půjde se na to od lesa
-    
-4.  **Pivot:** místo lepšího promptu — deterministický *preprocessing skript*.
-    
-
-> „LLM radí dobře, ale na špatném místě." — přesný popis problému před tímto řešením.
+> „LLM radí dobře, ale na špatném místě."
 
 * * *
 
-## Řešení
+## Dva kanály, jeden formát
 
-Vlastní konvertor (skript vyvinutý ve spolupráci/cross validací LLM nástrojů, zejména Claude a CLI Open Code) parsuje COLLADA XML, rekurzivně resolvuje 4×4 transformační matice, převádí palce → mm a generuje strukturovaný JSON.  
-Talkže LLM dostane čísla v mm s bounding boxy, ne geometrii k interpretaci a halucinacím
+| | Kanál `sketchup` | Kanál `dae` |
+|---|---|---|
+| Vstup | `.skp` otevřený v GUI | `.dae` (CLI, headless) |
+| Nástroj | `src/cad2llm_exporter.rb` (extension) | `tools/cad2llm.py` |
+| Hierarchie, bbox, rotace | ✅ | ✅ |
+| Tagy (vrstvy) | ✅ | ❌ |
+| Attribute dictionaries (`energy`, `zone`, `safety`, `thermal`) | ✅ | ❌ |
+| `persistent_id`, GPS | ✅ | ❌ |
+| Přesné názvy | ✅ | ⚠️ mezery → `_`, `#` → `_`, `,` → `_` |
 
-```
-Fyzické měření (kovový metr + papír)
-    ↓
-SketchUp 2016 — každý objekt jako pojmenovaný Component
-    ↓
-Export .dae (COLLADA)
-    ↓
-convert_dae_to_json_v3.py   ←── deterministický konvertor (lxml + numpy)
-    ↓
-mistnost_2_v4.json           ←── 30 nodes, bounding boxy v mm
-    ↓
-LLM analýza + iterace s uživatelem
-    ↓
-Nález: chybný osový systém X/Y/Z → korekce v SketchUp → re-export → v4
-    ↓
-Groq validace: žádné nekonzistence
-```
+`project_metadata.capabilities` hlásí dostupné vlastnosti strojově — konzument
+pozná, co v datech chybí, a nesmí to domýšlet.
+**Pro energetické a požární analýzy je nutný kanál `sketchup`.**
 
 * * *
 
-## Reálný kontext — proč to vzniklo
+## Quickstart — DAE (bez GUI)
 
-Projekt vznikl jako součást **Outpost 2026** — off-grid modulárního bydlení vlastní výstavby v Praze (dřevěná konstrukce, solární systém 8S2P LiFePO4 630 Ah). Cílem je přesnější prototypování prostoru v součinnosti s LLM nástroji.
-
-Aktuální scope: **Zone 2** — vývojový/obytný uzel, ~450 × 200 cm. Aspirační cíl: celý objekt Outpost (~45 m²).
-
-* * *
-
-## Vývoj konvertoru — jak vznikl v3
-
-Skript vznikl v jednom dni přes tři LLM nástroje (google Gemini je odsunuto do auxiliární, "tvůrčí role")
-
-| Krok | Nástroj | Role |
-| --- | --- | --- |
-| Průzkum možností + první handoff JSON | Deepseek | rychlý přehled formátu, proof of concept |
-| v1, v2 | Claude Sonnet | funkční, ale vertex-level bounding box nedostatečný |
-| **v3** | Open Code | v2 jako základ + stejný prompt → 1 iterace = finální verze |
-
-Pivot k Open Code byl klíčový: existující kód jako kontext výrazně zkrátil iterační cyklus.
-
-* * *
-
-## Osová korekce — reálný bug, ne feature
-
-Při LLM analýze `mistnost_2_v3.json` byly identifikovány nekonzistence. Hypotéza uživatele: osový systém X/Y/Z byl chybně nastaven od začátku modelování.
-
-Postup:
-
-1.  Uživatel vyslovil hypotézu na základě anomálií ve výstupu
-2.  Groq navrhl metodiku korekce os v SketchUp
-3.  Korekce provedena → nový export .dae → konverze přes v3 → `mistnost_2_v4.json`
-4.  Groq validace: **žádné nekonzistence nalezeny**
-
-Toto je hlavní iterační cyklus pipeline v praxi: JSON odhalí chybu modelu, model se opraví, JSON se znovu vygeneruje.
-
-* * *
-
-## Reálná data z `mistnost_2_v4.json`
-
-Místnost: ~4 500 × 2 000 mm (Outpost Zone 2)
-
-| Objekt | Pozice XYZ (mm) | Rozměr (mm) |
-| --- | --- | --- |
-| `bed_v1` | 2495, 0, 0 | 2000 × 970 × 180 |
-| `table_main` | 0, 84, 0 | 675 × 745 × 665 |
-| `stove_main` | 3930, 1480, 0 | 480 × 380 × 680 |
-| `worktop_m2` | 1520, 1760, 745 | 2260 × 200 × 50 |
-| `lfp_main_worktop` | 1620, 1760, 490 | 2087 × 240 × 35 |
-| `gokw_lfp` | 1987, 1760, 0 | 525 × 240 × 220 |
-| `HWP_3.2_kW_invertor` | 1720, 1860, 1075 | 270 × 100 × 350 |
-| `lfp_cell` (×16) | x: 1700–2777, y: 1828, z: 525 | 70 × 172 × 205 každý |
-| `window_south` | 4495, 0, 0 | – × 1235 × 1780 |
-| `window_bed` | –, 2, 600 | 1295 × – × 1260 |
-| `windows_table` | 285, 2, 545 | 1325 × – × 1300 |
-| `Door` | 50, 2000, 0 | 1440 × 50 × 1430 |
-
-* * *
-
-## Co je v repozitáři
-
-```
-sketchup-llm-dae-pipeline/
-├── README.md
-├── LICENSE                           ← MIT
-├── METODIKA_SketchUp_LLM.md          ← replikovatelný postup
-├── scripts/
-│   └── convert_dae_to_json_v3.py     ← konvertor (lxml + numpy)
-└── examples/
-    ├── mistnost_2_v4.dae             ← reálný vstup (SketchUp 2016)
-    ├── mistnost_2_v4.json            ← reálný výstup (30 nodes, mm)
-    └── REPORT_mistnost_2_v3.md       ← reálná LLM analýza výstupu
-```
-
-* * *
-
-## Quickstart
-
-[Download konverzní skript](https://github.com/outpost2026/cad2llm/blob/main/convert_dae_to_json_v3.py)
-
+```powershell
 pip install lxml numpy
 
-*bash* -> python convert_dae_to_json_v3.py examples/mistnost_2_v4.dae output.json
+python tools/cad2llm.py convert examples/mistnost_2_sk24.dae out.json
+python tools/cad2llm.py validate out.json
+python tools/cad2llm.py summary  out.json
+python tools/cad2llm.py diff old.json new.json
+```
 
+## Quickstart — SketchUp extension
+
+1. `releases/cad2llm_exporter.rbz` → *Window → Extension Manager → Install Extension*
+2. *Extensions → CAD2LLM*
+   - **Export (v4)** — aktuální schema, tagy + metadata
+   - **Export legacy JSON (v3)** — jen pro kompatibilitu se starými konzumenty
+   - **Export selection (v4)** — jen vybrané entity
+
+* * *
+
+## Testy
+
+```powershell
+python -m unittest discover -s tests -v    # 15 testů (parse, matice, bbox, legacy)
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 40 checků (exporter bez SketchUpu)
+```
+
+Ruby testy běží proti `spec/sketchup_stub.rb` (world-space `Group#bounds`,
+`Transformation`, `AttributeDictionary`), takže exportér lze vyvíjet bez GUI.
+
+* * *
+
+## Reálná data — `mistnost_2_sk24` (Outpost Zone 2)
+
+Místnost **4 500 × 2 000 mm**, světlá výška **1 990 mm**, obálka s izolací
+4 688 × 2 176 mm. Model obsahuje 46 uzlů (30 instancí ve scéně + 16 LFP článků
+uvnitř definice baterie).
+
+| Objekt | Bbox min (mm) | Rozměr (mm) |
+|---|---|---|
+| `Bed_01_mattres_with_light_frame` | 2495, 0, 0 | 2000 × 970 × 180 |
+| `main_table_rectangel_food_work_dump_place` | −2, 84, 0 | 675 × 745 × 665 |
+| `Kamna_Priti_mini_D` | 3989, 1612, 0 | 431 × 312 × 680 |
+| `Worktop_01` | 1520, 1760, 745 | 2260 × 200 × 50 |
+| `LFP_main_base` | 1690, 1760, 490 | 2087 × 240 × 35 |
+| `_24V_gokwh_100ah_lfp_battery` | 2055, 1760, 0 | 525 × 240 × 220 |
+| `Energy_source_main_power_invertor_MPPT` | 1790, 1900, 1075 | 270 × 100 × 350 |
+| `lfp_cell_314ah` (×16) | 2718, 1828, 525 | 70 × 172 × 205 |
+| `windows_jižní_dvojokno` | 4654, 45, 600 | 20 × 1136 × 1150 |
+| `windows_západní_dvojokno` (spanek) | 3245, −93, 561 | 1255 × 20 × 1270 |
+| `windows_západní_dvojokno` (stolování) | 330, −90, 590 | 1245 × 20 × 1221 |
+
+Kompletní analýza: [`docs/reports/ANALYZA_mistnost_2_sk24_2026-10-22.md`](docs/reports/ANALYZA_mistnost_2_sk24_2026-10-22.md).
+
+### Ověření integrity kanálů
+
+Stejný model přes oba kanály: **46 vs. 46 uzlů**, spárováno **45/46**, geometrické
+změny > 1 mm **žádné** (`tools/cad2llm.py diff`). Neshody jsou jen v názvech
+(ztráta `#`, `,`, mezer v DAE) a v pojmenování jednoho LFP článku
+(`unnamed` v Ruby vs. `lfp_cell_314ah_3.2V` v DAE), se shodným středem.
+
+* * *
+
+## Struktura repozitáře
 
 ```
+cad2llm/
+├── tools/
+│   ├── cad2llm.py                  ← CLI: convert | validate | summary | diff
+│   ├── cad2llm_core.py             ← DAE parser, schema v4, validace
+│   └── cad2llm_rules.json          ← pravidla (name_pattern, clearance, overlaps)
+├── src/
+│   ├── cad2llm_exporter.rb         ← loader + menu (Extensions → CAD2LLM)
+│   ├── cad2llm_exporter/
+│   │   ├── main.rb                 ← entry point
+│   │   └── lib/exporter.rb         ← exportér (v4 + legacy v3)
+│   ├── legacy_python/              ← historický konvertor v3 (deprecated)
+│   └── _archive/console/           ← 7 původních konzolových skriptů (archiv)
+├── tests/                          ← Python testy + fixture mini.dae
+├── spec/                           ← Ruby testy + SketchUp stub (headless)
+├── docs/
+│   ├── SCHEMA_v4.md                ← specifikace formátu
+│   ├── METODIKA_SketchUp_LLM_v4.md
+│   ├── Metodika_cad2llm_postprocesing.md
+│   └── reports/                    ← analýzy výstupů
+├── examples/                       ← reálné exporty
+└── releases/                       ← instalovatelný .rbz
+```
+
 * * *
 
 ## Klíčová technická rozhodnutí
 
 | Rozhodnutí | Alternativa (zamítnuta) | Důvod |
-| --- | --- | --- |
-| Vlastní COLLADA XML parser (`lxml`) | Přímý `.dae` do LLM | LLM halucinuje i na „správném" formátu bez preprocessing |
-| Rekurzivní 4×4 matice (`numpy`) | Flat seznam pozic | Správné world-space souřadnice pro zanořené Components |
-| Vertex-level bounding box | Pouze transformační matice | Skutečné rozměry objektu, ne jen pivot point |
-| Převod palce → mm při parsování | Ponechat native jednotky | SketchUp interně v palcích; LLM pracuje s mm |
-| Noise filter (`instance_*`, `skp_camera`) | Parsovat vše | Eliminuje exportní artefakty SketchUpu |
-| SketchUp 2016 (lokální) | Cloud CAD | Outpost je off-grid; žádná závislost na připojení |
+|---|---|---|
+| Vlastní COLLADA parser (`lxml`) | Raw `.dae` do LLM | LLM halucinuje i na „správném" formátu |
+| Rekurzivní 4×4 matice (`numpy`) | Flat seznam pozic | world-space souřadnice pro zanořené komponenty |
+| Bbox z geometrie (min/max) | Jen pivot point | skutečné rozměry, nutné pro z-tabulku |
+| mm při parsování | Native palce | SketchUp interně v palcích, LLM pracuje v mm |
+| Stabilní `uid = persistent_id@path` | Index v poli | unikátní i pro děti sdílené definice |
+| `validation` blok součástí JSON | Validace až v LLM | deterministické, opakovatelné, auditovatelné |
+| Noise filtr prefixy (`SU_`, `FormFonts`, `BIM*`) | Parsovat vše | eliminace exportních artefaktů SketchUpu |
 
 * * *
 
-## Co tento projekt demonstruje
+## Historie (zkráceně)
 
--   **Selhání jako datový bod** — dvě slepé uličky (2D export, raw DAE) jsou součástí dokumentace, ne skryté
--   **Multi-LLM workflow** — Deepseek pro průzkum, Sonnet pro iteraci, Open Code pro průlom, Groq pro validaci
--   **Architektonické rozhodnutí (lidský mozek)** — kdy přestat psát lepší prompt a postavit preprocessing vrstvu
--   **Iterační korekce** — osový bug byl nalezen analýzou JSON výstupu, ne code review
+- **2026-04** — v1–v3 konvertor (Deepseek → Claude Sonnet → Open Code), ruční vkládání do Ruby Console.
+- **2026-04** — osový bug nalezen LLM analýzou JSONu → korekce v modelu → re-export.
+- **2026-09-24** — rekonstrukce pipeline z dumpu (`RECONSTRUCTION_REPORT.md`).
+- **2026-10-22** — **reaktivace**: schema v4, oprava korupce matic (`gsub` `\10`),
+  oprava dvojité transformace u skupin, extension + menu, headless testy obou kanálů.
 
-* * *
-
-## Metodika
-
-Viz [`METODIKA_SketchUp_LLM.md`](METODIKA_SketchUp_LLM.md) — kompletní postup od fyzického měření po validaci výstupu.
+> Historické konzolové skripty v `src/_archive/console/` obsahují známou korupci
+> matic — nepoužívat.
 
 * * *
 
 ## Licence
 
 MIT — viz [LICENSE](LICENSE)
-
-* * *
 
 *Autor: Ondřej — [outpost2026](https://github.com/outpost2026) · Praha, 2026*

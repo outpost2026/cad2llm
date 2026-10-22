@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """
+DEPRECATED — kept for history. Use tools/cad2llm.py (schema v4) instead.
+
+Known limitations of this v3 script:
+  * emits every library (definition) node twice -> 2x node count vs. the model
+  * no parent_id / hierarchy, no tags, no attribute dictionaries
+  * noise filter only matches the exact name "skp_camera"
+  * lxml truth-testing of elements (`if ref_node:`) skips childless nodes
+
 convert.py – SketchUp .dae → spatial JSON converter
 Usage: python convert.py input.dae output.json
 
@@ -22,6 +30,7 @@ from lxml import etree
 # ---------------------------------------------------------------------------
 
 COLLADA_NS = "http://www.collada.org/2005/11/COLLADASchema"
+
 
 def _tag(local: str) -> str:
     """Return a Clark-notation tag for the COLLADA namespace."""
@@ -46,6 +55,7 @@ def _findtext(element, local: str, default=""):
 # 1. Unit detection
 # ---------------------------------------------------------------------------
 
+
 def parse_unit(root: etree._Element) -> float:
     asset = _find(root, "asset")
     if asset is None:
@@ -67,6 +77,7 @@ def parse_unit(root: etree._Element) -> float:
 # ---------------------------------------------------------------------------
 # 2. Matrix utilities
 # ---------------------------------------------------------------------------
+
 
 def parse_matrix(text: str) -> np.ndarray:
     values = list(map(float, text.split()))
@@ -137,6 +148,7 @@ def apply_unit(trs: dict, mm_per_unit: float) -> dict:
 # 3. Geometry and Node Indexing
 # ---------------------------------------------------------------------------
 
+
 def index_library_nodes(root: etree._Element) -> dict:
     index = {}
     lib = _find(root, "library_nodes")
@@ -153,6 +165,7 @@ def index_library_nodes(root: etree._Element) -> dict:
     _index_recursive(lib)
     return index
 
+
 def index_geometries(root: etree._Element) -> dict:
     """Map geometry ID to the geometry element."""
     index = {}
@@ -165,50 +178,52 @@ def index_geometries(root: etree._Element) -> dict:
             index[gid] = geom_el
     return index
 
+
 def get_geometry_vertices(root: etree._Element, geom_el: etree._Element) -> np.ndarray:
     """Extract vertex positions (flattened 3D array) from a geometry element."""
     mesh = _find(geom_el, "mesh")
     if mesh is None:
         return np.array([])
-    
+
     # 1. Find the input with semantic="POSITION"
     vertices_el = _find(mesh, "vertices")
     if vertices_el is None:
         return np.array([])
-        
+
     pos_input = None
     for input_el in _findall(vertices_el, "input"):
         if input_el.get("semantic") == "POSITION":
             pos_input = input_el
             break
-            
+
     if pos_input is None:
         return np.array([])
-    
+
     source_id = pos_input.get("source").lstrip("#")
-    
+
     # 2. Find the source
     source_el = None
     for s in _findall(mesh, "source"):
         if s.get("id") == source_id:
             source_el = s
             break
-    
+
     if source_el is None:
         return np.array([])
-        
+
     # 3. Extract float array
     float_array = _find(source_el, "float_array")
     if float_array is None or float_array.text is None:
         return np.array([])
-        
-    values = np.fromstring(float_array.text, sep=' ')
-    return values.reshape(-1, 3) # Return as N x 3 array
+
+    values = np.array([float(v) for v in float_array.text.split()], dtype=np.float64)
+    return values.reshape(-1, 3)  # Return as N x 3 array
 
 
 # ---------------------------------------------------------------------------
 # 4. Recursive node traversal
 # ---------------------------------------------------------------------------
+
 
 def get_node_matrix(node_el: etree._Element) -> np.ndarray:
     mat_el = _find(node_el, "matrix")
@@ -229,32 +244,44 @@ def traverse_nodes(
 
     name = node_el.get("name", node_el.get("id", "unnamed"))
     node_id = node_el.get("id", "")
-    
+
     # --- Noise Filter ---
     # SketchUp 2016 specific noise
-    if name.startswith("instance_") or name == "SketchUp" or name == "skp_camera":
+    if (
+        name.startswith("instance_")
+        or name == "SketchUp"
+        or name.startswith("skp_camera")
+    ):
         # Pass through to process children, but don't add to results
         local_matrix = get_node_matrix(node_el)
         world_matrix = parent_matrix @ local_matrix
-        
+
         for child_el in _findall(node_el, "node"):
-            results.extend(traverse_nodes(child_el, world_matrix, mm_per_unit, lib_nodes, lib_geoms, depth))
-        
+            results.extend(
+                traverse_nodes(
+                    child_el, world_matrix, mm_per_unit, lib_nodes, lib_geoms, depth
+                )
+            )
+
         for inst in _findall(node_el, "instance_node"):
             url = inst.get("url", "").lstrip("#")
             ref_node = lib_nodes.get(url)
-            if ref_node:
-                results.extend(traverse_nodes(ref_node, world_matrix, mm_per_unit, lib_nodes, lib_geoms, depth))
-        
+            if ref_node is not None:
+                results.extend(
+                    traverse_nodes(
+                        ref_node, world_matrix, mm_per_unit, lib_nodes, lib_geoms, depth
+                    )
+                )
+
         return results
 
     # --- Regular Processing ---
     local_matrix = get_node_matrix(node_el)
-    world_matrix = parent_matrix @ local_matrix 
+    world_matrix = parent_matrix @ local_matrix
 
     trs = matrix_to_pos_rot_scale(world_matrix)
     apply_unit(trs, mm_per_unit)
-    
+
     # --- Collect all vertices for BB ---
     all_vertices = []
 
@@ -277,10 +304,12 @@ def traverse_nodes(
     for inst in _findall(node_el, "instance_node"):
         url = inst.get("url", "").lstrip("#")
         ref_node = lib_nodes.get(url)
-        if ref_node:
-            sub = traverse_nodes(ref_node, world_matrix, mm_per_unit, lib_nodes, lib_geoms, depth + 1)
+        if ref_node is not None:
+            sub = traverse_nodes(
+                ref_node, world_matrix, mm_per_unit, lib_nodes, lib_geoms, depth + 1
+            )
             instance_children_results.extend(sub)
-    
+
     # Collect vertices from children too
     for child in instance_children_results:
         if "vertices" in child:
@@ -294,18 +323,26 @@ def traverse_nodes(
         "world_rotation_deg": trs["rotation_deg"],
         "world_scale": trs["scale"],
     }
-    
+
     # If it has geometry, store vertices temporarily for parent BB calculation
     if all_vertices:
         combined_verts = np.vstack(all_vertices)
         record["vertices"] = combined_verts
-        
+
         # Calculate BB
         mins = combined_verts.min(axis=0)
         maxs = combined_verts.max(axis=0)
         record["bounding_box_mm"] = {
-            "min": {"x": round(mins[0]*mm_per_unit, 4), "y": round(mins[1]*mm_per_unit, 4), "z": round(mins[2]*mm_per_unit, 4)},
-            "max": {"x": round(maxs[0]*mm_per_unit, 4), "y": round(maxs[1]*mm_per_unit, 4), "z": round(maxs[2]*mm_per_unit, 4)},
+            "min": {
+                "x": round(mins[0] * mm_per_unit, 4),
+                "y": round(mins[1] * mm_per_unit, 4),
+                "z": round(mins[2] * mm_per_unit, 4),
+            },
+            "max": {
+                "x": round(maxs[0] * mm_per_unit, 4),
+                "y": round(maxs[1] * mm_per_unit, 4),
+                "z": round(maxs[2] * mm_per_unit, 4),
+            },
         }
 
     results.append(record)
@@ -313,7 +350,11 @@ def traverse_nodes(
 
     # Direct node children
     for child_el in _findall(node_el, "node"):
-        results.extend(traverse_nodes(child_el, world_matrix, mm_per_unit, lib_nodes, lib_geoms, depth + 1))
+        results.extend(
+            traverse_nodes(
+                child_el, world_matrix, mm_per_unit, lib_nodes, lib_geoms, depth + 1
+            )
+        )
 
     return results
 
@@ -321,6 +362,7 @@ def traverse_nodes(
 # ---------------------------------------------------------------------------
 # 5. Main parsing entry point
 # ---------------------------------------------------------------------------
+
 
 def parse_dae(path: str) -> dict:
     tree = etree.parse(path)
@@ -344,7 +386,7 @@ def parse_dae(path: str) -> dict:
             if vs.get("id", "") == vis_scene_url or vis_scene_url == "":
                 vis_scene = vs
                 break
-    
+
     # Fallback
     if vis_scene is None and lib_vis is not None:
         children = _findall(lib_vis, "visual_scene")
@@ -356,7 +398,9 @@ def parse_dae(path: str) -> dict:
         identity = np.eye(4)
         for top_node in _findall(vis_scene, "node"):
             nodes.extend(
-                traverse_nodes(top_node, identity, mm_per_unit, lib_nodes, lib_geoms, depth=0)
+                traverse_nodes(
+                    top_node, identity, mm_per_unit, lib_nodes, lib_geoms, depth=0
+                )
             )
 
     # Clean up temporary vertices from final output
@@ -374,6 +418,7 @@ def parse_dae(path: str) -> dict:
 # 6. CLI
 # ---------------------------------------------------------------------------
 
+
 def main():
     parser = argparse.ArgumentParser(
         description="Convert SketchUp .dae spatial metadata → JSON (units: mm)"
@@ -384,7 +429,7 @@ def main():
 
     input_path = Path(args.input)
     data = parse_dae(str(input_path))
-    
+
     output_path = Path(args.output)
     with open(output_path, "w", encoding="utf-8") as fh:
         json.dump(data, fh, indent=2, ensure_ascii=False)

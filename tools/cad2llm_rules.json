@@ -1,0 +1,15 @@
+{
+  "name_pattern": "^[^/\\\\:*?\"<>|]+$",
+  "ascii_strict": false,
+  "min_size_mm": 1.0,
+  "overlap_min_volume_mm3": 1000.0,
+  "clearance_rules": [
+    {
+      "a": "^kamna",
+      "b": "^bed",
+      "min_mm": 500,
+      "why": "fire safety: radiant heat vs bedding (Outpost rule of thumb)"
+    }
+  ],
+  "required_metadata": {}
+}

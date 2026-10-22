@@ -2,8 +2,9 @@
 
 Datum: 2026-10-22 | Autor: outpost2026 | Účel: rozhodovací podklad pro implementaci v5
 
-Stav: **návrhové artefakty**. Nic z tohoto dokumentu není v kódu. Rozhodnutí o implementaci
-je na uživateli. Machine-readable protějšky:
+Stav: **F0 hotová** (schémata + příklady, commit `69faa99`), **F1 hotová**
+(`tools/cad2llm_v5.py`, CLI `enrich`, golden master, 30/30 Python testů).
+F2–F4 jsou stále jen návrh. Machine-readable protějšky:
 
 - `docs/schema/cad2llm_v5.schema.json` — dokument v5
 - `docs/schema/cad2llm_rules_v2.schema.json` — epistemická pravidlová KB
@@ -184,8 +185,10 @@ disciplína: zamítnutá hypotéza je součást znalosti.
 
 ## 9. llm_brief
 
-Formát: Markdown, ≤ 4000 znaků, sekce pevně dané (rozměry, kanál, layout,
-passages, nálezy, suppressed, chybějící data). Pravidla:
+Implementováno ve F1 (`tools/cad2llm_v5.py: build_brief`) — EN, protože brief
+čte LLM; strojová pole zůstávají v `facts`. Formát: Markdown, ≤ 4000 znaků,
+sekce pevně dané (rozměry, kanál, layout, passages, nálezy, suppressed,
+chybějící data). Pravidla:
 
 - žádné surové seznamy uzlů — jen agregace a nálezy;
 - čísla vždy s jednotkou;
@@ -256,8 +259,8 @@ ignoruje), konzument v5 nesmí tvrdit, že v4 dokument je v5.
 
 | Fáze | Obsah | Acceptance |
 |---|---|---|
-| F0 | schémata + příklady (tento krok) | JSONy validují, dokumenty existují |
-| F1 | facts + semantics + brief v Pythonu | golden master na mistnost_2, 0 false positives |
+| F0 | schémata + příklady (tento krok) | **HOTOVO** — JSONy validují, dokumenty existují |
+| F1 | facts + semantics + brief v Pythonu | **HOTOVO** — `enrich`, golden master, 46/46 rolí, 0 false positives |
 | F2 | relations + metrics (free_space, z_table) | deterministický výstup, test idempotence |
 | F3 | rules v2 + suppressions | SNR: ≤ 3 varování/objekt, rejected pravidla v KB |
 | F4 | ops + round-trip do SketchUp | patch s expectations projde, model_hash sedí |

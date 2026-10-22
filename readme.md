@@ -6,6 +6,9 @@ Schema **v4** (2026-10) sjednocuje dva exportní kanály a doplňuje data, kter�
 předchozí verze neměly: `bbox_mm` min/max, `parent_uid`, rotace, tagy,
 attribute dictionaries. Detail: [`docs/SCHEMA_v4.md`](docs/SCHEMA_v4.md).
 
+Nad v4 staví **v5 F1** (aditivní): deterministická sémantika, normalizovaná
+validace a `brief` pro LLM. Detail: [`docs/DESIGN_v5.md`](docs/DESIGN_v5.md).
+
 * * *
 
 ## Problém — jak zkombinovat LLM s 3D modely „na koleně"
@@ -50,7 +53,12 @@ python tools/cad2llm.py convert examples/mistnost_2_sk24.dae out.json
 python tools/cad2llm.py validate out.json
 python tools/cad2llm.py summary  out.json
 python tools/cad2llm.py diff old.json new.json
+python tools/cad2llm.py enrich out.json out_v5.json
 ```
+
+`enrich` je F1 sémantické vrstvy v5: deterministické role/zóny/intent,
+normalizovaná validace a ~400znakový `brief` pro LLM. Schémata a návrh:
+[`docs/DESIGN_v5.md`](docs/DESIGN_v5.md), [`docs/schema/`](docs/schema/).
 
 ## Quickstart — SketchUp extension
 
@@ -65,7 +73,7 @@ python tools/cad2llm.py diff old.json new.json
 ## Testy
 
 ```powershell
-python -m unittest discover -s tests -v    # 15 testů (parse, matice, bbox, legacy)
+python -m unittest discover -s tests -v    # 30 testů (parse, matice, bbox, legacy, v5)
 C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 40 checků (exporter bez SketchUpu)
 ```
 
@@ -110,8 +118,9 @@ změny > 1 mm **žádné** (`tools/cad2llm.py diff`). Neshody jsou jen v názvec
 ```
 cad2llm/
 ├── tools/
-│   ├── cad2llm.py                  ← CLI: convert | validate | summary | diff
+│   ├── cad2llm.py                  ← CLI: convert | validate | summary | diff | enrich
 │   ├── cad2llm_core.py             ← DAE parser, schema v4, validace
+│   ├── cad2llm_v5.py               ← F1: sémantika, normalizace, brief
 │   └── cad2llm_rules.json          ← pravidla (name_pattern, clearance, overlaps)
 ├── src/
 │   ├── cad2llm_exporter.rb         ← loader + menu (Extensions → CAD2LLM)
@@ -120,10 +129,12 @@ cad2llm/
 │   │   └── lib/exporter.rb         ← exportér (v4 + legacy v3)
 │   ├── legacy_python/              ← historický konvertor v3 (deprecated)
 │   └── _archive/console/           ← 7 původních konzolových skriptů (archiv)
-├── tests/                          ← Python testy + fixture mini.dae
+├── tests/                          ← Python testy + fixture mini.dae + golden/
 ├── spec/                           ← Ruby testy + SketchUp stub (headless)
 ├── docs/
 │   ├── SCHEMA_v4.md                ← specifikace formátu
+│   ├── DESIGN_v5.md                ← návrh sémantické vrstvy (F1 hotová)
+│   ├── schema/                     ← JSON Schemas v5 + příklady
 │   ├── METODIKA_SketchUp_LLM_v4.md
 │   ├── Metodika_cad2llm_postprocesing.md
 │   └── reports/                    ← analýzy výstupů
@@ -154,6 +165,8 @@ cad2llm/
 - **2026-09-24** — rekonstrukce pipeline z dumpu (`RECONSTRUCTION_REPORT.md`).
 - **2026-10-22** — **reaktivace**: schema v4, oprava korupce matic (`gsub` `\10`),
   oprava dvojité transformace u skupin, extension + menu, headless testy obou kanálů.
+- **2026-10-22** — **v5 F1**: deterministická sémantika (role/zóna/intent + evidence),
+  normalizovaná validace, LLM brief, golden master 46 uzlů.
 
 > Historické konzolové skripty v `src/_archive/console/` obsahují známou korupci
 > matic — nepoužívat.

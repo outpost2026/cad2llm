@@ -1,0 +1,351 @@
+{
+  "semantics": {
+    "ID3": {
+      "role": "worktop",
+      "zone": "work",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.85
+    },
+    "ID15": {
+      "role": "bed",
+      "zone": "sleep",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.9
+    },
+    "ID27": {
+      "role": "stove",
+      "zone": "sleep",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.9
+    },
+    "ID53": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID61": {
+      "role": "table",
+      "zone": "work",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.85
+    },
+    "ID79": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID103": {
+      "role": "inverter",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.85
+    },
+    "ID115": {
+      "role": "floor",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.9
+    },
+    "ID123": {
+      "role": "wall",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.9
+    },
+    "ID141": {
+      "role": "wall",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.9
+    },
+    "ID155": {
+      "role": "wall",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.9
+    },
+    "ID163": {
+      "role": "ceiling",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.9
+    },
+    "ID171": {
+      "role": "window",
+      "zone": "sleep",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.9
+    },
+    "ID183": {
+      "role": "window",
+      "zone": "sleep",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.9
+    },
+    "ID191": {
+      "role": "window",
+      "zone": "dining",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.9
+    },
+    "ID199": {
+      "role": "beam",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.85
+    },
+    "ID207": {
+      "role": "beam",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.85
+    },
+    "ID215": {
+      "role": "void",
+      "zone": "entry",
+      "intent": "ARTIFACT",
+      "confidence": 0.9
+    },
+    "ID223": {
+      "role": "wall",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.9
+    },
+    "ID235": {
+      "role": "beam",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.85
+    },
+    "ID236": {
+      "role": "beam",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.85
+    },
+    "ID237": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID239": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID251": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID252": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID253": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID254": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID240": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID256": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID257": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID258": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID259": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID260": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID261": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID262": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID263": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID264": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID265": {
+      "role": "battery",
+      "zone": "energy",
+      "intent": "DESIGN_DECISION",
+      "confidence": 0.8
+    },
+    "ID266": {
+      "role": "beam",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.85
+    },
+    "ID267": {
+      "role": "insulation",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.95
+    },
+    "ID275": {
+      "role": "insulation",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.95
+    },
+    "ID283": {
+      "role": "insulation",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.95
+    },
+    "ID297": {
+      "role": "insulation",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.95
+    },
+    "ID311": {
+      "role": "insulation",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.95
+    },
+    "ID319": {
+      "role": "insulation",
+      "zone": "envelope",
+      "intent": "CONSTRUCTION",
+      "confidence": 0.95
+    },
+    "ID327": {
+      "role": "boundary",
+      "zone": "unknown",
+      "intent": "ARTIFACT",
+      "confidence": 0.9
+    }
+  },
+  "metrics": {
+    "envelope_mm": {
+      "x": 4688.0,
+      "y": 2211.7,
+      "z": 2316.0
+    },
+    "floor_area_m2": 9.31,
+    "clear_height_mm": 1990.0,
+    "clearances": [
+      {
+        "a": "ID27",
+        "b": "ID15",
+        "gap_mm": 642.4,
+        "min_mm": 500,
+        "ok": true,
+        "rule_id": "R_CLEARANCE_MIN"
+      }
+    ]
+  },
+  "validation": {
+    "counts": {
+      "nodes": 46,
+      "with_bbox": 46,
+      "errors": 0,
+      "warnings": 0,
+      "critical": 0,
+      "info": 2,
+      "suppressed": 0
+    },
+    "issues": [
+      {
+        "code": "ZERO_SIZE",
+        "severity": "INFO",
+        "uids": [
+          "ID215"
+        ]
+      },
+      {
+        "code": "ZERO_SIZE",
+        "severity": "INFO",
+        "uids": [
+          "ID327"
+        ]
+      }
+    ]
+  },
+  "brief": {
+    "version": "1.0",
+    "markdown": "# Brief: mistnost_2_sk24\n\n- Envelope 4688 x 2211.7 mm, height 2316 mm; footprint 9.31 m2, clear height 1990 mm.\n- Channel: dae. Nodes: 46 (bbox 46); errors 0, warnings 0.\n- Unavailable in this channel: tags, metadata_dictionaries, persistent_ids, gps.\n\n## Clearances\n- ID27 / ID15: gap 642.4 mm (min 500 mm) - OK\n\n## Findings: 0\n- No critical or warning issues.\n",
+    "facts": {
+      "dimensions_mm": {
+        "x": 4688.0,
+        "y": 2211.7,
+        "z": 2316.0
+      },
+      "floor_area_m2": 9.31,
+      "clear_height_mm": 1990.0,
+      "nodes": 46,
+      "with_bbox": 46,
+      "errors": 0,
+      "warnings": 0,
+      "channel": "dae",
+      "missing_capabilities": [
+        "tags",
+        "metadata_dictionaries",
+        "persistent_ids",
+        "gps"
+      ]
+    },
+    "top_findings": []
+  }
+}

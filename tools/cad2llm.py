@@ -5,6 +5,7 @@ python tools/cad2llm.py convert  <model.dae> <out.json> [--rules rules.json] [--
 python tools/cad2llm.py validate <doc.json> [--rules rules.json] [--out report.json]
 python tools/cad2llm.py summary  <doc.json> [--md report.md]
 python tools/cad2llm.py diff     <a.json> <b.json>
+python tools/cad2llm.py enrich   <doc.json> <out.json> [--excerpt]
 """
 
 from __future__ import annotations
@@ -17,6 +18,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import cad2llm_core as core
+import cad2llm_v5 as v5
 
 
 def _load_rules(path: str | None) -> dict:
@@ -86,6 +88,25 @@ def cmd_diff(args) -> int:
     return 0
 
 
+def cmd_enrich(args) -> int:
+    doc = core.load_any(args.doc)
+    out = v5.enrich(
+        doc,
+        source_hash=v5.file_hash(args.doc),
+        basis="excerpt" if args.excerpt else "full",
+    )
+    v5.write_json(args.out, out)
+    sem = [n["semantics"] for n in out["nodes"]]
+    known = sum(1 for s in sem if s["role"] != "unknown")
+    print(f"OK  {args.out}")
+    print(
+        f"    nodes={len(sem)} known_role={known} unknown={len(sem) - known} "
+        f"brief={len(out['brief']['markdown'])} chars "
+        f"findings={len(out['brief']['top_findings'])}"
+    )
+    return 0
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(
         prog="cad2llm",
@@ -118,6 +139,12 @@ def main(argv=None) -> int:
     d.add_argument("a")
     d.add_argument("b")
     d.set_defaults(func=cmd_diff)
+
+    e = sub.add_parser("enrich", help="v4 -> v5 (semantics + validation + brief)")
+    e.add_argument("doc")
+    e.add_argument("out")
+    e.add_argument("--excerpt", action="store_true")
+    e.set_defaults(func=cmd_enrich)
 
     args = p.parse_args(argv)
     return args.func(args)

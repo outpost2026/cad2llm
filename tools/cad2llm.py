@@ -90,6 +90,7 @@ def cmd_diff(args) -> int:
 
 def cmd_enrich(args) -> int:
     doc = core.load_any(args.doc)
+    computed = not v5.has_validation(doc)
     out = v5.enrich(
         doc,
         source_hash=v5.file_hash(args.doc),
@@ -104,6 +105,8 @@ def cmd_enrich(args) -> int:
         f"brief={len(out['brief']['markdown'])} chars "
         f"findings={len(out['brief']['top_findings'])}"
     )
+    if computed:
+        print("    validation=computed")
     return 0
 
 

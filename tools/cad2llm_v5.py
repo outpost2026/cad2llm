@@ -68,6 +68,43 @@ ROLE_ZONE_FALLBACK = {
     "marker": "unknown",
 }
 
+# Secondary evidence: SketchUp tags (GUI channel) when the name carries no role.
+TAG_ROLE_RULES = [
+    ("wall", r"\b(walls?|stena|steny)\b"),
+    ("insulation", r"\b(insulation|izolace)\b"),
+    ("floor", r"\bfloor\b"),
+    ("ceiling", r"\b(ceiling|strop)\b"),
+    ("window", r"\b(windows?|okna?)\b"),
+    ("door", r"\b(doors?|dvere)\b"),
+    ("bed", r"\bbed\b"),
+    ("table", r"\btable\b"),
+    ("void", r"\b(entrance|void|entry)\b"),
+    ("boundary", r"\b(boundary|pudorys|room\d*)\b"),
+]
+
+TAG_ZONE_RULES = [
+    ("energy", r"\benergy\b"),
+    ("envelope", r"\b(walls?|insulation|floor|ceiling|construction)\b"),
+    ("sleep", r"\bbed\b"),
+    ("dining", r"\btable\b"),
+    ("work", r"\b(shelves?|shelf|worktop)\b"),
+    ("entry", r"\b(entrance|entry|void)\b"),
+]
+
+# A nameless child may inherit its parent's role when the parent is a known
+# design object (16th LFP cell named "Unnamed" inside a battery pack).
+PARENT_INHERIT_ROLES = {
+    "battery",
+    "inverter",
+    "worktop",
+    "table",
+    "bed",
+    "stove",
+    "appliance",
+    "storage",
+    "furniture",
+}
+
 ISSUE_META = {
     "ZERO_SIZE": ("R_GEOM_ZERO_THICKNESS", "CLASS_A", 0.99, "ARTIFACT"),
     "MISSING_BBOX": ("R_GEOM_MISSING_BBOX", "CLASS_A", 0.99, "UNKNOWN"),
@@ -93,6 +130,90 @@ def _norm(text: str) -> str:
 def _match(rule_re: str, name: str) -> str | None:
     m = re.search(rule_re, name)
     return m.group(0) if m else None
+
+
+def _intent_for(role: str) -> str:
+    if role == "unknown":
+        return "UNKNOWN"
+    if role in {"void", "marker", "boundary"}:
+        return "ARTIFACT"
+    if role in STRUCTURAL or role in {"window", "door", "opening"}:
+        return "CONSTRUCTION"
+    return "DESIGN_DECISION"
+
+
+def _tag_lookup(rules: list, tag: str) -> tuple[str, str] | None:
+    norm = _norm(tag)
+    for candidate, pattern in rules:
+        m = re.search(pattern, norm)
+        if m:
+            return candidate, m.group(0)
+    return None
+
+
+def _apply_semantic_fallbacks(nodes: list) -> None:
+    """Tag + parent-role fallback for nodes whose name gave no role/zone."""
+    by_uid = {n.get("uid"): n for n in nodes}
+    for node in nodes:
+        s = node.get("semantics") or {}
+        role = s.get("role", "unknown")
+        zone = s.get("zone")
+        tag = node.get("tag") or ""
+        size = (node.get("spatial") or {}).get("size_mm") or {}
+        degenerate = bool(size) and any(float(size.get(ax, 0)) < 1.0 for ax in "xyz")
+        evidence = s.setdefault("evidence", [])
+        role_changed = False
+
+        if role == "unknown":
+            found = _tag_lookup(TAG_ROLE_RULES, tag)
+            if found:
+                role, token = found
+                role_changed = True
+                s["confidence"] = max(float(s.get("confidence", 0.0)), 0.7)
+                evidence.append(
+                    {
+                        "rule_id": f"R_TAG_ROLE_{role.upper()}",
+                        "rule_class": "CLASS_C",
+                        "support_n": 1,
+                        "detail": f"tag token '{token}'",
+                    }
+                )
+
+        if role == "unknown":
+            parent = by_uid.get(node.get("parent_uid"))
+            parent_role = ((parent or {}).get("semantics") or {}).get("role")
+            if parent_role in PARENT_INHERIT_ROLES:
+                role = parent_role
+                role_changed = True
+                s["confidence"] = max(float(s.get("confidence", 0.0)), 0.6)
+                evidence.append(
+                    {
+                        "rule_id": "R_PARENT_ROLE_INHERIT",
+                        "rule_class": "CLASS_C",
+                        "support_n": 1,
+                        "detail": f"parent {parent.get('uid')} role '{parent_role}'",
+                    }
+                )
+
+        if zone in (None, "unknown"):
+            found_zone = _tag_lookup(TAG_ZONE_RULES, tag)
+            if found_zone:
+                zone, token = found_zone
+                evidence.append(
+                    {
+                        "rule_id": f"R_TAG_ZONE_{zone.upper()}",
+                        "rule_class": "CLASS_C",
+                        "support_n": 1,
+                        "detail": f"tag token '{token}'",
+                    }
+                )
+        if zone in (None, "unknown"):
+            zone = ROLE_ZONE_FALLBACK.get(role, "unknown")
+
+        s["role"] = role
+        s["zone"] = zone
+        if role_changed:
+            s["intent"] = "ARTIFACT" if degenerate else _intent_for(role)
 
 
 def classify(name: str, spatial: dict | None = None) -> dict:
@@ -794,6 +915,23 @@ def file_hash(path: str | Path) -> str:
     return f"sha256:{digest}"
 
 
+def _project_rules() -> dict:
+    path = Path(__file__).with_name("cad2llm_rules.json")
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    return {}
+
+
+def has_validation(doc: dict) -> bool:
+    """True when the v4 document already carries usable validate --out output."""
+    v = doc.get("validation") or {}
+    return (
+        bool(v.get("counts"))
+        and isinstance(v.get("z_table"), list)
+        and isinstance(v.get("clearances"), list)
+    )
+
+
 def enrich(doc: dict, source_hash: str | None = None, basis: str = "full") -> dict:
     """v4 document -> v5 document (deterministic, deep-copies input)."""
     out = copy.deepcopy(doc)
@@ -806,9 +944,20 @@ def enrich(doc: dict, source_hash: str | None = None, basis: str = "full") -> di
         source["model_hash"] = source_hash
     meta.setdefault("global_origin_gps", None)
 
+    if not has_validation(out):
+        import cad2llm_core
+
+        out["validation"] = cad2llm_core.validate(out, _project_rules())
+        # Keep enrich deterministic: no wall clock in the auto-validation path.
+        out["validation"]["checked_at"] = (
+            meta.get("export_date") or "1970-01-01T00:00:00Z"
+        )
+
     for node in out.get("nodes", []):
         node["semantics"] = classify(node.get("name", ""), node.get("spatial"))
         node.setdefault("metadata", {})
+
+    _apply_semantic_fallbacks(out.get("nodes", []))
 
     out["relations"] = []
     validation = normalize_validation(out)

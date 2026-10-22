@@ -1,0 +1,3731 @@
+{
+  "schema_version": "4.0",
+  "project_metadata": {
+    "name": "mistnost_2_v7",
+    "export_date": "2026-10-22T20:45:51Z",
+    "units": "mm",
+    "up_axis": "Z_UP",
+    "global_origin_gps": [
+      50.150888,
+      14.42336652
+    ],
+    "source": {
+      "channel": "sketchup",
+      "file": "mistnost_2_v7.skp",
+      "model_path": "C:\\Users\\PC\\Documents\\Sketchup2016\\mistnost_2_v7.skp",
+      "sketchup_version": "24.0.484"
+    },
+    "capabilities": {
+      "hierarchy": true,
+      "bbox_mm": true,
+      "rotation": true,
+      "tags": true,
+      "metadata_dictionaries": true,
+      "persistent_ids": true,
+      "gps": true
+    }
+  },
+  "nodes": [
+    {
+      "uid": "3347@Worktop #01 hlavní pracovni plocha dřevěná",
+      "persistent_id": 3347,
+      "name": "Worktop #01 hlavní pracovni plocha dřevěná",
+      "definition_name": "worktop_user",
+      "entity_type": "component",
+      "tag": "Shelves",
+      "hierarchy_path": [
+        "Worktop #01 hlavní pracovni plocha dřevěná"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1520.0,
+          "y": 1760.0,
+          "z": 745.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1520.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1760.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            745.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 1520.0,
+            "y": 1760.0,
+            "z": 745.0
+          },
+          "max": {
+            "x": 3780.0,
+            "y": 1960.0,
+            "z": 795.0
+          }
+        },
+        "size_mm": {
+          "x": 2260.0,
+          "y": 200.0,
+          "z": 50.0
+        },
+        "center_mm": {
+          "x": 2650.0,
+          "y": 1860.0,
+          "z": 770.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3348@Bed_01_mattres_with_light_frame",
+      "persistent_id": 3348,
+      "name": "Bed_01_mattres_with_light_frame",
+      "definition_name": "sleep_zone",
+      "entity_type": "component",
+      "tag": "bed_m2",
+      "hierarchy_path": [
+        "Bed_01_mattres_with_light_frame"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 2495.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2495.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2495.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4495.0,
+            "y": 970.0,
+            "z": 180.0
+          }
+        },
+        "size_mm": {
+          "x": 2000.0,
+          "y": 970.0,
+          "z": 180.0
+        },
+        "center_mm": {
+          "x": 3495.0,
+          "y": 485.0,
+          "z": 90.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3349@Kamna Priti mini D_zone_bed_energy wall primary wood fuel",
+      "persistent_id": 3349,
+      "name": "Kamna Priti mini D_zone_bed_energy wall primary wood fuel",
+      "definition_name": "stove_main",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "Kamna Priti mini D_zone_bed_energy wall primary wood fuel"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 3988.528,
+          "y": 1612.4,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            0.8989,
+            0.0,
+            0.0,
+            3988.528
+          ],
+          [
+            0.0,
+            0.82,
+            0.0,
+            1612.4
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 3988.528,
+            "y": 1612.4,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4420.0,
+            "y": 1924.0,
+            "z": 680.0
+          }
+        },
+        "size_mm": {
+          "x": 431.472,
+          "y": 311.6,
+          "z": 680.0
+        },
+        "center_mm": {
+          "x": 4204.264,
+          "y": 1768.2,
+          "z": 340.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3350@LFP_main_base",
+      "persistent_id": 3350,
+      "name": "LFP_main_base",
+      "definition_name": "lfp_main_worktop_policka_na_main_battery",
+      "entity_type": "component",
+      "tag": "Shelves",
+      "hierarchy_path": [
+        "LFP_main_base"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1690.0,
+          "y": 1760.0,
+          "z": 490.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1690.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1760.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            490.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 1690.0,
+            "y": 1760.0,
+            "z": 490.0
+          },
+          "max": {
+            "x": 3777.0,
+            "y": 2000.0,
+            "z": 525.0
+          }
+        },
+        "size_mm": {
+          "x": 2087.0,
+          "y": 240.0,
+          "z": 35.0
+        },
+        "center_mm": {
+          "x": 2733.5,
+          "y": 1880.0,
+          "z": 507.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3351@main_table_rectangel_food_work_dump_place",
+      "persistent_id": 3351,
+      "name": "main_table_rectangel_food_work_dump_place",
+      "definition_name": "table_main",
+      "entity_type": "component",
+      "tag": "table_main",
+      "hierarchy_path": [
+        "main_table_rectangel_food_work_dump_place"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": -1.751,
+          "y": 84.38,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            -1.7511
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            84.3804
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": -1.751,
+            "y": 84.38,
+            "z": 0.0
+          },
+          "max": {
+            "x": 673.249,
+            "y": 829.38,
+            "z": 665.0
+          }
+        },
+        "size_mm": {
+          "x": 675.0,
+          "y": 745.0,
+          "z": 665.0
+        },
+        "center_mm": {
+          "x": 335.749,
+          "y": 456.88,
+          "z": 332.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3353@24V gokwh 100ah lfp battery",
+      "persistent_id": 3353,
+      "name": "24V gokwh 100ah lfp battery",
+      "definition_name": "24V_secondary_100ah_lfp",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "24V gokwh 100ah lfp battery"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 2055.0,
+          "y": 1760.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2055.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1760.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2055.0,
+            "y": 1760.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 2580.0,
+            "y": 2000.0,
+            "z": 220.0
+          }
+        },
+        "size_mm": {
+          "x": 525.0,
+          "y": 240.0,
+          "z": 220.0
+        },
+        "center_mm": {
+          "x": 2317.5,
+          "y": 1880.0,
+          "z": 110.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3354@Energy source main power invertor mppt dc -ac max load 3,2 kw",
+      "persistent_id": 3354,
+      "name": "Energy source main power invertor mppt dc -ac max load 3,2 kw",
+      "definition_name": "HVM3.2H_hybrid_invertor",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "Energy source main power invertor mppt dc -ac max load 3,2 kw"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1790.0,
+          "y": 1900.0,
+          "z": 1075.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1790.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1900.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            1075.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 1790.0,
+            "y": 1900.0,
+            "z": 1075.0
+          },
+          "max": {
+            "x": 2060.0,
+            "y": 2000.0,
+            "z": 1425.0
+          }
+        },
+        "size_mm": {
+          "x": 270.0,
+          "y": 100.0,
+          "z": 350.0
+        },
+        "center_mm": {
+          "x": 1925.0,
+          "y": 1950.0,
+          "z": 1250.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3355@floor_m2",
+      "persistent_id": 3355,
+      "name": "floor_m2",
+      "definition_name": "wooden_floor",
+      "entity_type": "component",
+      "tag": "floor_wooden",
+      "hierarchy_path": [
+        "floor_m2"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": -24.0,
+            "y": -24.0,
+            "z": -20.0
+          },
+          "max": {
+            "x": 4524.0,
+            "y": 2024.0,
+            "z": 0.0
+          }
+        },
+        "size_mm": {
+          "x": 4548.0,
+          "y": 2048.0,
+          "z": 20.0
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": 1000.0,
+          "z": -10.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3356@wall vnitřní west wooden prostupy pro okna zone bed",
+      "persistent_id": 3356,
+      "name": "wall vnitřní west wooden prostupy pro okna zone bed",
+      "definition_name": "wall_inner_west_wooden_windows_openings",
+      "entity_type": "component",
+      "tag": "walls",
+      "hierarchy_path": [
+        "wall vnitřní west wooden prostupy pro okna zone bed"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": -24.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4500.0,
+            "y": 0.0,
+            "z": 1990.0
+          }
+        },
+        "size_mm": {
+          "x": 4500.0,
+          "y": 24.0,
+          "z": 1990.0
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": -12.0,
+          "z": 995.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3357@wall vnitřní inner jih south prostup pro okno zone postel stove",
+      "persistent_id": 3357,
+      "name": "wall vnitřní inner jih south prostup pro okno zone postel stove",
+      "definition_name": ";",
+      "entity_type": "component",
+      "tag": "walls",
+      "hierarchy_path": [
+        "wall vnitřní inner jih south prostup pro okno zone postel stove"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 4500.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4524.0,
+            "y": 2000.0,
+            "z": 2090.0
+          }
+        },
+        "size_mm": {
+          "x": 24.0,
+          "y": 2000.0,
+          "z": 2090.0
+        },
+        "center_mm": {
+          "x": 4512.0,
+          "y": 1000.0,
+          "z": 1045.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3358@wall inner vnitřní zone entry",
+      "persistent_id": 3358,
+      "name": "wall inner vnitřní zone entry",
+      "definition_name": "wall_inner_north_wooden",
+      "entity_type": "component",
+      "tag": "walls",
+      "hierarchy_path": [
+        "wall inner vnitřní zone entry"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": -24.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 0.0,
+            "y": 2000.0,
+            "z": 2090.0
+          }
+        },
+        "size_mm": {
+          "x": 24.0,
+          "y": 2000.0,
+          "z": 2090.0
+        },
+        "center_mm": {
+          "x": -12.0,
+          "y": 1000.0,
+          "z": 1045.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3359@ceiling_guttafol_135_bottom_layer_ceiling_textile",
+      "persistent_id": 3359,
+      "name": "ceiling_guttafol_135_bottom_layer_ceiling_textile",
+      "definition_name": "Ceiling_m2",
+      "entity_type": "component",
+      "tag": "ceiling",
+      "hierarchy_path": [
+        "ceiling_guttafol_135_bottom_layer_ceiling_textile"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.0,
+          "y": 0.0,
+          "z": 1990.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            1990.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": -0.05,
+            "z": 1990.0
+          },
+          "max": {
+            "x": 4500.0,
+            "y": 2000.0,
+            "z": 2090.999
+          }
+        },
+        "size_mm": {
+          "x": 4500.0,
+          "y": 2000.05,
+          "z": 100.999
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": 999.975,
+          "z": 2040.499
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3360@windows jižní dvojokno bez rámu zone sleeping stove",
+      "persistent_id": 3360,
+      "name": "windows jižní dvojokno bez rámu zone sleeping stove",
+      "definition_name": "window_south",
+      "entity_type": "component",
+      "tag": "windows_m2",
+      "hierarchy_path": [
+        "windows jižní dvojokno bez rámu zone sleeping stove"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4654.0,
+          "y": 45.0,
+          "z": 600.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4654.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            45.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            600.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 4654.0,
+            "y": 45.0,
+            "z": 600.0
+          },
+          "max": {
+            "x": 4674.0,
+            "y": 1181.361,
+            "z": 1750.356
+          }
+        },
+        "size_mm": {
+          "x": 20.0,
+          "y": 1136.361,
+          "z": 1150.356
+        },
+        "center_mm": {
+          "x": 4664.0,
+          "y": 613.18,
+          "z": 1175.178
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3361@windows západní dvojokno bez rámu zone sleeping",
+      "persistent_id": 3361,
+      "name": "windows západní dvojokno bez rámu zone sleeping",
+      "definition_name": "windos_south_west",
+      "entity_type": "component",
+      "tag": "windows_m2",
+      "hierarchy_path": [
+        "windows západní dvojokno bez rámu zone sleeping"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.0,
+          "y": -93.0,
+          "z": 561.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -93.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            561.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 3245.0,
+            "y": -93.0,
+            "z": 561.0
+          },
+          "max": {
+            "x": 4500.0,
+            "y": -73.0,
+            "z": 1831.0
+          }
+        },
+        "size_mm": {
+          "x": 1255.0,
+          "y": 20.0,
+          "z": 1270.0
+        },
+        "center_mm": {
+          "x": 3872.5,
+          "y": -83.0,
+          "z": 1196.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3362@windows západní dvojokno bez rámu zóna dinning dump",
+      "persistent_id": 3362,
+      "name": "windows západní dvojokno bez rámu zóna dinning dump",
+      "definition_name": "window_west",
+      "entity_type": "component",
+      "tag": "windows_m2",
+      "hierarchy_path": [
+        "windows západní dvojokno bez rámu zóna dinning dump"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1575.194,
+          "y": -90.0,
+          "z": 590.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            1575.1944
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -90.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            590.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 329.834,
+            "y": -90.0,
+            "z": 590.0
+          },
+          "max": {
+            "x": 1575.194,
+            "y": -70.0,
+            "z": 1811.356
+          }
+        },
+        "size_mm": {
+          "x": 1245.361,
+          "y": 20.0,
+          "z": 1221.356
+        },
+        "center_mm": {
+          "x": 952.514,
+          "y": -80.0,
+          "z": 1200.678
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3363@beam_nosnik_01_wppde",
+      "persistent_id": 3363,
+      "name": "beam_nosnik_01_wppde",
+      "definition_name": "Beam_east_wall",
+      "entity_type": "component",
+      "tag": "construction_wood",
+      "hierarchy_path": [
+        "beam_nosnik_01_wppde"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 40.0,
+          "y": 2024.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            40.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2024.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": -80.0,
+            "y": 2024.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 40.0,
+            "y": 2074.0,
+            "z": 1994.528
+          }
+        },
+        "size_mm": {
+          "x": 120.0,
+          "y": 50.0,
+          "z": 1994.528
+        },
+        "center_mm": {
+          "x": -20.0,
+          "y": 2049.0,
+          "z": 997.264
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3364@truss překlad pozednice #01 east wall",
+      "persistent_id": 3364,
+      "name": "truss překlad pozednice #01 east wall",
+      "definition_name": "Beam_truss_main_5_m",
+      "entity_type": "component",
+      "tag": "construction_wood",
+      "hierarchy_path": [
+        "truss překlad pozednice #01 east wall"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4774.0,
+          "y": 2024.0,
+          "z": 1994.528
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4774.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2024.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            1994.528
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": -226.0,
+            "y": 2024.0,
+            "z": 1994.528
+          },
+          "max": {
+            "x": 4774.0,
+            "y": 2104.0,
+            "z": 2074.528
+          }
+        },
+        "size_mm": {
+          "x": 5000.0,
+          "y": 80.0,
+          "z": 80.0
+        },
+        "center_mm": {
+          "x": 2274.0,
+          "y": 2064.0,
+          "z": 2034.528
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3365@void_entry_point",
+      "persistent_id": 3365,
+      "name": "void_entry_point",
+      "definition_name": "Entry_opening_raw_frame_east_wall",
+      "entity_type": "component",
+      "tag": "entrance_void",
+      "hierarchy_path": [
+        "void_entry_point"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1695.0,
+          "y": 2000.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            1695.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2000.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 45.0,
+            "y": 2000.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 1695.0,
+            "y": 2000.0,
+            "z": 1994.528
+          }
+        },
+        "size_mm": {
+          "x": 1650.0,
+          "y": 0.0,
+          "z": 1994.528
+        },
+        "center_mm": {
+          "x": 870.0,
+          "y": 2000.0,
+          "z": 997.264
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3366@east_wall_with_entrance_opening_no_windows",
+      "persistent_id": 3366,
+      "name": "east_wall_with_entrance_opening_no_windows",
+      "definition_name": "East_wall#1",
+      "entity_type": "component",
+      "tag": "walls",
+      "hierarchy_path": [
+        "east_wall_with_entrance_opening_no_windows"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.0,
+          "y": 2000.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2000.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": 2000.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4500.0,
+            "y": 2024.0,
+            "z": 2074.528
+          }
+        },
+        "size_mm": {
+          "x": 4500.0,
+          "y": 24.0,
+          "z": 2074.528
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": 2012.0,
+          "z": 1037.264
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3367@beam_nosnik_02",
+      "persistent_id": 3367,
+      "name": "beam_nosnik_02",
+      "definition_name": "Beam_east_wall",
+      "entity_type": "component",
+      "tag": "construction_wood",
+      "hierarchy_path": [
+        "beam_nosnik_02"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1815.0,
+          "y": 2024.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            1815.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2024.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 1695.0,
+            "y": 2024.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 1815.0,
+            "y": 2074.0,
+            "z": 1994.528
+          }
+        },
+        "size_mm": {
+          "x": 120.0,
+          "y": 50.0,
+          "z": 1994.528
+        },
+        "center_mm": {
+          "x": 1755.0,
+          "y": 2049.0,
+          "z": 997.264
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3368@beam_nosnik_03",
+      "persistent_id": 3368,
+      "name": "beam_nosnik_03",
+      "definition_name": "Beam_east_wall",
+      "entity_type": "component",
+      "tag": "construction_wood",
+      "hierarchy_path": [
+        "beam_nosnik_03"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4620.0,
+          "y": 2024.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4620.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2024.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 4500.0,
+            "y": 2024.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4620.0,
+            "y": 2074.0,
+            "z": 1994.528
+          }
+        },
+        "size_mm": {
+          "x": 120.0,
+          "y": 50.0,
+          "z": 1994.528
+        },
+        "center_mm": {
+          "x": 4560.0,
+          "y": 2049.0,
+          "z": 997.264
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "persistent_id": 3369,
+      "name": "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "definition_name": "Main_battery_of_the_house",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1785.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1785.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 1785.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2931.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 1146.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2358.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "304@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 304,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2718.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2718.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2718.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2788.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2753.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "305@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 305,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2861.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2861.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2861.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2931.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2896.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "306@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 306,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 1928.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1928.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 1928.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 1998.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 1963.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "307@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 307,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2072.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2072.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2072.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2142.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2107.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "308@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 308,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2359.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2359.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2359.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2429.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2394.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "309@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/Unnamed",
+      "persistent_id": 309,
+      "name": "Unnamed",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "Unnamed"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2144.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2144.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2144.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2214.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2179.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "310@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 310,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2000.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2000.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2000.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2070.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2035.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "311@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 311,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2215.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2215.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2215.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2285.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "312@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 312,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2502.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2502.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2502.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2572.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2537.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "313@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 313,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2574.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2574.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2574.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2644.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2609.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "314@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 314,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2789.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2789.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2789.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2859.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2824.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "315@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 315,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2431.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2431.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2431.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2501.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2466.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "316@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 316,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2287.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2287.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2287.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2357.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2322.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "317@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 317,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 1785.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1785.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 1785.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 1855.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 1820.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "318@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 318,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 2646.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2646.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 2646.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2716.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2681.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "319@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells/lfp_cell_314ah",
+      "persistent_id": 319,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": "energy_nodes",
+      "hierarchy_path": [
+        "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "3369@LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells",
+      "spatial": {
+        "origin_mm": {
+          "x": 1857.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1857.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1828.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 1857.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 1927.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 1892.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3370@truss překlad pozednice #02 west wall",
+      "persistent_id": 3370,
+      "name": "truss překlad pozednice #02 west wall",
+      "definition_name": "Beam_truss_main_5_m",
+      "entity_type": "component",
+      "tag": "construction_wood",
+      "hierarchy_path": [
+        "truss překlad pozednice #02 west wall"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4774.0,
+          "y": -104.0,
+          "z": 1910.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4774.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -104.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            1910.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": -226.0,
+            "y": -104.0,
+            "z": 1910.0
+          },
+          "max": {
+            "x": 4774.0,
+            "y": -24.0,
+            "z": 1990.0
+          }
+        },
+        "size_mm": {
+          "x": 5000.0,
+          "y": 80.0,
+          "z": 80.0
+        },
+        "center_mm": {
+          "x": 2274.0,
+          "y": -64.0,
+          "z": 1950.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3371@izolace minerální 7cm východní stěna",
+      "persistent_id": 3371,
+      "name": "izolace minerální 7cm východní stěna",
+      "definition_name": "insulation_wall_east_7_cm",
+      "entity_type": "component",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální 7cm východní stěna"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4511.904,
+          "y": 2022.153,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4511.9044
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2022.153
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 11.904,
+            "y": 2022.153,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4511.904,
+            "y": 2082.153,
+            "z": 2074.528
+          }
+        },
+        "size_mm": {
+          "x": 4500.0,
+          "y": 60.0,
+          "z": 2074.528
+        },
+        "center_mm": {
+          "x": 2261.904,
+          "y": 2052.153,
+          "z": 1037.264
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3372@izolace minerální 7cm severní stěna",
+      "persistent_id": 3372,
+      "name": "izolace minerální 7cm severní stěna",
+      "definition_name": "insulation_wall_north_7_cm",
+      "entity_type": "component",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální 7cm severní stěna"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": -24.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            -24.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": -94.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": -24.0,
+            "y": 2000.0,
+            "z": 2090.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 2000.0,
+          "z": 2090.0
+        },
+        "center_mm": {
+          "x": -59.0,
+          "y": 1000.0,
+          "z": 1045.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3373@izolace minerální 7cm západní stěna",
+      "persistent_id": 3373,
+      "name": "izolace minerální 7cm západní stěna",
+      "definition_name": "insulation_wall_west_7_cm",
+      "entity_type": "component",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální 7cm západní stěna"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.0,
+          "y": -94.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -94.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": -94.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4500.0,
+            "y": -24.0,
+            "z": 1990.0
+          }
+        },
+        "size_mm": {
+          "x": 4500.0,
+          "y": 70.0,
+          "z": 1990.0
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": -59.0,
+          "z": 995.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3374@izolace minerální 7cm jižní stěna",
+      "persistent_id": 3374,
+      "name": "izolace minerální 7cm jižní stěna",
+      "definition_name": "insulation_wall_south_7_cm",
+      "entity_type": "component",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální 7cm jižní stěna"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4594.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4594.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 4524.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4594.0,
+            "y": 2000.0,
+            "z": 2090.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 2000.0,
+          "z": 2090.0
+        },
+        "center_mm": {
+          "x": 4559.0,
+          "y": 1000.0,
+          "z": 1045.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3375@izolace minerální isover domo plus 10 cm podlaha Lamb.D 0,038 W.",
+      "persistent_id": 3375,
+      "name": "izolace minerální isover domo plus 10 cm podlaha Lamb.D 0,038 W.",
+      "definition_name": "insulation_mineral_floor_10_cm",
+      "entity_type": "component",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální isover domo plus 10 cm podlaha Lamb.D 0,038 W."
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": -24.0,
+          "y": -24.0,
+          "z": -120.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            -24.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            -24.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -120.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": -24.0,
+            "y": -24.0,
+            "z": -120.0
+          },
+          "max": {
+            "x": 4524.0,
+            "y": 2024.0,
+            "z": -20.0
+          }
+        },
+        "size_mm": {
+          "x": 4548.0,
+          "y": 2048.0,
+          "z": 100.0
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": 1000.0,
+          "z": -70.0
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3376@izolace minerální isover domo plus 10 cm strop Lamb.D 0,038 W.",
+      "persistent_id": 3376,
+      "name": "izolace minerální isover domo plus 10 cm strop Lamb.D 0,038 W.",
+      "definition_name": "insulation_mineral_ceiling_10_cm",
+      "entity_type": "component",
+      "tag": "insulation",
+      "hierarchy_path": [
+        "izolace minerální isover domo plus 10 cm strop Lamb.D 0,038 W."
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.0,
+          "y": -0.05,
+          "z": 1990.999
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -0.0499
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            1990.9988
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": -108.784,
+            "z": 1985.812
+          },
+          "max": {
+            "x": 4500.0,
+            "y": 2102.919,
+            "z": 2196.022
+          }
+        },
+        "size_mm": {
+          "x": 4500.0,
+          "y": 2211.703,
+          "z": 210.211
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": 997.067,
+          "z": 2090.917
+        }
+      },
+      "metadata": {
+      }
+    },
+    {
+      "uid": "3377@room#1 půdorys area boundary pergola",
+      "persistent_id": 3377,
+      "name": "room#1 půdorys area boundary pergola",
+      "definition_name": "room#1_pergola_area_boundary",
+      "entity_type": "component",
+      "tag": "room1",
+      "hierarchy_path": [
+        "room#1 půdorys area boundary pergola"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4620.0,
+          "y": 2074.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4620.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2074.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "bbox_mm": {
+          "min": {
+            "x": -80.0,
+            "y": 2074.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4620.0,
+            "y": 7074.0,
+            "z": 0.0
+          }
+        },
+        "size_mm": {
+          "x": 4700.0,
+          "y": 5000.0,
+          "z": 0.0
+        },
+        "center_mm": {
+          "x": 2270.0,
+          "y": 4574.0,
+          "z": 0.0
+        }
+      },
+      "metadata": {
+      }
+    }
+  ],
+  "validation": {
+    "issues": [
+
+    ]
+  }
+}

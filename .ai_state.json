@@ -1,0 +1,77 @@
+{
+  "schema": "ai_state/v1",
+  "repo": "cad2llm",
+  "branch": "main",
+  "updated_at": "2026-10-22",
+  "status": "F2 committed; F2.1 implemented and verified, awaiting commit",
+  "last_commits": [
+    {
+      "hash": "5aeb530",
+      "summary": "[CAD2LLM] v5 F2: relace, SNR filtry, free_space/passages/volumes, brief"
+    }
+  ],
+  "completed": [
+    "v5 F0: JSON schemas + examples",
+    "v5 F1: deterministic semantics (role/zone/intent + evidence), normalized validation, brief, golden master",
+    "v5 F2: 6 relation kinds with SNR filters (30 edges), free floor 100 mm raster, passages, volumes",
+    "F2.1: enrich auto-computes validation when input has no validation block (GUI export), using cad2llm_rules.json; checked_at derived from project_metadata.export_date for determinism",
+    "F2.1: tag role/zone fallback and parent-role inheritance for nameless nodes (Unnamed cell -> battery/energy)",
+    "F2.1: CLI enrich prints validation=computed",
+    "Tests: 42/42 Python, 40/40 Ruby, v5 schema validation OK, ASCII-NOM check OK",
+    "Docs: readme + docs/DESIGN_v5.md updated (F2.1, 42 tests)",
+    "Examples regenerated: examples/mistnost_2_v7_v5.json and examples/mistnost_2_v7_v5_gui.json (30 relations each)"
+  ],
+  "verified_numbers": {
+    "gui_v7_nodes": 46,
+    "gui_v7_known_roles": 46,
+    "gui_v7_unknown_roles": 0,
+    "gui_v7_relations": 30,
+    "gui_v7_relation_kinds": {
+      "adjacency": 17,
+      "support": 5,
+      "contact": 3,
+      "opening_in": 3,
+      "containment": 1,
+      "proximity": 1
+    },
+    "gui_v7_passage_mm": 642.4,
+    "gui_v7_brief_chars": 575,
+    "dae_v7_relations": 30,
+    "dae_v7_brief_chars": 561,
+    "info_issues": 2,
+    "findings": 0
+  },
+  "session_semantic_progress": [
+    "Diagnosed that GUI export (v7) has empty validation and one nameless node ('Unnamed') causing 37-38 relations and missing passage",
+    "Established that auto-validation must use project rules (^kamna / ^bed), not core defaults (stove|kamna / bed|sleep|postel), because GUI names contain tag/zone suffixes and defaults created 15 false proximity pairs",
+    "Confirmed old report (53 nodes, main_door_DIY) is not reproducible; v7 == sk24 geometrically",
+    "Confirmed DAE channel lacks tags/metadata/GPS; GUI channel has tags and metadata capabilities but currently 0 metadata dictionaries"
+  ],
+  "pending": [
+    "Commit F2.1 changes (tools/cad2llm_v5.py, tools/cad2llm.py, tests/test_cad2llm_v5.py, readme.md, docs/DESIGN_v5.md) with message [CAD2LLM] v5 F2.1: auto-validace + tag/parent fallback",
+    "Decide whether to commit untracked fixtures: examples/Sketchup2024_export/mistnost_2_v7.dae, examples/mistnost_2_v7_v4.json, examples/mistnost_2_v7_v4_gui.json, examples/mistnost_2_v7_v5.json, examples/mistnost_2_v7_v5_gui.json",
+    "Provide exact SketchUp 2024 extension install instructions (RBZ 4.0.0 via Extension Manager; fallback manual copy to Plugins; verify CAD2LLM menu in Ruby Console)",
+    "Optional: sanitize GPS 50.150888, 14.42336652 in examples before any public push (requires explicit approval)",
+    "Optional: clean stray artifacts outside workspace (C:\\tmp\\test_model_cad2llm.json, src/legacy_python/__pycache__) — blocked by deny guardrail",
+    "Known non-issues: pyright false positives on lxml/Optional; DAE channel exposes no tags/metadata/GPS"
+  ],
+  "key_files": {
+    "semantics_relations": "tools/cad2llm_v5.py",
+    "cli": "tools/cad2llm.py",
+    "core_validate": "tools/cad2llm_core.py",
+    "rules": "tools/cad2llm_rules.json",
+    "tests": "tests/test_cad2llm_v5.py",
+    "schema": "docs/schema/cad2llm_v5.schema.json",
+    "design": "docs/DESIGN_v5.md",
+    "readme": "readme.md",
+    "extension": "releases/cad2llm_exporter.rbz",
+    "extension_source": "src/cad2llm_exporter.rb"
+  },
+  "notes": {
+    "tests_python": "python -m pytest tests -q",
+    "tests_ruby": "C:\\Ruby32-x64\\bin\\ruby.exe -I src -I spec spec\\test_exporter.rb",
+    "ascii_check": "pwsh ..\\.scripts\\ascii_filenames_check.ps1",
+    "extension_version": "4.0.0",
+    "sketchup_plugins_path": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins"
+  }
+}

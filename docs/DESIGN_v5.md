@@ -3,8 +3,11 @@
 Datum: 2026-10-22 | Autor: outpost2026 | Účel: rozhodovací podklad pro implementaci v5
 
 Stav: **F0 hotová** (schémata + příklady, commit `69faa99`), **F1 hotová** a
-**F2 hotová** (`tools/cad2llm_v5.py`, CLI `enrich`, golden master, 38/38 Python testů,
-30 relací na reálném modelu, SNR filtry).
+**F2 hotová** (`tools/cad2llm_v5.py`, CLI `enrich`, golden master, 30 relací na
+reálném modelu, SNR filtry). **F2.1 hotová**: auto-validace dokumentů bez
+`validation` bloku (projektová pravidla, deterministické `checked_at` z
+`export_date`) a tag/parent-role fallback pro uzly bez role v názvu. 42/42
+Python testů.
 F3–F4 jsou stále jen návrh. Machine-readable protějšky:
 
 - `docs/schema/cad2llm_v5.schema.json` — dokument v5
@@ -263,6 +266,7 @@ ignoruje), konzument v5 nesmí tvrdit, že v4 dokument je v5.
 | F0 | schémata + příklady (tento krok) | **HOTOVO** — JSONy validují, dokumenty existují |
 | F1 | facts + semantics + brief v Pythonu | **HOTOVO** — `enrich`, golden master, 46/46 rolí, 0 false positives |
 | F2 | relations + metrics (free_space, z_table) | **HOTOVO** — 6 druhů relací, SNR filtry (30 hran), rastr 100 mm, passages, volumes |
+| F2.1 | GUI export bez validace + bezejmenné uzly | **HOTOVO** — auto-validace, tag/parent fallback, 46/46 rolí, 30 relací |
 | F3 | rules v2 + suppressions | SNR: ≤ 3 varování/objekt, rejected pravidla v KB |
 | F4 | ops + round-trip do SketchUp | patch s expectations projde, model_hash sedí |
 

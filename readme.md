@@ -59,8 +59,10 @@ python tools/cad2llm.py enrich out.json out_v5.json
 
 `enrich` je sémantická vrstva v5: deterministické role/zóny/intent, normalizovaná
 validace, relace (contact / adjacency / opening_in / support / containment / proximity),
-volná podlaha s passages, volumes a ~560znakový `brief` pro LLM. Schémata a návrh:
-[`docs/DESIGN_v5.md`](docs/DESIGN_v5.md), [`docs/schema/`](docs/schema/).
+volná podlaha s passages, volumes a ~560znakový `brief` pro LLM. Pokud dokument nemá
+`validation` (typicky GUI export), `enrich` ji dopočítá projektovými pravidly; uzly bez
+role v názvu řeší tag fallback a dědění role z rodiče (`Unnamed` buňka → battery/energy).
+Schémata a návrh: [`docs/DESIGN_v5.md`](docs/DESIGN_v5.md), [`docs/schema/`](docs/schema/).
 
 ## Quickstart — SketchUp extension
 
@@ -75,7 +77,7 @@ volná podlaha s passages, volumes a ~560znakový `brief` pro LLM. Schémata a n
 ## Testy
 
 ```powershell
-python -m unittest discover -s tests -v    # 38 testů (parse, matice, bbox, legacy, v5)
+python -m unittest discover -s tests -v    # 42 testů (parse, matice, bbox, legacy, v5)
 C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 40 checků (exporter bez SketchUpu)
 ```
 
@@ -171,6 +173,8 @@ cad2llm/
   normalizovaná validace, LLM brief, golden master 46 uzlů.
 - **2026-10-22** — **v5 F2**: relace (6 druhů, SNR filtry), volná podlaha 100mm rastr,
   passages, volumes; 30 hran na reálném modelu, 38/38 testů.
+- **2026-10-22** — **v5 F2.1**: `enrich` dopočítá validaci, když chybí (GUI export);
+  tag + parent-role fallback (`Unnamed` → battery/energy), 46/46 rolí i bez jmen, 42/42 testů.
 
 > Historické konzolové skripty v `src/_archive/console/` obsahují známou korupci
 > matic — nepoužívat.

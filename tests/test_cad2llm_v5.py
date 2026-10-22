@@ -241,6 +241,61 @@ class TestV5Relations(unittest.TestCase):
         self.assertEqual(keys, sorted(keys))
 
 
+class TestV5Fallbacks(unittest.TestCase):
+    def test_tag_role_and_zone_fill_unknown(self):
+        node = {
+            "uid": "A",
+            "name": "Unnamed",
+            "tag": "walls_zone_envelope",
+            "spatial": {"size_mm": {"x": 100, "y": 10, "z": 100}},
+            "semantics": v5.classify("Unnamed"),
+        }
+        v5._apply_semantic_fallbacks([node])
+        self.assertEqual(node["semantics"]["role"], "wall")
+        self.assertEqual(node["semantics"]["zone"], "envelope")
+        self.assertEqual(node["semantics"]["intent"], "CONSTRUCTION")
+        rules = [e["rule_id"] for e in node["semantics"]["evidence"]]
+        self.assertIn("R_TAG_ROLE_WALL", rules)
+        self.assertIn("R_TAG_ZONE_ENVELOPE", rules)
+
+    def test_parent_role_inherit_for_unnamed_cell(self):
+        doc = json.loads(EXAMPLE.read_text(encoding="utf-8"))
+        cell = next(n for n in doc["nodes"] if n["uid"] == "ID239")
+        cell["name"] = "Unnamed"
+        cell["tag"] = "energy_nodes"
+        out = v5.enrich(doc)
+        node = next(n for n in out["nodes"] if n["uid"] == "ID239")
+        self.assertEqual(node["semantics"]["role"], "battery")
+        self.assertEqual(node["semantics"]["zone"], "energy")
+        self.assertEqual(node["semantics"]["intent"], "DESIGN_DECISION")
+        rules = [e["rule_id"] for e in node["semantics"]["evidence"]]
+        self.assertIn("R_PARENT_ROLE_INHERIT", rules)
+        self.assertIn("R_TAG_ZONE_ENERGY", rules)
+        self.assertEqual(len(out["relations"]), 30)
+        cont = [r for r in out["relations"] if r["kind"] == "containment"]
+        self.assertEqual(cont[0]["evidence"]["detail"], "16 x battery inside ID237")
+
+    def test_auto_validation_when_missing(self):
+        doc = json.loads(EXAMPLE.read_text(encoding="utf-8"))
+        doc["validation"] = {}
+        self.assertFalse(v5.has_validation(doc))
+        out = v5.enrich(doc)
+        self.assertEqual(out["validation"]["counts"]["nodes"], 46)
+        self.assertEqual(
+            out["validation"]["checked_at"],
+            out["project_metadata"]["export_date"],
+        )
+        self.assertEqual(len(out["relations"]), 30)
+        self.assertEqual(out["metrics"]["free_space"]["passages"][0]["width_mm"], 642.4)
+
+    def test_auto_validation_is_deterministic(self):
+        doc = json.loads(EXAMPLE.read_text(encoding="utf-8"))
+        doc["validation"] = {}
+        a = json.dumps(v5.enrich(doc), sort_keys=True)
+        b = json.dumps(v5.enrich(doc), sort_keys=True)
+        self.assertEqual(a, b)
+
+
 class TestV5Determinism(unittest.TestCase):
     def test_enrich_twice_is_identical(self):
         doc = json.loads(EXAMPLE.read_text(encoding="utf-8"))

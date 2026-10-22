@@ -1,0 +1,4432 @@
+{
+  "schema_version": "4.0",
+  "project_metadata": {
+    "name": "mistnost_2_v7",
+    "export_date": "2026-10-22T20:52:42Z",
+    "units": "mm",
+    "up_axis": "Z_UP",
+    "unit_source": {
+      "native": "inch",
+      "mm_per_unit": 25.4
+    },
+    "global_origin_gps": null,
+    "source": {
+      "channel": "dae",
+      "file": "mistnost_2_v7.dae",
+      "path": "examples\\Sketchup2024_export\\mistnost_2_v7.dae",
+      "size_bytes": 166765,
+      "mtime_utc": "2026-10-22T20:51:35Z"
+    },
+    "capabilities": {
+      "hierarchy": true,
+      "bbox_mm": true,
+      "rotation": true,
+      "instance_definition": true,
+      "tags": false,
+      "metadata_dictionaries": false,
+      "persistent_ids": false,
+      "gps": false,
+      "note": "DAE channel: SketchUp replaces spaces with underscores in names, does not export tags, attribute dictionaries or persistent IDs."
+    }
+  },
+  "nodes": [
+    {
+      "uid": "ID3",
+      "persistent_id": null,
+      "name": "Worktop__01_hlavní_pracovni_plocha_dřevěná",
+      "definition_name": "worktop_user",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "Worktop__01_hlavní_pracovni_plocha_dřevěná"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1520.0,
+          "y": 1760.0,
+          "z": 745.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1520.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1760.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            745.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 1520.0,
+            "y": 1760.0,
+            "z": 745.0
+          },
+          "max": {
+            "x": 3780.0,
+            "y": 1960.0,
+            "z": 795.0
+          }
+        },
+        "size_mm": {
+          "x": 2260.0,
+          "y": 200.0,
+          "z": 50.0
+        },
+        "center_mm": {
+          "x": 2650.0,
+          "y": 1860.0,
+          "z": 770.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID15",
+      "persistent_id": null,
+      "name": "Bed_01_mattres_with_light_frame",
+      "definition_name": "sleep_zone",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "Bed_01_mattres_with_light_frame"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 2495.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2495.0001
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2495.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4495.0,
+            "y": 970.0,
+            "z": 180.0
+          }
+        },
+        "size_mm": {
+          "x": 2000.0,
+          "y": 970.0,
+          "z": 180.0
+        },
+        "center_mm": {
+          "x": 3495.0,
+          "y": 485.0,
+          "z": 90.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID27",
+      "persistent_id": null,
+      "name": "Kamna_Priti_mini_D_zone_bed_energy_wall_primary_wood_fuel",
+      "definition_name": "stove_main",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "Kamna_Priti_mini_D_zone_bed_energy_wall_primary_wood_fuel"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 3988.529,
+          "y": 1612.4,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            0.8989,
+            0.0,
+            0.0,
+            3988.529
+          ],
+          [
+            0.0,
+            0.82,
+            0.0,
+            1612.3999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 0.8989,
+          "y": 0.82,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 3988.529,
+            "y": 1612.4,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4420.001,
+            "y": 1924.0,
+            "z": 680.0
+          }
+        },
+        "size_mm": {
+          "x": 431.472,
+          "y": 311.6,
+          "z": 680.0
+        },
+        "center_mm": {
+          "x": 4204.265,
+          "y": 1768.2,
+          "z": 340.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID53",
+      "persistent_id": null,
+      "name": "LFP_main_base",
+      "definition_name": "lfp_main_worktop_policka_na_main_battery",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_main_base"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1690.0,
+          "y": 1760.0,
+          "z": 490.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1689.9999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1760.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            490.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 1690.0,
+            "y": 1760.0,
+            "z": 490.0
+          },
+          "max": {
+            "x": 3777.0,
+            "y": 2000.0,
+            "z": 525.0
+          }
+        },
+        "size_mm": {
+          "x": 2087.0,
+          "y": 240.0,
+          "z": 35.0
+        },
+        "center_mm": {
+          "x": 2733.5,
+          "y": 1880.0,
+          "z": 507.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID61",
+      "persistent_id": null,
+      "name": "main_table_rectangel_food_work_dump_place",
+      "definition_name": "table_main",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "main_table_rectangel_food_work_dump_place"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": -1.751,
+          "y": 84.38,
+          "z": -0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            -1.7511
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            84.3804
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": -1.751,
+            "y": 84.38,
+            "z": 0.0
+          },
+          "max": {
+            "x": 673.249,
+            "y": 829.38,
+            "z": 665.0
+          }
+        },
+        "size_mm": {
+          "x": 675.0,
+          "y": 745.0,
+          "z": 665.0
+        },
+        "center_mm": {
+          "x": 335.749,
+          "y": 456.88,
+          "z": 332.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID79",
+      "persistent_id": null,
+      "name": "_24V_gokwh_100ah_lfp_battery",
+      "definition_name": "_24V_secondary_100ah_lfp",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "_24V_gokwh_100ah_lfp_battery"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 2055.0,
+          "y": 1760.0,
+          "z": -0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2055.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1760.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2055.0,
+            "y": 1760.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 2580.0,
+            "y": 2000.0,
+            "z": 220.0
+          }
+        },
+        "size_mm": {
+          "x": 525.0,
+          "y": 240.0,
+          "z": 220.0
+        },
+        "center_mm": {
+          "x": 2317.5,
+          "y": 1880.0,
+          "z": 110.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID103",
+      "persistent_id": null,
+      "name": "Energy_source_main_power_invertor_mppt_dc_-ac_max_load_3_2_kw",
+      "definition_name": "HVM3.2H_hybrid_invertor",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "Energy_source_main_power_invertor_mppt_dc_-ac_max_load_3_2_kw"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1790.0,
+          "y": 1900.0,
+          "z": 1075.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1790.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1900.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            1074.9999
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 1790.0,
+            "y": 1900.0,
+            "z": 1075.0
+          },
+          "max": {
+            "x": 2060.0,
+            "y": 2000.0,
+            "z": 1425.0
+          }
+        },
+        "size_mm": {
+          "x": 270.0,
+          "y": 100.0,
+          "z": 350.0
+        },
+        "center_mm": {
+          "x": 1925.0,
+          "y": 1950.0,
+          "z": 1250.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID115",
+      "persistent_id": null,
+      "name": "floor_m2",
+      "definition_name": "wooden_floor",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "floor_m2"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": -24.0,
+            "y": -24.0,
+            "z": -20.0
+          },
+          "max": {
+            "x": 4523.999,
+            "y": 2024.0,
+            "z": 0.0
+          }
+        },
+        "size_mm": {
+          "x": 4547.999,
+          "y": 2048.0,
+          "z": 20.0
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": 1000.0,
+          "z": -10.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID123",
+      "persistent_id": null,
+      "name": "wall_vnitřní_west_wooden_prostupy_pro_okna_zone_bed",
+      "definition_name": "wall_inner_west_wooden_windows_openings",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "wall_vnitřní_west_wooden_prostupy_pro_okna_zone_bed"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.001,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0012
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": -24.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4500.001,
+            "y": 0.0,
+            "z": 1990.0
+          }
+        },
+        "size_mm": {
+          "x": 4500.001,
+          "y": 24.0,
+          "z": 1990.0
+        },
+        "center_mm": {
+          "x": 2250.001,
+          "y": -12.0,
+          "z": 995.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID141",
+      "persistent_id": null,
+      "name": "wall_vnitřní_inner_jih_south_prostup_pro_okno_zone_postel_stove",
+      "definition_name": "__",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "wall_vnitřní_inner_jih_south_prostup_pro_okno_zone_postel_stove"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.001,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0012
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 4500.001,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4524.001,
+            "y": 2000.0,
+            "z": 2090.0
+          }
+        },
+        "size_mm": {
+          "x": 24.0,
+          "y": 2000.0,
+          "z": 2090.0
+        },
+        "center_mm": {
+          "x": 4512.001,
+          "y": 1000.0,
+          "z": 1045.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID155",
+      "persistent_id": null,
+      "name": "wall_inner_vnitřní_zone_entry",
+      "definition_name": "wall_inner_north_wooden",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "wall_inner_vnitřní_zone_entry"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": -24.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 0.0,
+            "y": 2000.0,
+            "z": 2090.0
+          }
+        },
+        "size_mm": {
+          "x": 24.0,
+          "y": 2000.0,
+          "z": 2090.0
+        },
+        "center_mm": {
+          "x": -12.0,
+          "y": 1000.0,
+          "z": 1045.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID163",
+      "persistent_id": null,
+      "name": "ceiling_guttafol_135_bottom_layer_ceiling_textile",
+      "definition_name": "Ceiling_m2",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "ceiling_guttafol_135_bottom_layer_ceiling_textile"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.001,
+          "y": 0.0,
+          "z": 1990.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0012
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            1990.0001
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": -0.05,
+            "z": 1990.0
+          },
+          "max": {
+            "x": 4500.001,
+            "y": 2000.0,
+            "z": 2090.999
+          }
+        },
+        "size_mm": {
+          "x": 4500.001,
+          "y": 2000.05,
+          "z": 100.999
+        },
+        "center_mm": {
+          "x": 2250.001,
+          "y": 999.975,
+          "z": 2040.499
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID171",
+      "persistent_id": null,
+      "name": "windows_jižní_dvojokno_bez_rámu_zone_sleeping_stove",
+      "definition_name": "window_south",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "windows_jižní_dvojokno_bez_rámu_zone_sleeping_stove"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4653.999,
+          "y": 45.0,
+          "z": 600.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4653.9988
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            45.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            600.0001
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 4653.999,
+            "y": 45.0,
+            "z": 600.0
+          },
+          "max": {
+            "x": 4673.999,
+            "y": 1181.361,
+            "z": 1750.356
+          }
+        },
+        "size_mm": {
+          "x": 20.0,
+          "y": 1136.361,
+          "z": 1150.356
+        },
+        "center_mm": {
+          "x": 4663.999,
+          "y": 613.18,
+          "z": 1175.178
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID183",
+      "persistent_id": null,
+      "name": "windows_západní_dvojokno_bez_rámu_zone_sleeping",
+      "definition_name": "windos_south_west",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "windows_západní_dvojokno_bez_rámu_zone_sleeping"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.001,
+          "y": -93.0,
+          "z": 561.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0012
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -93.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            560.9999
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 3245.001,
+            "y": -93.0,
+            "z": 561.0
+          },
+          "max": {
+            "x": 4500.001,
+            "y": -73.0,
+            "z": 1831.0
+          }
+        },
+        "size_mm": {
+          "x": 1255.0,
+          "y": 20.0,
+          "z": 1270.0
+        },
+        "center_mm": {
+          "x": 3872.501,
+          "y": -83.0,
+          "z": 1196.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID191",
+      "persistent_id": null,
+      "name": "windows_západní_dvojokno_bez_rámu_zóna_dinning_dump",
+      "definition_name": "window_west",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "windows_západní_dvojokno_bez_rámu_zóna_dinning_dump"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1575.194,
+          "y": -90.0,
+          "z": 590.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            1575.1945
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -90.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            590.0001
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 329.834,
+            "y": -90.0,
+            "z": 590.0
+          },
+          "max": {
+            "x": 1575.194,
+            "y": -70.0,
+            "z": 1811.356
+          }
+        },
+        "size_mm": {
+          "x": 1245.361,
+          "y": 20.0,
+          "z": 1221.356
+        },
+        "center_mm": {
+          "x": 952.514,
+          "y": -80.0,
+          "z": 1200.678
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID199",
+      "persistent_id": null,
+      "name": "beam_nosnik_01_wppde",
+      "definition_name": "Beam_east_wall",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "beam_nosnik_01_wppde"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 40.0,
+          "y": 2024.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            40.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2024.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": -80.0,
+            "y": 2024.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 40.0,
+            "y": 2074.0,
+            "z": 1994.528
+          }
+        },
+        "size_mm": {
+          "x": 120.0,
+          "y": 50.0,
+          "z": 1994.528
+        },
+        "center_mm": {
+          "x": -20.0,
+          "y": 2049.0,
+          "z": 997.264
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID207",
+      "persistent_id": null,
+      "name": "truss_překlad_pozednice__01_east_wall",
+      "definition_name": "Beam_truss_main_5_m",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "truss_překlad_pozednice__01_east_wall"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4774.001,
+          "y": 2024.0,
+          "z": 1994.528
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4774.0011
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2024.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            1994.5279
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": -225.999,
+            "y": 2024.0,
+            "z": 1994.528
+          },
+          "max": {
+            "x": 4774.001,
+            "y": 2104.0,
+            "z": 2074.528
+          }
+        },
+        "size_mm": {
+          "x": 5000.0,
+          "y": 80.0,
+          "z": 80.0
+        },
+        "center_mm": {
+          "x": 2274.001,
+          "y": 2064.0,
+          "z": 2034.528
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID215",
+      "persistent_id": null,
+      "name": "void_entry_point",
+      "definition_name": "Entry_opening_raw_frame_east_wall",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "void_entry_point"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1695.0,
+          "y": 2000.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            1694.9999
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2000.0001
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 45.0,
+            "y": 2000.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 1695.0,
+            "y": 2000.0,
+            "z": 1994.528
+          }
+        },
+        "size_mm": {
+          "x": 1650.0,
+          "y": 0.0,
+          "z": 1994.528
+        },
+        "center_mm": {
+          "x": 870.0,
+          "y": 2000.0,
+          "z": 997.264
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID223",
+      "persistent_id": null,
+      "name": "east_wall_with_entrance_opening_no_windows",
+      "definition_name": "East_wall_1",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "east_wall_with_entrance_opening_no_windows"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.001,
+          "y": 2000.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0012
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2000.0001
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": 2000.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4500.001,
+            "y": 2024.0,
+            "z": 2074.528
+          }
+        },
+        "size_mm": {
+          "x": 4500.001,
+          "y": 24.0,
+          "z": 2074.528
+        },
+        "center_mm": {
+          "x": 2250.001,
+          "y": 2012.0,
+          "z": 1037.264
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID235",
+      "persistent_id": null,
+      "name": "beam_nosnik_02",
+      "definition_name": "Beam_east_wall",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "beam_nosnik_02"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1815.0,
+          "y": 2024.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            1814.9999
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2024.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 1695.0,
+            "y": 2024.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 1815.0,
+            "y": 2074.0,
+            "z": 1994.528
+          }
+        },
+        "size_mm": {
+          "x": 120.0,
+          "y": 50.0,
+          "z": 1994.528
+        },
+        "center_mm": {
+          "x": 1755.0,
+          "y": 2049.0,
+          "z": 997.264
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID236",
+      "persistent_id": null,
+      "name": "beam_nosnik_03",
+      "definition_name": "Beam_east_wall",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "beam_nosnik_03"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4620.001,
+          "y": 2024.0,
+          "z": -0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4620.0009
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2024.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 4500.001,
+            "y": 2024.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4620.001,
+            "y": 2074.0,
+            "z": 1994.528
+          }
+        },
+        "size_mm": {
+          "x": 120.0,
+          "y": 50.0,
+          "z": 1994.528
+        },
+        "center_mm": {
+          "x": 4560.001,
+          "y": 2049.0,
+          "z": 997.264
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID237",
+      "persistent_id": null,
+      "name": "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+      "definition_name": "Main_battery_of_the_house",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 1785.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1785.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 1785.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2931.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 1146.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2358.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID239",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2718.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2717.9999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2718.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2788.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2753.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID251",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2861.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2860.9999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2861.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2931.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2896.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID252",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 1928.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1928.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 1928.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 1998.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 1963.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID253",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2072.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2071.9999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2072.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2142.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2107.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID254",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2359.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2359.0001
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2359.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2429.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2394.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID240",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah_3.2V",
+      "definition_name": null,
+      "entity_type": "node",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah_3.2V"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2144.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2144.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2144.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2214.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2179.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID256",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2000.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2000.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2000.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2070.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2035.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID257",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2215.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2214.9999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2215.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2285.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID258",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2502.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2502.0001
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2502.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2572.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2537.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID259",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2574.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2573.9999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2574.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2644.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2609.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID260",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2789.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2789.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2789.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2859.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2824.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID261",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2431.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2431.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2431.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2501.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2466.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID262",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2287.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2287.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2287.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2357.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2322.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID263",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 1785.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1785.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 1785.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 1855.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 1820.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID264",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 2646.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2646.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 2646.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 2716.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 2681.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID265",
+      "persistent_id": null,
+      "name": "lfp_cell_314ah",
+      "definition_name": "lfp_cell_314ah_3.2V",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "lfp_cell_314ah"
+      ],
+      "parent_uid": "ID237",
+      "spatial": {
+        "origin_mm": {
+          "x": 1857.0,
+          "y": 1828.0,
+          "z": 525.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1857.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1827.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            525.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 1857.0,
+            "y": 1828.0,
+            "z": 525.0
+          },
+          "max": {
+            "x": 1927.0,
+            "y": 2000.0,
+            "z": 730.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 172.0,
+          "z": 205.0
+        },
+        "center_mm": {
+          "x": 1892.0,
+          "y": 1914.0,
+          "z": 627.5
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID266",
+      "persistent_id": null,
+      "name": "truss_překlad_pozednice__02_west_wall",
+      "definition_name": "Beam_truss_main_5_m",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "truss_překlad_pozednice__02_west_wall"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4774.001,
+          "y": -104.0,
+          "z": 1910.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4774.0011
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -104.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            1910.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": -225.999,
+            "y": -104.0,
+            "z": 1910.0
+          },
+          "max": {
+            "x": 4774.001,
+            "y": -24.0,
+            "z": 1990.0
+          }
+        },
+        "size_mm": {
+          "x": 5000.0,
+          "y": 80.0,
+          "z": 80.0
+        },
+        "center_mm": {
+          "x": 2274.001,
+          "y": -64.0,
+          "z": 1950.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID267",
+      "persistent_id": null,
+      "name": "izolace_minerální_7cm_východní_stěna",
+      "definition_name": "insulation_wall_east_7_cm",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "izolace_minerální_7cm_východní_stěna"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4511.904,
+          "y": 2022.153,
+          "z": -0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4511.9036
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2022.1529
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 11.902,
+            "y": 2022.153,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4511.904,
+            "y": 2082.153,
+            "z": 2074.528
+          }
+        },
+        "size_mm": {
+          "x": 4500.001,
+          "y": 60.0,
+          "z": 2074.528
+        },
+        "center_mm": {
+          "x": 2261.903,
+          "y": 2052.153,
+          "z": 1037.264
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID275",
+      "persistent_id": null,
+      "name": "izolace_minerální_7cm_severní_stěna",
+      "definition_name": "insulation_wall_north_7_cm",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "izolace_minerální_7cm_severní_stěna"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": -24.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            -24.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": -94.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": -24.0,
+            "y": 2000.0,
+            "z": 2090.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 2000.0,
+          "z": 2090.0
+        },
+        "center_mm": {
+          "x": -59.0,
+          "y": 1000.0,
+          "z": 1045.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID283",
+      "persistent_id": null,
+      "name": "izolace_minerální_7cm_západní_stěna",
+      "definition_name": "insulation_wall_west_7_cm",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "izolace_minerální_7cm_západní_stěna"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.001,
+          "y": -94.0,
+          "z": 0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0012
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -94.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": -94.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4500.001,
+            "y": -24.0,
+            "z": 1990.0
+          }
+        },
+        "size_mm": {
+          "x": 4500.001,
+          "y": 70.0,
+          "z": 1990.0
+        },
+        "center_mm": {
+          "x": 2250.001,
+          "y": -59.0,
+          "z": 995.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID297",
+      "persistent_id": null,
+      "name": "izolace_minerální_7cm_jižní_stěna",
+      "definition_name": "insulation_wall_south_7_cm",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "izolace_minerální_7cm_jižní_stěna"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4593.999,
+          "y": -0.0,
+          "z": -0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4593.9989
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 4523.999,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4593.999,
+            "y": 2000.0,
+            "z": 2090.0
+          }
+        },
+        "size_mm": {
+          "x": 70.0,
+          "y": 2000.0,
+          "z": 2090.0
+        },
+        "center_mm": {
+          "x": 4558.999,
+          "y": 1000.0,
+          "z": 1045.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID311",
+      "persistent_id": null,
+      "name": "izolace_minerální_isover_domo_plus_10_cm_podlaha_Lamb.D_0_038_W.",
+      "definition_name": "insulation_mineral_floor_10_cm",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "izolace_minerální_isover_domo_plus_10_cm_podlaha_Lamb.D_0_038_W."
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": -24.0,
+          "y": -24.0,
+          "z": -120.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 0.0
+        },
+        "quaternion": {
+          "w": 1.0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "matrix_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            -24.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            -24.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -120.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": -24.0,
+            "y": -24.0,
+            "z": -120.0
+          },
+          "max": {
+            "x": 4524.0,
+            "y": 2024.0,
+            "z": -20.0
+          }
+        },
+        "size_mm": {
+          "x": 4548.0,
+          "y": 2048.0,
+          "z": 100.0
+        },
+        "center_mm": {
+          "x": 2250.0,
+          "y": 1000.0,
+          "z": -70.0
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID319",
+      "persistent_id": null,
+      "name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+      "definition_name": "insulation_mineral_ceiling_10_cm",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W."
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4500.001,
+          "y": -0.05,
+          "z": 1990.999
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4500.0012
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            -0.0499
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            1990.9988
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": 0.0,
+            "y": -108.784,
+            "z": 1985.812
+          },
+          "max": {
+            "x": 4500.001,
+            "y": 2102.919,
+            "z": 2196.023
+          }
+        },
+        "size_mm": {
+          "x": 4500.001,
+          "y": 2211.703,
+          "z": 210.211
+        },
+        "center_mm": {
+          "x": 2250.001,
+          "y": 997.067,
+          "z": 2090.917
+        }
+      },
+      "metadata": {}
+    },
+    {
+      "uid": "ID327",
+      "persistent_id": null,
+      "name": "room_1_půdorys_area_boundary_pergola",
+      "definition_name": "room_1_pergola_area_boundary",
+      "entity_type": "component",
+      "tag": null,
+      "hierarchy_path": [
+        "room_1_půdorys_area_boundary_pergola"
+      ],
+      "parent_uid": null,
+      "spatial": {
+        "origin_mm": {
+          "x": 4620.001,
+          "y": 2074.0,
+          "z": -0.0
+        },
+        "rotation_deg": {
+          "x": 0.0,
+          "y": -0.0,
+          "z": 90.0
+        },
+        "quaternion": {
+          "w": 0.707107,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.707107
+        },
+        "matrix_4x4": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            4620.0009
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2073.9999
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "bbox_mm": {
+          "min": {
+            "x": -80.0,
+            "y": 2074.0,
+            "z": 0.0
+          },
+          "max": {
+            "x": 4620.001,
+            "y": 7074.0,
+            "z": 0.0
+          }
+        },
+        "size_mm": {
+          "x": 4700.001,
+          "y": 5000.0,
+          "z": 0.0
+        },
+        "center_mm": {
+          "x": 2270.001,
+          "y": 4574.0,
+          "z": 0.0
+        }
+      },
+      "metadata": {}
+    }
+  ],
+  "validation": {
+    "checked_at": "2026-10-22T20:52:42Z",
+    "rules": {
+      "name_pattern": "^[^/\\\\:*?\"<>|]+$",
+      "ascii_strict": false,
+      "min_size_mm": 1.0,
+      "overlap_min_volume_mm3": 1000.0,
+      "clearance_rules": [
+        {
+          "a": "^kamna",
+          "b": "^bed",
+          "min_mm": 500,
+          "why": "fire safety: radiant heat vs bedding (Outpost rule of thumb)"
+        }
+      ],
+      "required_metadata": {}
+    },
+    "counts": {
+      "nodes": 46,
+      "with_bbox": 46,
+      "errors": 0,
+      "warnings": 0
+    },
+    "capabilities": {
+      "hierarchy": true,
+      "bbox_mm": true,
+      "rotation": true,
+      "instance_definition": true,
+      "tags": false,
+      "metadata_dictionaries": false,
+      "persistent_ids": false,
+      "gps": false,
+      "note": "DAE channel: SketchUp replaces spaces with underscores in names, does not export tags, attribute dictionaries or persistent IDs."
+    },
+    "issues": [
+      {
+        "code": "ZERO_SIZE",
+        "severity": "info",
+        "uid": "ID215",
+        "message": "void_entry_point: degenerate size {'x': 1650.0, 'y': 0.0, 'z': 1994.528}"
+      },
+      {
+        "code": "ZERO_SIZE",
+        "severity": "info",
+        "uid": "ID327",
+        "message": "room_1_půdorys_area_boundary_pergola: degenerate size {'x': 4700.001, 'y': 5000.0, 'z': 0.0}"
+      }
+    ],
+    "overlaps": [
+      {
+        "a": "ID61",
+        "b": "ID155",
+        "a_name": "main_table_rectangel_food_work_dump_place",
+        "b_name": "wall_inner_vnitřní_zone_entry",
+        "overlap_mm3": 867489.2
+      },
+      {
+        "a": "ID123",
+        "b": "ID319",
+        "a_name": "wall_vnitřní_west_wooden_prostupy_pro_okna_zone_bed",
+        "b_name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+        "overlap_mm3": 452304.1
+      },
+      {
+        "a": "ID141",
+        "b": "ID297",
+        "a_name": "wall_vnitřní_inner_jih_south_prostup_pro_okno_zone_postel_stove",
+        "b_name": "izolace_minerální_7cm_jižní_stěna",
+        "overlap_mm3": 8360.0
+      },
+      {
+        "a": "ID163",
+        "b": "ID319",
+        "a_name": "ceiling_guttafol_135_bottom_layer_ceiling_textile",
+        "b_name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+        "overlap_mm3": 909013926.8
+      },
+      {
+        "a": "ID183",
+        "b": "ID283",
+        "a_name": "windows_západní_dvojokno_bez_rámu_zone_sleeping",
+        "b_name": "izolace_minerální_7cm_západní_stěna",
+        "overlap_mm3": 31877000.0
+      },
+      {
+        "a": "ID191",
+        "b": "ID283",
+        "a_name": "windows_západní_dvojokno_bez_rámu_zóna_dinning_dump",
+        "b_name": "izolace_minerální_7cm_západní_stěna",
+        "overlap_mm3": 30420558.2
+      },
+      {
+        "a": "ID199",
+        "b": "ID267",
+        "a_name": "beam_nosnik_01_wppde",
+        "b_name": "izolace_minerální_7cm_východní_stěna",
+        "overlap_mm3": 2802112.4
+      },
+      {
+        "a": "ID199",
+        "b": "ID319",
+        "a_name": "beam_nosnik_01_wppde",
+        "b_name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+        "overlap_mm3": 17432.0
+      },
+      {
+        "a": "ID207",
+        "b": "ID267",
+        "a_name": "truss_překlad_pozednice__01_east_wall",
+        "b_name": "izolace_minerální_7cm_východní_stěna",
+        "overlap_mm3": 20935089.3
+      },
+      {
+        "a": "ID207",
+        "b": "ID319",
+        "a_name": "truss_překlad_pozednice__01_east_wall",
+        "b_name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+        "overlap_mm3": 28410846.3
+      },
+      {
+        "a": "ID223",
+        "b": "ID267",
+        "a_name": "east_wall_with_entrance_opening_no_windows",
+        "b_name": "izolace_minerální_7cm_východní_stěna",
+        "overlap_mm3": 17196839.0
+      },
+      {
+        "a": "ID223",
+        "b": "ID319",
+        "a_name": "east_wall_with_entrance_opening_no_windows",
+        "b_name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+        "overlap_mm3": 9581330.1
+      },
+      {
+        "a": "ID235",
+        "b": "ID267",
+        "a_name": "beam_nosnik_02",
+        "b_name": "izolace_minerální_7cm_východní_stěna",
+        "overlap_mm3": 11967168.0
+      },
+      {
+        "a": "ID235",
+        "b": "ID319",
+        "a_name": "beam_nosnik_02",
+        "b_name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+        "overlap_mm3": 52296.0
+      },
+      {
+        "a": "ID236",
+        "b": "ID267",
+        "a_name": "beam_nosnik_03",
+        "b_name": "izolace_minerální_7cm_východní_stěna",
+        "overlap_mm3": 1187043.3
+      },
+      {
+        "a": "ID266",
+        "b": "ID283",
+        "a_name": "truss_překlad_pozednice__02_west_wall",
+        "b_name": "izolace_minerální_7cm_západní_stěna",
+        "overlap_mm3": 25200005.6
+      },
+      {
+        "a": "ID266",
+        "b": "ID319",
+        "a_name": "truss_překlad_pozednice__02_west_wall",
+        "b_name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+        "overlap_mm3": 1507680.3
+      },
+      {
+        "a": "ID267",
+        "b": "ID319",
+        "a_name": "izolace_minerální_7cm_východní_stěna",
+        "b_name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+        "overlap_mm3": 23889971.5
+      },
+      {
+        "a": "ID283",
+        "b": "ID319",
+        "a_name": "izolace_minerální_7cm_západní_stěna",
+        "b_name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+        "overlap_mm3": 1319220.3
+      }
+    ],
+    "clearances": [
+      {
+        "a_name": "Kamna_Priti_mini_D_zone_bed_energy_wall_primary_wood_fuel",
+        "b_name": "Bed_01_mattres_with_light_frame",
+        "gap_mm": 642.4,
+        "min_mm": 500,
+        "why": "fire safety: radiant heat vs bedding (Outpost rule of thumb)",
+        "ok": true
+      }
+    ],
+    "z_table": [
+      {
+        "uid": "ID311",
+        "name": "izolace_minerální_isover_domo_plus_10_cm_podlaha_Lamb.D_0_038_W.",
+        "z_min": -120.0,
+        "z_max": -20.0,
+        "height": 100.0
+      },
+      {
+        "uid": "ID115",
+        "name": "floor_m2",
+        "z_min": -20.0,
+        "z_max": 0.0,
+        "height": 20.0
+      },
+      {
+        "uid": "ID15",
+        "name": "Bed_01_mattres_with_light_frame",
+        "z_min": 0.0,
+        "z_max": 180.0,
+        "height": 180.0
+      },
+      {
+        "uid": "ID27",
+        "name": "Kamna_Priti_mini_D_zone_bed_energy_wall_primary_wood_fuel",
+        "z_min": 0.0,
+        "z_max": 680.0,
+        "height": 680.0
+      },
+      {
+        "uid": "ID61",
+        "name": "main_table_rectangel_food_work_dump_place",
+        "z_min": 0.0,
+        "z_max": 665.0,
+        "height": 665.0
+      },
+      {
+        "uid": "ID79",
+        "name": "_24V_gokwh_100ah_lfp_battery",
+        "z_min": 0.0,
+        "z_max": 220.0,
+        "height": 220.0
+      },
+      {
+        "uid": "ID123",
+        "name": "wall_vnitřní_west_wooden_prostupy_pro_okna_zone_bed",
+        "z_min": 0.0,
+        "z_max": 1990.0,
+        "height": 1990.0
+      },
+      {
+        "uid": "ID141",
+        "name": "wall_vnitřní_inner_jih_south_prostup_pro_okno_zone_postel_stove",
+        "z_min": 0.0,
+        "z_max": 2090.0,
+        "height": 2090.0
+      },
+      {
+        "uid": "ID155",
+        "name": "wall_inner_vnitřní_zone_entry",
+        "z_min": 0.0,
+        "z_max": 2090.0,
+        "height": 2090.0
+      },
+      {
+        "uid": "ID199",
+        "name": "beam_nosnik_01_wppde",
+        "z_min": 0.0,
+        "z_max": 1994.528,
+        "height": 1994.5
+      },
+      {
+        "uid": "ID215",
+        "name": "void_entry_point",
+        "z_min": 0.0,
+        "z_max": 1994.528,
+        "height": 1994.5
+      },
+      {
+        "uid": "ID223",
+        "name": "east_wall_with_entrance_opening_no_windows",
+        "z_min": 0.0,
+        "z_max": 2074.528,
+        "height": 2074.5
+      },
+      {
+        "uid": "ID235",
+        "name": "beam_nosnik_02",
+        "z_min": 0.0,
+        "z_max": 1994.528,
+        "height": 1994.5
+      },
+      {
+        "uid": "ID236",
+        "name": "beam_nosnik_03",
+        "z_min": 0.0,
+        "z_max": 1994.528,
+        "height": 1994.5
+      },
+      {
+        "uid": "ID267",
+        "name": "izolace_minerální_7cm_východní_stěna",
+        "z_min": 0.0,
+        "z_max": 2074.528,
+        "height": 2074.5
+      },
+      {
+        "uid": "ID275",
+        "name": "izolace_minerální_7cm_severní_stěna",
+        "z_min": 0.0,
+        "z_max": 2090.0,
+        "height": 2090.0
+      },
+      {
+        "uid": "ID283",
+        "name": "izolace_minerální_7cm_západní_stěna",
+        "z_min": 0.0,
+        "z_max": 1990.0,
+        "height": 1990.0
+      },
+      {
+        "uid": "ID297",
+        "name": "izolace_minerální_7cm_jižní_stěna",
+        "z_min": 0.0,
+        "z_max": 2090.0,
+        "height": 2090.0
+      },
+      {
+        "uid": "ID327",
+        "name": "room_1_půdorys_area_boundary_pergola",
+        "z_min": 0.0,
+        "z_max": 0.0,
+        "height": 0.0
+      },
+      {
+        "uid": "ID53",
+        "name": "LFP_main_base",
+        "z_min": 490.0,
+        "z_max": 525.0,
+        "height": 35.0
+      },
+      {
+        "uid": "ID237",
+        "name": "LFP_battery_DIY_630_Ah_Cornex_24V_2S2P_16_pcs_cells",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID239",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID251",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID252",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID253",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID254",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID240",
+        "name": "lfp_cell_314ah_3.2V",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID256",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID257",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID258",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID259",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID260",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID261",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID262",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID263",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID264",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID265",
+        "name": "lfp_cell_314ah",
+        "z_min": 525.0,
+        "z_max": 730.0,
+        "height": 205.0
+      },
+      {
+        "uid": "ID183",
+        "name": "windows_západní_dvojokno_bez_rámu_zone_sleeping",
+        "z_min": 561.0,
+        "z_max": 1831.0,
+        "height": 1270.0
+      },
+      {
+        "uid": "ID191",
+        "name": "windows_západní_dvojokno_bez_rámu_zóna_dinning_dump",
+        "z_min": 590.0,
+        "z_max": 1811.356,
+        "height": 1221.4
+      },
+      {
+        "uid": "ID171",
+        "name": "windows_jižní_dvojokno_bez_rámu_zone_sleeping_stove",
+        "z_min": 600.0,
+        "z_max": 1750.356,
+        "height": 1150.4
+      },
+      {
+        "uid": "ID3",
+        "name": "Worktop__01_hlavní_pracovni_plocha_dřevěná",
+        "z_min": 745.0,
+        "z_max": 795.0,
+        "height": 50.0
+      },
+      {
+        "uid": "ID103",
+        "name": "Energy_source_main_power_invertor_mppt_dc_-ac_max_load_3_2_kw",
+        "z_min": 1075.0,
+        "z_max": 1425.0,
+        "height": 350.0
+      },
+      {
+        "uid": "ID266",
+        "name": "truss_překlad_pozednice__02_west_wall",
+        "z_min": 1910.0,
+        "z_max": 1990.0,
+        "height": 80.0
+      },
+      {
+        "uid": "ID319",
+        "name": "izolace_minerální_isover_domo_plus_10_cm_strop_Lamb.D_0_038_W.",
+        "z_min": 1985.812,
+        "z_max": 2196.023,
+        "height": 210.2
+      },
+      {
+        "uid": "ID163",
+        "name": "ceiling_guttafol_135_bottom_layer_ceiling_textile",
+        "z_min": 1990.0,
+        "z_max": 2090.999,
+        "height": 101.0
+      },
+      {
+        "uid": "ID207",
+        "name": "truss_překlad_pozednice__01_east_wall",
+        "z_min": 1994.528,
+        "z_max": 2074.528,
+        "height": 80.0
+      }
+    ]
+  }
+}

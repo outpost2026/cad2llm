@@ -2,12 +2,16 @@
   "schema": "ai_state/v1",
   "repo": "cad2llm",
   "branch": "main",
-  "updated_at": "2026-10-22",
-  "status": "F2 committed; F2.1 implemented and verified, awaiting commit",
+  "updated_at": "2026-10-23",
+  "status": "F2.1 committed + pushed; RBZ 4.0.0 installed manually into SU 2024 Plugins; new GUI export verified identical to previous GUI export; PR cancelled by author",
   "last_commits": [
     {
-      "hash": "5aeb530",
-      "summary": "[CAD2LLM] v5 F2: relace, SNR filtry, free_space/passages/volumes, brief"
+      "hash": "9ec1c81",
+      "summary": "[CAD2LLM] v5 F2.1: auto-validace, tag/parent fallback, fixtures v7"
+    },
+    {
+      "hash": "86041a9",
+      "summary": "[CAD2LLM] feat: schema v4, oprava korupce matic a dvojite transformace, headless testy"
     }
   ],
   "completed": [
@@ -19,7 +23,14 @@
     "F2.1: CLI enrich prints validation=computed",
     "Tests: 42/42 Python, 40/40 Ruby, v5 schema validation OK, ASCII-NOM check OK",
     "Docs: readme + docs/DESIGN_v5.md updated (F2.1, 42 tests)",
-    "Examples regenerated: examples/mistnost_2_v7_v5.json and examples/mistnost_2_v7_v5_gui.json (30 relations each)"
+    "Examples regenerated: examples/mistnost_2_v7_v5.json and examples/mistnost_2_v7_v5_gui.json (30 relations each)",
+    "Commit 9ec1c81 pushed to origin/main (5aeb530..9ec1c81); working tree clean before extension install",
+    "Extension 4.0.0 installed manually into SU 2024 Plugins (cad2llm_exporter.rb 872 B, main.rb 2227 B, lib/exporter.rb 10141 B); SHA256 identical to src; ruby -c Syntax OK on Ruby 3.2.11",
+    "Plugins audit: no stale cad2llm copies existed; llm_tools.rb left untouched (module LLM only, no menu/namespace conflict); backup at C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_2026-10-22\\llm_tools.rb",
+    "New GUI export from sk24.skp verified: 46 nodes, 46 with bbox, 0 errors, 0 warnings, 18 overlaps, 2 info ZERO_SIZE",
+    "Diff new export vs prior GUI export (examples/mistnost_2_v7_v4_gui.json): 0 geometric diffs, 0 metadata diffs, identical envelope and tag distribution",
+    "Diff new export vs DAE channel (examples/mistnost_2_sk24_v4.json): 45/46 matched, 0 spatial changes; only differences are channel fidelity (tags/persistent_id/definition_name) and float rounding",
+    "PR cancelled by author (all v5 commits already on main; gh token invalid - HTTP 401)"
   ],
   "verified_numbers": {
     "gui_v7_nodes": 46,
@@ -39,20 +50,65 @@
     "dae_v7_relations": 30,
     "dae_v7_brief_chars": 561,
     "info_issues": 2,
-    "findings": 0
+    "findings": 0,
+    "gui_sk24_nodes": 46,
+    "gui_sk24_with_bbox": 46,
+    "gui_sk24_errors": 0,
+    "gui_sk24_warnings": 0,
+    "gui_sk24_overlaps": 18,
+    "gui_sk24_vs_gui_v7_geom_diffs": 0,
+    "gui_sk24_vs_gui_v7_meta_diffs": 0,
+    "gui_sk24_vs_dae_matched": 45,
+    "gui_sk24_vs_dae_spatial_changes": 0,
+    "gui_sk24_envelope_mm": [5000.0, 7182.784, 2316.022],
+    "gui_sk24_file_bytes": 79592,
+    "gui_sk24_md5": "FA7F16EDBFC6088B1306117B0EF111E8"
   },
   "session_semantic_progress": [
     "Diagnosed that GUI export (v7) has empty validation and one nameless node ('Unnamed') causing 37-38 relations and missing passage",
     "Established that auto-validation must use project rules (^kamna / ^bed), not core defaults (stove|kamna / bed|sleep|postel), because GUI names contain tag/zone suffixes and defaults created 15 false proximity pairs",
     "Confirmed old report (53 nodes, main_door_DIY) is not reproducible; v7 == sk24 geometrically",
-    "Confirmed DAE channel lacks tags/metadata/GPS; GUI channel has tags and metadata capabilities but currently 0 metadata dictionaries"
+    "Confirmed DAE channel lacks tags/metadata/GPS; GUI channel has tags and metadata capabilities but currently 0 metadata dictionaries",
+    "Proved GUI channel is a strict superset of DAE for this model: same geometry, plus tags, persistent_id and faithful definition names",
+    "Identified remaining new-export quirks (not regressions, identical to previous GUI export): definition_name ';' on south wall, zero-thickness void_entry_point, zero-height pergola boundary, one 'Unnamed' cell (pid 309)",
+    "Clarified that validation.issues=[] in exporter output means 'not evaluated', not 'clean'; run tools/cad2llm.py validate for real checks"
   ],
+  "research_2026_10_23": {
+    "question": "Is DAE path redundant now that the RBZ extension works, and how far can Ruby/agent automation go in SU 2024?",
+    "decision": "Extension is primary path for all author workflows (whole building, focused object, exterior); DAE kept only as CI/headless/foreign-model fallback",
+    "official_connector": "Trimble SketchUp Connector for Claude (Apr 2026) is cloud, generate-only, cannot edit existing .skp, Claude-only, 30 free models -> not usable for this workflow",
+    "candidate_repos": [
+      "zinin/sketchup-mcp2 (MIT, FastMCP+TCP, 30+ tools, eval_ruby default ON) - protocol reference",
+      "lumberbarons/sketchup-mcp (MIT, Go+TCP, batch_create/pattern_linear/mirror/inspect_geometry) - reference for batch + geometry inspection",
+      "russell-qca/sketchup-mcp (MIT, REST WEBrick, push_pull/follow_me) - older architecture",
+      "NeoNexAI/sketchup-mcp (MIT, hardened fork, eval_ruby removed, 13 bounded tools)",
+      "darwin/supex (MIT, MCP+CLI+REPL, SU 2026, macOS only, VCAD sidecar)",
+      "vbosolution/vbo-sk-agent (MIT, command.rb polling + MCP HTTP :7891, SU 2017+)",
+      "SidhNor/sketchup-mcp-server (AGPL-3.0 - avoid)",
+      "SketchUp/ruby-api-stubs, SketchUp/testup-2, SketchUp/sketchup-ruby-debugger - adopt for dev tooling"
+    ],
+    "proposed_architecture": [
+      "L1 READ: existing extension export -> JSON v4/v5 -> validate -> diff (done)",
+      "L2 WRITE: local bridge 127.0.0.1 + token, whitelisted ops, one undo transaction per op (pending)",
+      "L3 SKILLS: rules A/B/C/D with rule_class/confidence/source, clearance, roles, templates (pending)",
+      "Agent loop: read -> plan -> write -> re-export -> diff -> accept/undo; diff at 1 mm is the verification gate"
+    ],
+    "platform_constraints": [
+      "SU 2024 = Ruby 3.2.2, build 24.0.484",
+      "SU 2026+ needed for viewport screenshot MCP tools; view.write_image works in 2024",
+      "SU 2027.0 (27.0.264) = Ruby 3.4.9 + Procedures API + CRS API + hatch patterns",
+      "Single-threaded Ruby: bridge must dispatch via UI.start_timer; no native threads",
+      "eval_ruby = arbitrary code execution with full disk/network access; no sandbox in SketchUp"
+    ]
+  },
   "pending": [
-    "Commit F2.1 changes (tools/cad2llm_v5.py, tools/cad2llm.py, tests/test_cad2llm_v5.py, readme.md, docs/DESIGN_v5.md) with message [CAD2LLM] v5 F2.1: auto-validace + tag/parent fallback",
-    "Decide whether to commit untracked fixtures: examples/Sketchup2024_export/mistnost_2_v7.dae, examples/mistnost_2_v7_v4.json, examples/mistnost_2_v7_v4_gui.json, examples/mistnost_2_v7_v5.json, examples/mistnost_2_v7_v5_gui.json",
-    "Provide exact SketchUp 2024 extension install instructions (RBZ 4.0.0 via Extension Manager; fallback manual copy to Plugins; verify CAD2LLM menu in Ruby Console)",
-    "Optional: sanitize GPS 50.150888, 14.42336652 in examples before any public push (requires explicit approval)",
-    "Optional: clean stray artifacts outside workspace (C:\\tmp\\test_model_cad2llm.json, src/legacy_python/__pycache__) — blocked by deny guardrail",
+    "Re-export baseline from primary model C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.0.skp (requires SU 2024 open) and diff it against the sk24 GUI export to document what changed since 2026-04-15",
+    "Author decision on P1: build minimal local write bridge (model_info, export_json, restricted eval/eval_ops, token auth, undo) or stay read-only",
+    "If P1 approved: 6 domain tools (set_attributes, place_component, tag_entities, measure_clearance, capture_view, boolean) + FastMCP wrapper",
+    "Adopt dev tooling: SketchUp/ruby-api-stubs, TestUp 2, sketchup-ruby-debugger",
+    "Optional: sanitize GPS 50.150888, 14.42336652 in examples before further public pushes (requires explicit approval)",
+    "Optional: clean stray artifacts outside workspace (C:\\tmp\\test_model_cad2llm.json, src/legacy_python/__pycache__) - blocked by deny guardrail",
+    "Consider SU 2027 upgrade for Procedures API (parametric components) and CRS API (exterior/terrain)",
     "Known non-issues: pyright false positives on lxml/Optional; DAE channel exposes no tags/metadata/GPS"
   ],
   "key_files": {
@@ -65,13 +121,24 @@
     "design": "docs/DESIGN_v5.md",
     "readme": "readme.md",
     "extension": "releases/cad2llm_exporter.rbz",
-    "extension_source": "src/cad2llm_exporter.rb"
+    "extension_source": "src/cad2llm_exporter.rb",
+    "export_new_gui": "C:\\Users\\PC\\Documents\\Sketchup2016\\mistnost_2_sk24_cad2llm_v4.json",
+    "export_ref_gui": "examples/mistnost_2_v7_v4_gui.json",
+    "export_ref_dae": "examples/mistnost_2_sk24_v4.json"
   },
   "notes": {
     "tests_python": "python -m pytest tests -q",
     "tests_ruby": "C:\\Ruby32-x64\\bin\\ruby.exe -I src -I spec spec\\test_exporter.rb",
+    "validate_export": "python tools\\cad2llm.py validate <file.json>",
+    "diff_export": "python tools\\cad2llm.py diff <a.json> <b.json>",
     "ascii_check": "pwsh ..\\.scripts\\ascii_filenames_check.ps1",
     "extension_version": "4.0.0",
-    "sketchup_plugins_path": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins"
+    "extension_install_mode": "manual copy to Plugins (RBZ unchanged in releases/)",
+    "skp_source_dir": "C:\\Users\\PC\\Documents\\SU2024",
+    "skp_primary_model": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.0.skp",
+    "skp_archive_dir": "C:\\Users\\PC\\Documents\\Sketchup2016 (read-only archive: v1-v7, sk24, Door_renovation_v1)",
+    "sketchup_plugins_path": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins",
+    "sketchup_installed": ["SketchUp 2016", "SketchUp 2024"],
+    "gh_auth": "invalid token - HTTP 401 (no PR possible until gh auth login)"
   }
 }

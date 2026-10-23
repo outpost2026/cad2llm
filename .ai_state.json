@@ -3,7 +3,7 @@
   "repo": "cad2llm",
   "branch": "main",
   "updated_at": "2026-10-23",
-  "status": "Commit 8e4b39a (geometry export profile) pushnut; predchozi d311209 (vocab overlay + stamp). Geometry profil v4 (cad2llm/geometry/v1) implementovan v Ruby exporteru, bridge/CLI/menu, legacy v3 export odstranen. Ruby 239 checks, Python 106, schema validace OK, RBZ 4.3.0 prebuilt (20272 B). Extension 4.3.0 jeste neni nainstalovana.",
+  "status": "Extension 4.3.0 installed into SU 2024 Plugins (loader + main + lib + html); bridge reloaded to 4.3.0. Live geometry export mistnost_2_v1.1: 46 nodes, 45 ok / 1 empty, 301 faces, 0 errors, 0 schema errors. SU restart needed for refreshed menu/Extension Manager; bridge already runs geometry code.",
   "last_commits": [
     {
       "hash": "8e4b39a",
@@ -77,7 +77,10 @@
     "SketchUp stub extended with Face/Edge/Loop/Vertex/Material + mk_box_geometry; exporter tests 82 checks",
     "Docs: docs/GEOMETRY_v1.md, docs/schema/cad2llm_geometry_v1.schema.json, SCHEMA_v4, PROTOCOL, readme",
     "Verification: Ruby SUITE OK 239 (annotate 68, bridge 85, exporter 86), Python 106, compileall OK, geometry JSON schema OK",
-    "Release artifact: releases/cad2llm_exporter.rbz 4.3.0, 20272 B, contains loader + main + lib exporter/annotate/bridge + inspector.html"
+    "Release artifact: releases/cad2llm_exporter.rbz 4.3.0, 20272 B, contains loader + main + lib exporter/annotate/bridge + inspector.html",
+    "Installed RBZ 4.3.0 into C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins; backup at C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261023_164633",
+    "Installed file hashes match src (loader, main, exporter, bridge, annotate, inspector.html); bridge reload OK",
+    "Live geometry export mistnost_2_v1.1: 317623 B, 46 nodes, 45 ok / 1 empty, 301 faces, 673 edges, 42 closed, 37 volumes, 46 unique hashes, 0 schema errors"
   ],
   "verified_numbers": {
     "gui_v7_nodes": 46,
@@ -238,6 +241,20 @@
       ],
       "box_volume_mm3": 98322384.0,
       "geometry_hash_sample": "96af24f995b9308e"
+    },
+    "geometry_live_2026_10_23": {
+      "model": "mistnost_2_v1.1.skp",
+      "nodes": 46,
+      "status_ok": 45,
+      "status_empty": 1,
+      "faces": 301,
+      "edges": 673,
+      "closed": 42,
+      "volumes": 37,
+      "unique_hashes": 46,
+      "bytes": 317623,
+      "schema_errors": 0,
+      "extension_version": "4.3.0"
     }
   },
   "session_semantic_progress": [
@@ -278,8 +295,8 @@
     ]
   },
   "pending": [
-    "Author: install releases/cad2llm_exporter.rbz 4.3.0 in SU 2024 and verify geometry export on house_test02 after Ctrl+S",
-    "Author: save house_test02 (Ctrl+S) before live geometry smoke if it still has unsaved autofill changes",
+    "Author: restart SketchUp to refresh CAD2LLM menu and Extension Manager version (bridge already runs 4.3.0)",
+    "Author: verify geometry export on house_test02 after Ctrl+S",
     "M4: FastMCP wrapper (server name cad2llm) around tools/cad2llm_bridge.py",
     "M5: geometry ops (move/scale/create) with 1 mm diff gate",
     "M6: release 5.0.0 - zone vocab unify (tech vs energy)",
@@ -308,7 +325,9 @@
     "geometry_doc": "docs/GEOMETRY_v1.md",
     "geometry_schema": "docs/schema/cad2llm_geometry_v1.schema.json",
     "exporter": "src/cad2llm_exporter/lib/exporter.rb",
-    "exporter_main": "src/cad2llm_exporter/main.rb"
+    "exporter_main": "src/cad2llm_exporter/main.rb",
+    "extension_installed": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins\\cad2llm_exporter.rb",
+    "geometry_live_export": "C:\\Users\\PC\\AppData\\Local\\Temp\\opencode\\mistnost_2_v1_1_geometry_live.json"
   },
   "notes": {
     "tests_python": 84,

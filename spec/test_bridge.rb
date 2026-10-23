@@ -90,6 +90,7 @@ Dir.mktmpdir do |dir|
   out = call("export", {}, token: token)
   eq("export ok", out["ok"], true)
   eq("export schema", out["result"]["schema"], "4.0")
+  eq("export profile", out["result"]["profile"], "spatial")
   eq("export nodes", out["result"]["nodes"], 2)
   eq("export default path", File.basename(out["result"]["path"]), "mistnost_2_v1_cad2llm_v4.json")
   check("export file exists") { File.exist?(out["result"]["path"]) }
@@ -106,6 +107,15 @@ Dir.mktmpdir do |dir|
   eq("export inline path nil", inline["result"]["path"], nil)
   eq("export inline document nodes", inline["result"]["document"]["nodes"].size, 2)
   eq("export inline schema", inline["result"]["document"]["schema_version"], "4.0")
+
+  geo = call("export", { "inline" => true, "profile" => "geometry" }, token: token)
+  eq("geometry export ok", geo["ok"], true)
+  eq("geometry export profile", geo["result"]["profile"], "geometry")
+  eq("geometry export document profile", geo["result"]["document"]["export_profile"], "geometry")
+  eq("geometry export first geometry schema",
+     geo["result"]["document"]["nodes"].first["geometry"]["schema"], "cad2llm/geometry/v1")
+  eq("unknown profile", call("export", { "profile" => "legacy" }, token: token)["error"]["code"],
+     "bad_request")
 
   # -------------------------------------------------------------- 5. apply
   plan = {

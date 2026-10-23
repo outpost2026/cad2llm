@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cad2llm/geometry/v1",
+  "title": "CAD2LLM geometry block",
+  "description": "Direct world-mm geometry of one node. Part of export_profile=geometry.",
+  "type": "object",
+  "required": [
+    "schema",
+    "scope",
+    "status",
+    "coordinate_space",
+    "counts",
+    "vertices",
+    "edges",
+    "faces",
+    "closed",
+    "oriented",
+    "hash"
+  ],
+  "properties": {
+    "schema": { "const": "cad2llm/geometry/v1" },
+    "scope": { "const": "direct" },
+    "status": { "enum": ["ok", "empty", "error"] },
+    "coordinate_space": { "const": "world_mm" },
+    "counts": {
+      "type": "object",
+      "required": ["vertices", "edges", "faces", "triangles"],
+      "properties": {
+        "vertices": { "type": "integer", "minimum": 0 },
+        "edges": { "type": "integer", "minimum": 0 },
+        "faces": { "type": "integer", "minimum": 0 },
+        "triangles": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "vertices": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          { "type": "number" },
+          { "type": "number" },
+          { "type": "number" }
+        ],
+        "minItems": 3,
+        "maxItems": 3
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          { "type": "integer", "minimum": 0 },
+          { "type": "integer", "minimum": 0 }
+        ],
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "faces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "outer", "holes", "normal", "area_mm2"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^f[0-9]{4}$" },
+          "outer": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 0 },
+            "minItems": 3
+          },
+          "holes": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": { "type": "integer", "minimum": 0 },
+              "minItems": 3
+            }
+          },
+          "normal": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" }
+            ],
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "area_mm2": { "type": "number", "minimum": 0 },
+          "material": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "closed": { "type": "boolean" },
+    "oriented": { "type": "boolean" },
+    "volume_mm3": { "type": "number", "minimum": 0 },
+    "hash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{16}$" }
+  },
+  "additionalProperties": false
+}

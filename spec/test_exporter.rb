@@ -115,14 +115,75 @@ model_with([parent])
 nested = CAD2LLM::Exporter.build(Sketchup.active_model)["nodes"].find { |n| n["name"] == "lfp_cell" }
 eq("nested world bbox", nested["spatial"]["bbox_mm"]["min"]["x"], 3810.0)
 
-# ----------------------------------------------------------- 6. legacy schema
-model_with([mk_group(name: "bed_v1", pid: 501, pos: [100, 0, 0], size_in: [10, 10, 10])])
-legacy = CAD2LLM::Exporter.build(Sketchup.active_model, schema: "3.0")
-leq = legacy["nodes"].first["spatial_data_m"]
-eq("legacy units", legacy["project_metadata"]["units"], "meters")
-eq("legacy origin meters", leq["origin_xyz"][0], 2.54)
-eq("legacy matrix length", leq["transform_matrix"].size, 16)
-eq("legacy matrix translation intact", leq["transform_matrix"][12], 2.54)
+# ------------------------------------------------------ 6. geometry profile
+box = mk_group(name: "wall_box", pid: 501, pos: [100, 0, 0], size_in: [10, 20, 30])
+mk_box_geometry(box, size_in: [10, 20, 30], material: "Brick")
+model_with([box])
+geo_doc = CAD2LLM::Exporter.build(Sketchup.active_model, profile: "geometry")
+geo_node = geo_doc["nodes"].first
+geo = geo_node["geometry"]
+eq("geometry profile", geo_doc["export_profile"], "geometry")
+eq("geometry capability", geo_doc["project_metadata"]["capabilities"]["geometry"], true)
+eq("geometry schema capability", geo_doc["project_metadata"]["capabilities"]["geometry_schema"],
+   "cad2llm/geometry/v1")
+eq("geometry schema", geo["schema"], "cad2llm/geometry/v1")
+eq("geometry scope", geo["scope"], "direct")
+eq("geometry vertex count", geo["counts"]["vertices"], 8)
+eq("geometry edge count", geo["counts"]["edges"], 12)
+eq("geometry face count", geo["counts"]["faces"], 6)
+eq("geometry triangle count", geo["counts"]["triangles"], 12)
+eq("geometry closed", geo["closed"], true)
+eq("geometry oriented", geo["oriented"], true)
+near("geometry volume mm3", geo["volume_mm3"], 98_322_384.0, 1.0)
+eq("geometry hash length", geo["hash"].length, 16)
+eq("geometry material", geo["faces"].first["material"], "Brick")
+check("geometry vertices world mm") { geo["vertices"].any? { |v| v[0] == 2540.0 } }
+check("geometry normals unit") do
+  geo["faces"].all? { |f| Math.sqrt(f["normal"].sum { |v| v * v }).round(6) == 1.0 }
+end
+check("geometry keeps spatial") { geo_node["spatial"]["bbox_mm"]["min"]["x"] == 2540.0 }
+geo2 = CAD2LLM::Exporter.build(Sketchup.active_model, profile: "geometry")["nodes"].first["geometry"]
+eq("geometry hash deterministic", geo2["hash"], geo["hash"])
+
+comp_box = mk_component(name: "box_comp", pid: 502, pos: [10, 20, 30], size_in: [10, 10, 10],
+                        def_name: "Box_def")
+mk_box_geometry(comp_box, size_in: [10, 10, 10])
+model_with([comp_box])
+comp_geo = CAD2LLM::Exporter.build(Sketchup.active_model, profile: "geometry")["nodes"].first["geometry"]
+near("component geometry world x", comp_geo["vertices"].map { |v| v[0] }.min, 254.0)
+near("component geometry world y", comp_geo["vertices"].map { |v| v[1] }.min, 508.0)
+near("component geometry world z", comp_geo["vertices"].map { |v| v[2] }.min, 762.0)
+eq("component geometry volume", comp_geo["volume_mm3"], 16_387_064.0)
+
+empty_geo = mk_group(name: "empty_geo", pid: 503, size_in: [0, 0, 0])
+model_with([empty_geo])
+empty_node = CAD2LLM::Exporter.build(Sketchup.active_model, profile: "geometry")["nodes"].first
+eq("empty geometry status", empty_node["geometry"]["status"], "empty")
+eq("empty geometry faces", empty_node["geometry"]["counts"]["faces"], 0)
+
+hole_group = mk_group(name: "face_with_hole", pid: 504, size_in: [0, 0, 0])
+outer_verts = [[0, 0, 0], [10, 0, 0], [10, 10, 0], [0, 10, 0]].map do |c|
+  Sketchup::Vertex.new(Geom::Point3d.new(*c))
+end
+hole_verts = [[4, 4, 0], [6, 4, 0], [6, 6, 0], [4, 6, 0]].map do |c|
+  Sketchup::Vertex.new(Geom::Point3d.new(*c))
+end
+hole_group.entities << Sketchup::Face.new(outer_verts, holes: [hole_verts])
+model_with([hole_group])
+hole_node = CAD2LLM::Exporter.build(Sketchup.active_model, profile: "geometry")["nodes"].first
+eq("hole face count", hole_node["geometry"]["counts"]["faces"], 1)
+eq("hole edge count", hole_node["geometry"]["counts"]["edges"], 8)
+near("hole area mm2", hole_node["geometry"]["faces"][0]["area_mm2"], 61_935.36, 0.1)
+eq("hole face closed", hole_node["geometry"]["closed"], false)
+
+check("unknown profile rejected") do
+  begin
+    CAD2LLM::Exporter.build(Sketchup.active_model, profile: "legacy")
+    false
+  rescue ArgumentError
+    true
+  end
+end
 
 # --------------------------------------------------------- 7. empty geometry
 empty = mk_group(name: "void_entry_point", pid: 601, pos: [0, 0, 0], size_in: [0, 0, 0])
@@ -140,10 +201,18 @@ Dir.mktmpdir do |dir|
   check("main.export wrote file") { File.exist?(path) }
   parsed = JSON.parse(File.read(path))
   eq("written schema", parsed["schema_version"], "4.0")
+  eq("written profile", parsed["export_profile"], "spatial")
   eq("written node count", parsed["nodes"].size, 1)
   eq("source file recorded", parsed["project_metadata"]["source"]["file"], "mistnost_2_sk24.skp")
   eq("source channel", parsed["project_metadata"]["source"]["channel"], "sketchup")
   eq("gps omitted when zero", parsed["project_metadata"]["global_origin_gps"], nil)
+
+  geo_path = CAD2LLM.export(model: m, profile: "geometry", interactive: false)
+  eq("main.geometry path", File.basename(geo_path), "mistnost_2_sk24_cad2llm_v4_geometry.json")
+  geo_parsed = JSON.parse(File.read(geo_path))
+  eq("written geometry profile", geo_parsed["export_profile"], "geometry")
+  check("written geometry block") { geo_parsed["nodes"].first.key?("geometry") }
+  check("spatial export has no geometry") { !parsed["nodes"].first.key?("geometry") }
 end
 
 # --------------------------------------------------------------- 9. loader
@@ -152,9 +221,11 @@ items = UI.menu("Extensions").items
 sub = items.find { |name, _| name == "CAD2LLM" }
 check("loader registered CAD2LLM submenu") { !sub.nil? }
 items = sub ? sub[1].items.reject { |i| i[0] == :separator } : []
-check("loader has export + bridge items") { items.size == 8 }
+check("loader has export + bridge items") { items.size == 9 }
 check("loader exposes bridge start/stop") { items.count { |i| i[0].to_s.include?("bridge") } == 2 }
 check("loader exposes inspector + purge") { items.count { |i| i[0].to_s =~ /Inspector|Purge/ } == 3 }
+check("loader exposes geometry export") { items.count { |i| i[0].to_s.include?("geometry") } == 2 }
+check("loader removed legacy export") { items.none? { |i| i[0].to_s =~ /legacy/i } }
 panel_model = model_with([mk_component(name: "comp_panel", pid: 990, def_name: "panel_def", size_in: [1, 1, 1])])
 Sketchup.model = panel_model
 panel_model.selection = Sketchup::Selection.new(panel_model.entities.to_a)

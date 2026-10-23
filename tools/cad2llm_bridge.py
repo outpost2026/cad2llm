@@ -7,7 +7,7 @@ writes its port + token to the temp dir. This client reads that file unless
 
 python tools/cad2llm_bridge.py ping
 python tools/cad2llm_bridge.py info
-python tools/cad2llm_bridge.py export [out.json] [--schema 4.0]
+python tools/cad2llm_bridge.py export [out.json] [--profile spatial|geometry]
 python tools/cad2llm_bridge.py apply plan.json [--dry-run] [--report report.json]
 python tools/cad2llm_bridge.py undo
 
@@ -151,16 +151,19 @@ class BridgeClient:
     def info(self) -> dict:
         return self.call("info")
 
-    def export(self, path: str | None = None, schema: str | None = None) -> dict:
+    def export(self, path: str | None = None, profile: str | None = None) -> dict:
         params: dict = {}
         if path:
             params["path"] = str(Path(path).resolve())
-        if schema:
-            params["schema"] = schema
+        if profile:
+            params["profile"] = profile
         return self.call("export", params)
 
-    def export_inline(self) -> dict:
-        return self.call("export", {"inline": True})
+    def export_inline(self, profile: str | None = None) -> dict:
+        params: dict = {"inline": True}
+        if profile:
+            params["profile"] = profile
+        return self.call("export", params)
 
     def apply(self, plan: dict | str | Path, dry_run: bool = False) -> dict:
         if isinstance(plan, (str, Path)):
@@ -204,9 +207,10 @@ def _print_result(args, result: dict) -> None:
     elif method == "export":
         print(f"OK  {result.get('path')}")
         print(
-            f"    schema={result.get('schema')} nodes={result.get('nodes')} "
-            f"bytes={result.get('bytes')} issues={result.get('issues')} "
-            f"errors={result.get('errors')} warnings={result.get('warnings')}"
+            f"    schema={result.get('schema')} profile={result.get('profile')} "
+            f"nodes={result.get('nodes')} bytes={result.get('bytes')} "
+            f"issues={result.get('issues')} errors={result.get('errors')} "
+            f"warnings={result.get('warnings')}"
         )
     elif method == "apply":
         s = result.get("summary") or {}
@@ -309,7 +313,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_export = sub.add_parser("export")
     p_export.add_argument("path", nargs="?", default=None)
-    p_export.add_argument("--schema", default=None, choices=["4.0", "3.0"])
+    p_export.add_argument("--profile", default=None, choices=["spatial", "geometry"])
 
     p_apply = sub.add_parser("apply")
     p_apply.add_argument("plan")
@@ -378,7 +382,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "purge-tags":
             result = client.purge_unused_tags()
         elif args.command == "export":
-            result = client.export(args.path, args.schema)
+            result = client.export(args.path, args.profile)
         else:
             result = getattr(client, args.command)()
     except BridgeError as exc:

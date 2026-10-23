@@ -3,7 +3,7 @@
 # CAD2LLM — SketchUp extension entry point.
 # Loads the exporter library and exposes CAD2LLM.export.
 #
-# Console:  CAD2LLM.export
+# Console:  CAD2LLM.export(profile: "geometry")
 # Menu:     Extensions > CAD2LLM > Export spatial JSON
 #
 require "json"
@@ -16,13 +16,13 @@ module CAD2LLM
 
   module_function
 
-  def export(schema: Exporter::SCHEMA_VERSION, model: Sketchup.active_model, path: nil, interactive: true)
-    path ||= default_path(model, schema)
+  def export(profile: Exporter::PROFILE_SPATIAL, model: Sketchup.active_model, path: nil, interactive: true)
+    path ||= default_path(model, profile)
     return nil if path.nil?
 
-    doc = Exporter.export_to_file(model, path, schema: schema)
+    doc = Exporter.export_to_file(model, path, profile: profile)
     nodes = doc["nodes"].size
-    message = "CAD2LLM export OK (#{nodes} nodes)\n#{path}"
+    message = "CAD2LLM #{profile} export OK (#{nodes} nodes)\n#{path}"
     puts message
     UI.messagebox(message) if interactive
     path
@@ -32,26 +32,22 @@ module CAD2LLM
     nil
   end
 
-  def export_v3(model: Sketchup.active_model, path: nil, interactive: true)
-    export(schema: Exporter::LEGACY_VERSION, model: model, path: path, interactive: interactive)
-  end
-
-  def export_selection(model: Sketchup.active_model, path: nil, interactive: true)
+  def export_selection(profile: Exporter::PROFILE_SPATIAL, model: Sketchup.active_model, path: nil, interactive: true)
     selected = model.selection.to_a
     if selected.empty?
       UI.messagebox("CAD2LLM: nothing selected.") if interactive
       return nil
     end
-    path ||= default_path(model, Exporter::SCHEMA_VERSION).to_s.sub(".json", "_selection.json")
-    doc = Exporter.export_to_file(model, path, entities: selected)
-    message = "CAD2LLM selection export OK (#{doc['nodes'].size} nodes)\n#{path}"
+    path ||= default_path(model, profile).to_s.sub(".json", "_selection.json")
+    doc = Exporter.export_to_file(model, path, profile: profile, entities: selected)
+    message = "CAD2LLM #{profile} selection export OK (#{doc['nodes'].size} nodes)\n#{path}"
     puts message
     UI.messagebox(message) if interactive
     path
   end
 
-  def default_path(model, schema)
-    suffix = schema == Exporter::LEGACY_VERSION ? "_cad2llm_v3.json" : "_cad2llm_v4.json"
+  def default_path(model, profile)
+    suffix = profile == Exporter::PROFILE_GEOMETRY ? "_cad2llm_v4_geometry.json" : "_cad2llm_v4.json"
     model_path = model.path.to_s
     unless model_path.empty?
       title = File.basename(model_path, ".*")

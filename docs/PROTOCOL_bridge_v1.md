@@ -2,7 +2,7 @@
 
 **Datum:** 2026-10-23 | **Autor:** outpost2026 | **Účel:** lokální obousměrná smyčka agent ↔ běžící SketchUp 2024
 
-Bridge je součástí rozšíření CAD2LLM Exporter 4.0.0 (`src/cad2llm_exporter/lib/bridge.rb`).
+Bridge je součástí rozšíření CAD2LLM Exporter 4.3.0 (`src/cad2llm_exporter/lib/bridge.rb`).
 Umožňuje LLM agentovi číst model, aplikovat deklarativní anotační plán a ověřit výsledek
 **bez copy-paste do Ruby konzole**.
 
@@ -109,11 +109,12 @@ Smaže tagy bez entit (vratné přes Undo). Vrací `purged`, `before`, `after`, 
 
 ### `export`
 Parametry: `path` (volitelné, default vedle `.skp` jako `<basename>_cad2llm_v4.json`),
-`schema` (`"4.0"` | `"3.0"`).
+`profile` (`"spatial"` | `"geometry"`), `inline` (bool). Profil `geometry` přidá
+blok `geometry` a mění default suffix na `_cad2llm_v4_geometry.json`.
 
 ```json
 {"path":"C:/.../mistnost_2_v1.0_cad2llm_v4.json","bytes":79592,"schema":"4.0",
- "nodes":46,"issues":2,"errors":0,"warnings":0}
+ "profile":"spatial","nodes":46,"issues":2,"errors":0,"warnings":0}
 ```
 
 ### `apply`
@@ -203,7 +204,7 @@ python tools\cad2llm_bridge.py describe --pid 3348
 python tools\cad2llm_bridge.py describe --definition bed_01
 python tools\cad2llm_bridge.py purge-tags
 python tools\cad2llm_bridge.py export
-python tools\cad2llm_bridge.py export out.json --schema 4.0
+python tools\cad2llm_bridge.py export out.json --profile geometry
 python tools\cad2llm_bridge.py apply plan.json --dry-run
 python tools\cad2llm_bridge.py apply plan.json --report report.json
 python tools\cad2llm_bridge.py undo
@@ -214,8 +215,8 @@ Exit kódy: `0` ok, `2` bridge nedostupný / chybí token file, `3` bridge vrát
 ## 8. Testy
 
 ```powershell
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 129 checks
-python -m unittest discover -s tests -v           # 53 testů
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 239 checks
+python -m unittest discover -s tests -v           # 106 testů
 ```
 
 `spec/test_bridge.rb` testuje dispatch i reálné TCP linky (ephemeral port,

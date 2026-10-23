@@ -1,6 +1,6 @@
 # Schema v4 — deterministický JSON pro LLM/RAG
 
-**Verze:** 4.1 (aditivní; `schema_version` zůstává `"4.0"`) | **Datum:** 2026-10-23 | **Jednotky:** mm | **Osy:** Z-up (SketchUp)
+**Verze:** 4.2 (aditivní; `schema_version` zůstává `"4.0"`) | **Datum:** 2026-10-23 | **Jednotky:** mm | **Osy:** Z-up (SketchUp)
 
 Schema v4 sjednocuje dva historické kanály (Python/DAE a Ruby/SketchUp) do jednoho
 tvaru a doplňuje data, která metodika vyžaduje, ale starší exporty neměly.
@@ -18,6 +18,7 @@ tvaru a doplňuje data, která metodika vyžaduje, ale starší exporty neměly.
 | **attribute dictionaries** (`energy`, `zone`, `safety`, `thermal`) | ✅ | ❌ |
 | `persistent_id` | ✅ | ❌ |
 | GPS z `shadow_info` | ✅ | ❌ |
+| **detailní geometrie** (`geometry`, profil `geometry`) | ✅ | ❌ |
 | přesné názvy | ✅ | ⚠️ mezery → `_` |
 
 `project_metadata.capabilities` nese tyto vlajky strojově, takže konzument (LLM,
@@ -31,6 +32,7 @@ Pro analýzy závislé na `energy`/`zone`/`safety` je nutný export z SketchUpu.
 ```json
 {
   "schema_version": "4.0",
+  "export_profile": "spatial",
   "project_metadata": {
     "name": "mistnost_2_sk24",
     "export_date": "2026-10-22T18:00:00Z",
@@ -47,7 +49,8 @@ Pro analýzy závislé na `energy`/`zone`/`safety` je nutný export z SketchUpu.
     "capabilities": { "hierarchy": true, "bbox_mm": true, "rotation": true,
                       "tags": true, "definition_description": true,
                       "metadata_dictionaries": true,
-                      "persistent_ids": true, "gps": true }
+                      "persistent_ids": true, "gps": true,
+                      "geometry": false, "geometry_schema": null }
   },
   "nodes": [ ... ],
   "validation": { ... }
@@ -80,6 +83,7 @@ slovníky se vynechávají stejně jako u uzlů.
 | `spatial.quaternion` | `{w,x,y,z}`, bez jednotek |
 | `spatial.matrix_4x4` | 4×4 world matice, **translace v mm**, řádky `[xaxis, yaxis, zaxis, origin]` |
 | `metadata` | slovníky bez `SU_*` (systémový balast), čísla jako čísla |
+| `geometry` | jen v profilu `geometry`; přímé vertices/edges/faces v world mm, viz [`GEOMETRY_v1.md`](GEOMETRY_v1.md) |
 
 `bbox_mm` u kontejnerů (komponenta se dětmi, skupina) = sjednocení potomků —
 parita s `definition.bounds` ve SketchUpu.
@@ -125,11 +129,24 @@ Překryvy se nehlásí mezi předkem a potomkem (kontejner vždy „překrývá�
 | `units: "meters"` | `units: "mm"` |
 | bez bbox min/max | `bbox_mm.min/max` |
 
-Legacy export lze stále vyrobit: `CAD2LLM.export_v3` (menu: *Export legacy JSON (v3)*).
-`tools/cad2llm.py validate` umí načíst i v3 a převést ho na mm v paměti
-(výsledek označí `LEGACY_SCHEMA`; bbox se dopočítá z `center ± size/2`).
+Legacy export v3 už extension **nevyrábí** (menu ani `CAD2LLM.export_v3` neexistují).
+`tools/cad2llm.py validate` umí staré v3 dokumenty načíst a převést je na mm
+v paměti (výsledek označí `LEGACY_SCHEMA`; bbox se dopočítá z `center + size/2`).
+Nové exporty jsou vždy v4.
 
-## 6. Integrita — pravidla
+## 6. Geometry profil
+
+`CAD2LLM.export(profile: "geometry")` nebo bridge
+`export --profile geometry` přidá ke každému uzlu blok `geometry`
+(`cad2llm/geometry/v1`): world-space vertices/edges/faces, normály, plochy,
+closed/oriented, volume a hash. Spatial pole zůstávají beze změny.
+
+- `export_profile` v rootu je `"spatial"` nebo `"geometry"`.
+- `capabilities.geometry` říká, zda blok existuje.
+- `geometry.scope = "direct"` znamená jen přímé plochy entity, ne děti.
+- Detailní kontrakt a deterministická pravidla: [`GEOMETRY_v1.md`](GEOMETRY_v1.md).
+
+## 7. Integrita — pravidla
 
 1. `units` je vždy `mm`; převod z palců probíhá při exportu (`× 25.4`).
 2. Žádné post-processing `gsub` nad JSONem — histogram hodnot se nesmí měnit.

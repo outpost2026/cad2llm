@@ -4,7 +4,9 @@
 
 Schema **v4** (2026-10) sjednocuje dva exportní kanály a doplňuje data, která
 předchozí verze neměly: `bbox_mm` min/max, `parent_uid`, rotace, tagy,
-attribute dictionaries. Detail: [`docs/SCHEMA_v4.md`](docs/SCHEMA_v4.md).
+attribute dictionaries. Volitelný **geometry profil** přidává world-space
+vertices/edges/faces pro přesné objemy, řezy a collision analýzu.
+Detail: [`docs/SCHEMA_v4.md`](docs/SCHEMA_v4.md), [`docs/GEOMETRY_v1.md`](docs/GEOMETRY_v1.md).
 
 Nad v4 staví **v5 (F1 + F2)** (aditivní): deterministická sémantika,
 normalizovaná validace, relace mezi objekty, volná podlaha a `brief` pro LLM.
@@ -37,6 +39,7 @@ LLM halucinuje při prostorové analýze CAD modelů — a to i když dostane �
 | Tagy (vrstvy) | ✅ | ❌ |
 | Attribute dictionaries (`energy`, `zone`, `safety`, `thermal`) | ✅ | ❌ |
 | `persistent_id`, GPS | ✅ | ❌ |
+| Detailní geometrie (`geometry` profil) | ✅ | ❌ |
 | Přesné názvy | ✅ | ⚠️ mezery → `_`, `#` → `_`, `,` → `_` |
 
 `project_metadata.capabilities` hlásí dostupné vlastnosti strojově — konzument
@@ -69,8 +72,8 @@ Schémata a návrh: [`docs/DESIGN_v5.md`](docs/DESIGN_v5.md), [`docs/schema/`](d
 1. `releases/cad2llm_exporter.rbz` → *Window → Extension Manager → Install Extension*
 2. *Extensions → CAD2LLM*
    - **Export (v4)** — aktuální schema, tagy + metadata
-   - **Export legacy JSON (v3)** — jen pro kompatibilitu se starými konzumenty
-   - **Export selection (v4)** — jen vybrané entity
+   - **Export detailed geometry (v4+geometry)** — navíc vertices/edges/faces, normály, objem, hash
+   - **Export selection** — jen vybrané entity (spatial i geometry)
    - **Bridge: start/stop, Inspector panel** — živé RPC nad otevřeným modelem
 
 ## Bridge + anotace (M1–M3)
@@ -80,7 +83,8 @@ Veškeré úpravy jsou **jen metadata** (atributy, tagy, jména, popisy definic)
 
 ```powershell
 python tools\cad2llm_bridge.py ping                      # stav + verze SU
-python tools\cad2llm_bridge.py export out.json           # v4 export živého modelu
+python tools\cad2llm_bridge.py export out.json           # v4 spatial export živého modelu
+python tools\cad2llm_bridge.py export geo.json --profile geometry
 python tools\cad2llm_bridge.py apply plan.json           # plán + drift guard (snapshot, rollback)
 python tools\cad2llm_bridge.py export baseline.json
 python tools\cad2llm_bridge.py verify --baseline baseline.json --live
@@ -94,6 +98,12 @@ společného `rules.json`. Overlay se předává `validate`/`summary`/`derive` p
 `vocab_base_version` a `vocab_hash` do modelového `cad2llm` dictionary, takže
 každý další export nese původ slovníku.
 
+Geometry profil (`--profile geometry`, menu *Export detailed geometry*) přidává
+ke každému uzlu přímé `vertices`/`edges`/`faces` v world-space mm, normály,
+plochu, closed/oriented, objem a deterministický hash. Spatial export zůstává
+zpětně kompatibilní a legacy v3 export už extension nevyrábí.
+Kontrakt: [`docs/GEOMETRY_v1.md`](docs/GEOMETRY_v1.md).
+
 `apply` před zápisem uloží snapshot exportu a po zápisu porovná geometrii; při driftu
 provede undo dávky a report označí `rolled_back`. `verify` vrací exit 3 při rozdílu
 invariant (name, tag, role, zóna, IFC) — vhodné pro CI i pro kontrolu po ručním zásahu.
@@ -103,8 +113,8 @@ invariant (name, tag, role, zóna, IFC) — vhodné pro CI i pro kontrolu po ru�
 ## Testy
 
 ```powershell
-python -m unittest discover -s tests -v    # 103 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge)
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 197 checků (exporter, anotace, bridge)
+python -m unittest discover -s tests -v    # 106 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge)
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 239 checků (exporter, anotace, bridge)
 ```
 
 Ruby testy běží proti `spec/sketchup_stub.rb` (world-space `Group#bounds`,
@@ -162,7 +172,7 @@ cad2llm/
 │   ├── cad2llm_exporter/
 │   │   ├── main.rb                 ← entry point
 │   │   └── lib/
-│   │       ├── exporter.rb         ← exportér (v4 + legacy v3)
+│   │       ├── exporter.rb         ← exportér (v4 spatial + geometry profil)
 │   │       ├── annotate.rb         ← plánovač anotací (entity/definition/model)
 │   │       └── bridge.rb           ← TCP RPC server + drift guard
 │   ├── legacy_python/              ← historický konvertor v3 (deprecated)
@@ -209,6 +219,8 @@ cad2llm/
   passages, volumes; 30 hran na reálném modelu, 38/38 testů.
 - **2026-10-22** — **v5 F2.1**: `enrich` dopočítá validaci, když chybí (GUI export);
   tag + parent-role fallback (`Unnamed` → battery/energy), 46/46 rolí i bez jmen, 42/42 testů.
+- **2026-10-23** — **vocab overlay + model stamp**; **geometry profil** v4
+  (`vertices`/`edges`/`faces`, normály, objem, hash), legacy v3 export odstraněn.
 
 > Historické konzolové skripty v `src/_archive/console/` obsahují známou korupci
 > matic — nepoužívat.

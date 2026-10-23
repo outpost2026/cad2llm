@@ -3,8 +3,12 @@
   "repo": "cad2llm",
   "branch": "main",
   "updated_at": "2026-10-23",
-  "status": "Batch A-D hotovo: A drift guard v apply (snapshot + geometry_drift + rollback) + CLI verify; B derive generator planu z exportu (idempotentni, 0 ops na v41); C model target pro projektova metadata (exporter project_metadata.metadata, filtr GeoReference/GSU/temp); D sdileny vocab (rules.json) + validate + metadata-first classify. Ruby 197 (annotate 68, bridge 79, exporter 50), Python 84. Extension 4.2.2 nainstalovana a reloadnuta. Zmeny necommitnute.",
+  "status": "Commit d311209 (vocab overlay + stamp) pushnut. Geometry profil v4 (cad2llm/geometry/v1) implementovan v Ruby exporteru, bridge/CLI/menu, legacy v3 export odstranen. Ruby 239 checks, Python 106, schema validace OK, RBZ 4.3.0 prebuilt (20272 B). Extension 4.3.0 jeste neni nainstalovana.",
   "last_commits": [
+    {
+      "hash": "d311209",
+      "summary": "[CAD2LLM] feat: project vocab overlay + model stamp"
+    },
     {
       "hash": "940eeaa",
       "summary": "[CAD2LLM] checkpoint: SU2024 jako primarni source, RBZ 4.0.0 instalace, overeny export"
@@ -60,7 +64,16 @@
     "Applied descriptions plan: 27/28 definitions, then orphan def 'beam_east_wall#1' (user's original 'Nosnik_futra_east_wall' preserved) renamed to beam_east_wall_120x50 with description",
     "28/28 definitions now have non-empty description (verified via describe)",
     "purge_unused_tags removed only tag '0'; legacy tags stay because nested geometry inside definitions still sits on them",
-    "M3: HtmlDialog Inspector panel (src/cad2llm_exporter/html/inspector.html) live-polls selection and renders all dicts; menu has 8 items"
+    "M3: HtmlDialog Inspector panel (src/cad2llm_exporter/html/inspector.html) live-polls selection and renders all dicts; menu has 8 items",
+    "Commit d311209: vocab overlay + model stamp, 14 files, 1059+/55-, pushed d11094c..d311209",
+    "Geometry profil: export_profile spatial|geometry, cad2llm/geometry/v1, direct world-mm vertices/edges/faces, normals/area, closed/oriented, volume, hash",
+    "Geometry determinismus: 3dp vertices, sorted edges/faces, canonical loops, SHA-256 prefix 16; repeated export same hash",
+    "Bridge/CLI/menu: --profile spatial|geometry, selected geometry export, default suffix _cad2llm_v4_geometry.json",
+    "Legacy v3 export removed from exporter, menu, bridge and Ruby tests; Python validate keeps read-only v3 conversion",
+    "SketchUp stub extended with Face/Edge/Loop/Vertex/Material + mk_box_geometry; exporter tests 82 checks",
+    "Docs: docs/GEOMETRY_v1.md, docs/schema/cad2llm_geometry_v1.schema.json, SCHEMA_v4, PROTOCOL, readme",
+    "Verification: Ruby SUITE OK 239 (annotate 68, bridge 85, exporter 86), Python 106, compileall OK, geometry JSON schema OK",
+    "Release artifact: releases/cad2llm_exporter.rbz 4.3.0, 20272 B, contains loader + main + lib exporter/annotate/bridge + inspector.html"
   ],
   "verified_numbers": {
     "gui_v7_nodes": 46,
@@ -204,6 +217,23 @@
       "house_test02_validate_errors": 0,
       "house_test02_validate_warnings": 0,
       "stamp_ops": 4
+    },
+    "geometry_export_2026_10_23": {
+      "ruby_checks": 239,
+      "ruby_files": {
+        "annotate": 68,
+        "bridge": 85,
+        "exporter": 86
+      },
+      "python_tests": 106,
+      "extension_version": "4.3.0",
+      "geometry_schema": "cad2llm/geometry/v1",
+      "profiles": [
+        "spatial",
+        "geometry"
+      ],
+      "box_volume_mm3": 98322384.0,
+      "geometry_hash_sample": "96af24f995b9308e"
     }
   },
   "session_semantic_progress": [
@@ -244,20 +274,13 @@
     ]
   },
   "pending": [
-    "Author: save model (Ctrl+S), then run load '.../cad2llm_exporter.rb' + CAD2LLM.show_inspector_panel (no SU restart needed)",
-    "Author: save model (Ctrl+S) - descriptions applied in memory",
-    "M4 option: flatten nested layers onto role tags (would allow purging 12 legacy tags, but loses per-nested-part visibility)",
-    "Reload extension in SU (load annotate.rb, bridge.rb, Bridge.start) to activate set_description/describe/purge",
-    "Author: save model in SketchUp (Ctrl+S) - 728 changes live, single undo available",
+    "Author: install releases/cad2llm_exporter.rbz 4.3.0 in SU 2024 and verify geometry export on house_test02 after Ctrl+S",
+    "Author: save house_test02 (Ctrl+S) before live geometry smoke if it still has unsaved autofill changes",
     "M4: FastMCP wrapper (server name cad2llm) around tools/cad2llm_bridge.py",
     "M5: geometry ops (move/scale/create) with 1 mm diff gate",
-    "M6: release 5.0.0 - RBZ rebuild, README refresh (cp1250, stale 42/40 test counts), zone vocab unify (tech vs energy)",
+    "M6: release 5.0.0 - zone vocab unify (tech vs energy)",
     "Optional: sanitize GPS 50.150888, 14.42336652 in examples before further public pushes (explicit approval needed)",
-    "Optional: clean stray artifacts outside workspace (blocked by deny guardrail)",
-    "Author: review + commit batch A-D (uncommitted: bridge/annotate/exporter, verify/vocab/derive tools, tests, docs, .ai_state)",
-    "M4 option: FastMCP wrapper (server name cad2llm) around tools/cad2llm_bridge.py",
-    "M5: geometry ops (move/scale/create) with 1 mm diff gate",
-    "M6: release 5.0.0 - RBZ rebuild, README refresh (stale counts fixed), zone vocab unify (tech vs energy)"
+    "Optional: clean stray artifacts outside workspace (blocked by deny guardrail)"
   ],
   "key_files": {
     "semantics_relations": "tools/cad2llm_v5.py",
@@ -277,7 +300,11 @@
     "bridge": "src/cad2llm_exporter/lib/bridge.rb",
     "protocol_bridge": "docs/PROTOCOL_bridge_v1.md",
     "schema_annotate": "docs/schema/annotate_plan.schema.json",
-    "bridge_client": "tools/cad2llm_bridge.py"
+    "bridge_client": "tools/cad2llm_bridge.py",
+    "geometry_doc": "docs/GEOMETRY_v1.md",
+    "geometry_schema": "docs/schema/cad2llm_geometry_v1.schema.json",
+    "exporter": "src/cad2llm_exporter/lib/exporter.rb",
+    "exporter_main": "src/cad2llm_exporter/main.rb"
   },
   "notes": {
     "tests_python": 84,
@@ -360,7 +387,9 @@
       ]
     },
     "vocab_2026_10_23": "rules.json vocab: +roof (IfcRoof), +chimney (IfcBuildingElementProxy); aliases zaklady/foundation->floor, ceilling->ceiling, roof/strecha/střecha->roof, chimney/komin/komín->chimney. v5 now resolves tag role via shared vocab first (legacy TAG_ROLE_RULES only fallback) and parent inheritance runs before tag fallback.",
-    "vocab_overlay": "cad2llm/vocab_overlay/v1 add-only project overlay: validate/summary --vocab, derive --vocab, cad2llm_stamp.py writes project_id/vocab_version/vocab_base_version/vocab_hash to model cad2llm dict; core vocab immutable; deprecated_roles warn."
+    "vocab_overlay": "cad2llm/vocab_overlay/v1 add-only project overlay: validate/summary --vocab, derive --vocab, cad2llm_stamp.py writes project_id/vocab_version/vocab_base_version/vocab_hash to model cad2llm dict; core vocab immutable; deprecated_roles warn.",
+    "geometry_export_2026_10_23": "export_profile spatial|geometry; geometry block is direct-only, world mm, deterministic vertices/edges/faces; volume only when closed+oriented and no holes; legacy v3 export retired, Python read-only v3 remains.",
+    "legacy_v3": "CAD2LLM.export_v3, LEGACY_VERSION and menu item removed. Old v3 JSON is still accepted by tools/cad2llm.py validate for migration only."
   },
   "proposals_M3_annotation": {
     "principle": "annotation must cost less than modeling; annotate component DEFINITIONS (28) not instances (46); infer the rest",

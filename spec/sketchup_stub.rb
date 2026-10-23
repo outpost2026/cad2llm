@@ -142,6 +142,53 @@ module Sketchup
     end
   end
 
+  class Vertex
+    attr_reader :position
+
+    def initialize(position)
+      @position = position
+    end
+  end
+
+  class Loop
+    attr_reader :vertices
+
+    def initialize(vertices)
+      @vertices = vertices
+    end
+  end
+
+  class Edge
+    attr_reader :start, :end
+
+    def initialize(start_vertex, end_vertex)
+      @start = start_vertex
+      @end = end_vertex
+    end
+  end
+
+  class Material
+    attr_reader :name
+
+    def initialize(name)
+      @name = name
+    end
+
+    def display_name
+      @name
+    end
+  end
+
+  class Face
+    attr_reader :outer_loop, :loops, :material
+
+    def initialize(vertices, holes: [], material: nil)
+      @outer_loop = Loop.new(vertices)
+      @loops = [@outer_loop] + holes.map { |hole| Loop.new(hole) }
+      @material = material
+    end
+  end
+
   class ComponentDefinition
     attr_accessor :name, :description, :bounds, :entities, :attribute_dictionaries
 
@@ -613,4 +660,43 @@ def mk_component(name:, pid:, pos: [0, 0, 0], size_in: [0, 0, 0], def_name: nil,
   dicts.each { |dn, pr| c.attribute_dictionaries << AttrDict.new(dn, pr) }
   c.layer = Sketchup::Layer.new("energy_nodes")
   c
+end
+
+def mk_box_geometry(container, origin_in: [0, 0, 0], size_in: [1, 1, 1], material: nil)
+  entities = container.is_a?(Sketchup::ComponentDefinition) ? container.entities :
+             container.is_a?(Sketchup::ComponentInstance) ? container.definition.entities : container.entities
+  x0, y0, z0 = origin_in
+  x1 = x0 + size_in[0]
+  y1 = y0 + size_in[1]
+  z1 = z0 + size_in[2]
+  coords = [
+    [x0, y0, z0], [x1, y0, z0], [x1, y1, z0], [x0, y1, z0],
+    [x0, y0, z1], [x1, y0, z1], [x1, y1, z1], [x0, y1, z1]
+  ]
+  vertices = coords.map { |c| Sketchup::Vertex.new(Geom::Point3d.new(*c)) }
+  loops = [
+    [0, 3, 2, 1],
+    [4, 5, 6, 7],
+    [0, 1, 5, 4],
+    [1, 2, 6, 5],
+    [2, 3, 7, 6],
+    [3, 0, 4, 7]
+  ]
+  mat = material ? Sketchup::Material.new(material) : nil
+  loops.each do |ids|
+    entities << Sketchup::Face.new(ids.map { |i| vertices[i] }, material: mat)
+  end
+  edge_pairs = loops.flat_map do |ids|
+    ids.each_with_index.map { |id, i| [id, ids[(i + 1) % ids.size]].sort }
+  end.uniq
+  edge_pairs.each { |a, b| entities << Sketchup::Edge.new(vertices[a], vertices[b]) }
+
+  if container.is_a?(Sketchup::Group)
+    container.own_size = size_in
+  elsif container.is_a?(Sketchup::ComponentInstance)
+    container.definition.bounds = Sketchup::BoundingBox.sized(size_in[0], size_in[1], size_in[2], origin_in)
+  else
+    container.bounds = Sketchup::BoundingBox.sized(size_in[0], size_in[1], size_in[2], origin_in) if container.respond_to?(:bounds=)
+  end
+  vertices
 end

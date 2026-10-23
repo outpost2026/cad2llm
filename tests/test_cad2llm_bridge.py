@@ -206,6 +206,18 @@ class BridgeClientTests(unittest.TestCase):
             bridge.BridgeClient(port=server.port, token="t").apply(path)
         self.assertEqual(server.received[0]["params"]["plan"]["operations"], [])
 
+    def test_export_sends_profile(self):
+        server = self.server()
+        bridge.BridgeClient(port=server.port, token="t").export(profile="geometry")
+        self.assertEqual(server.received[0]["params"], {"profile": "geometry"})
+
+    def test_export_inline_sends_profile(self):
+        server = self.server()
+        bridge.BridgeClient(port=server.port, token="t").export_inline("geometry")
+        self.assertEqual(
+            server.received[0]["params"], {"inline": True, "profile": "geometry"}
+        )
+
 
 class CliTests(unittest.TestCase):
     def setUp(self):
@@ -221,6 +233,13 @@ class CliTests(unittest.TestCase):
             code = bridge.main(self.base + ["info"])
         self.assertEqual(code, 0)
         self.assertIn("OK", out.getvalue())
+
+    def test_export_profile_flag(self):
+        out = io.StringIO()
+        with redirect_stdout(out):
+            code = bridge.main(self.base + ["export", "--profile", "geometry"])
+        self.assertEqual(code, 0)
+        self.assertEqual(self.server.received[0]["params"]["profile"], "geometry")
 
     def test_json_flag(self):
         out = io.StringIO()

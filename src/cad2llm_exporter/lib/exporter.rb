@@ -10,10 +10,17 @@
 #   * stable uid = persistent_id@path (children of shared definitions no longer collide)
 #   * bbox min/max included (required by Metodika krok 1: z_min/z_max table)
 #
+require "digest"
+require "json"
+require "time"
+
 module CAD2LLM
   module Exporter
     SCHEMA_VERSION = "4.0"
-    LEGACY_VERSION = "3.0"
+    PROFILE_SPATIAL = "spatial"
+    PROFILE_GEOMETRY = "geometry"
+    PROFILES = [PROFILE_SPATIAL, PROFILE_GEOMETRY].freeze
+    GEOMETRY_SCHEMA = "cad2llm/geometry/v1"
     MM_PER_INCH = 25.4
     SKIP_DICT_PREFIX = "SU_"
     SKIP_DICT_EXACT = ["FormFonts", "BIM", "BIM_Ifc", "DynamicComponents"].freeze
@@ -22,11 +29,15 @@ module CAD2LLM
 
     module_function
 
-    def build(model, entities: nil, schema: SCHEMA_VERSION, now: Time.now.utc)
+    def build(model, entities: nil, profile: PROFILE_SPATIAL, now: Time.now.utc)
+      unless PROFILES.include?(profile)
+        raise ArgumentError, "unknown export profile #{profile.inspect} (#{PROFILES.join('|')})"
+      end
+
       @issues = []
       @pids = []
       nodes = []
-      traverse(entities || model.entities, [], nil, Geom::Transformation.new, nodes, schema)
+      traverse(entities || model.entities, [], nil, Geom::Transformation.new, nodes, profile)
       gps = begin
         [model.shadow_info["Latitude"].to_f, model.shadow_info["Longitude"].to_f]
       rescue StandardError
@@ -36,44 +47,45 @@ module CAD2LLM
 
       title = model.title.to_s.strip
       title = "SketchUp_Model" if title.empty?
+      geometry = profile == PROFILE_GEOMETRY
 
-      if schema == LEGACY_VERSION
-        legacy_doc(model, title, nodes, gps, now)
-      else
-        {
-          "schema_version" => SCHEMA_VERSION,
-          "project_metadata" => {
-            "name" => title,
-            "export_date" => now.iso8601,
-            "units" => "mm",
-            "up_axis" => "Z_UP",
-            "global_origin_gps" => gps,
-            "metadata" => metadata_of(model, skip: SKIP_DICT_EXACT + SKIP_MODEL_DICT_EXACT),
-            "source" => {
-              "channel" => "sketchup",
-              "file" => model.path.to_s.empty? ? nil : File.basename(model.path),
-              "model_path" => model.path.to_s.empty? ? nil : model.path,
-              "sketchup_version" => Sketchup.version.to_s
-            },
-            "capabilities" => {
-              "hierarchy" => true,
-              "bbox_mm" => true,
-              "rotation" => true,
-              "tags" => true,
-              "definition_description" => true,
-              "metadata_dictionaries" => true,
-              "persistent_ids" => true,
-              "gps" => !gps.nil?
-            }
+      {
+        "schema_version" => SCHEMA_VERSION,
+        "export_profile" => profile,
+        "project_metadata" => {
+          "name" => title,
+          "export_date" => now.iso8601,
+          "units" => "mm",
+          "up_axis" => "Z_UP",
+          "global_origin_gps" => gps,
+          "metadata" => metadata_of(model, skip: SKIP_DICT_EXACT + SKIP_MODEL_DICT_EXACT),
+          "source" => {
+            "channel" => "sketchup",
+            "file" => model.path.to_s.empty? ? nil : File.basename(model.path),
+            "model_path" => model.path.to_s.empty? ? nil : model.path,
+            "sketchup_version" => Sketchup.version.to_s
           },
-          "nodes" => nodes,
-          "validation" => { "issues" => @issues }
-        }
-      end
+          "capabilities" => {
+            "hierarchy" => true,
+            "bbox_mm" => true,
+            "rotation" => true,
+            "tags" => true,
+            "definition_description" => true,
+            "metadata_dictionaries" => true,
+            "persistent_ids" => true,
+            "gps" => !gps.nil?,
+            "geometry" => geometry,
+            "geometry_schema" => geometry ? GEOMETRY_SCHEMA : nil,
+            "geometry_coordinate_space" => geometry ? "world_mm" : nil
+          }
+        },
+        "nodes" => nodes,
+        "validation" => { "issues" => @issues }
+      }
     end
 
-    def export_to_file(model, path, schema: SCHEMA_VERSION, entities: nil, now: Time.now.utc)
-      doc = build(model, entities: entities, schema: schema, now: now)
+    def export_to_file(model, path, profile: PROFILE_SPATIAL, entities: nil, now: Time.now.utc)
+      doc = build(model, entities: entities, profile: profile, now: now)
       File.write(path, JSON.pretty_generate(doc) + "\n")
       doc
     end
@@ -81,7 +93,7 @@ module CAD2LLM
     # ------------------------------------------------------------------
     # traversal
     # ------------------------------------------------------------------
-    def traverse(entities, path, parent_uid, parent_world, out, schema)
+    def traverse(entities, path, parent_uid, parent_world, out, profile)
       return unless entities
 
       entities.each do |entity|
@@ -100,8 +112,6 @@ module CAD2LLM
         world = parent_world * entity.transformation
 
         box = world_bounds(entity, world)
-        spatial = spatial_data(world, box, schema)
-
         node = {
           "uid" => uid,
           "persistent_id" => entity.persistent_id,
@@ -113,15 +123,16 @@ module CAD2LLM
           "hierarchy_path" => node_path,
           "parent_uid" => parent_uid
         }
-        node.merge!(spatial)
+        node.merge!(spatial_data(world, box))
         node["metadata"] = metadata_of(entity)
+        node["geometry"] = geometry_of(entity, world, uid) if profile == PROFILE_GEOMETRY
         out << node
         @issues << { "code" => "DUPLICATE_PERSISTENT_ID", "severity" => "info", "uid" => uid,
                      "message" => "persistent_id #{entity.persistent_id} reused across instances (definition children)" } if @pids&.include?(entity.persistent_id)
         (@pids ||= []) << entity.persistent_id
 
         kids = entity.is_a?(Sketchup::Group) ? entity.entities : entity.definition.entities
-        traverse(kids, node_path, uid, world, out, schema)
+        traverse(kids, node_path, uid, world, out, profile)
       end
     end
 
@@ -144,24 +155,10 @@ module CAD2LLM
       [mins, maxs]
     end
 
-    def spatial_data(world, box, schema)
+    def spatial_data(world, box)
       o = world.origin
       mm = MM_PER_INCH
       euler, quat = rotation_of(world)
-
-      if schema == LEGACY_VERSION
-        return { "spatial_data_m" => { "origin_xyz" => [round3(o.x * 0.0254), round3(o.y * 0.0254), round3(o.z * 0.0254)] } } if box.nil?
-
-        mins, maxs = box
-        center = mins.each_with_index.map { |v, i| (v + maxs[i]) / 2.0 }
-        size = mins.each_with_index.map { |v, i| maxs[i] - v }
-        return { "spatial_data_m" => {
-          "origin_xyz" => [round3(o.x * 0.0254), round3(o.y * 0.0254), round3(o.z * 0.0254)],
-          "center_xyz" => center.map { |v| round3(v * 0.0254) },
-          "size_xyz" => size.map { |v| round3(v * 0.0254) },
-          "transform_matrix" => legacy_matrix(world)
-        } }
-      end
 
       data = {
         "origin_mm" => { "x" => round3(o.x * mm), "y" => round3(o.y * mm), "z" => round3(o.z * mm) },
@@ -194,11 +191,233 @@ module CAD2LLM
       rows.map { |r| r.map { |v| v.round(4) } }
     end
 
-    # legacy v3 matrix had the translation in inches while units claimed metres
-    def legacy_matrix(world)
-      world.to_a.each_with_index.map do |v, i|
-        i.between?(12, 14) ? (v * 0.0254).round(6) : v.round(6)
+    # ------------------------------------------------------------------
+    # geometry profile
+    # ------------------------------------------------------------------
+    def geometry_of(entity, world, uid)
+      source = entity.is_a?(Sketchup::ComponentInstance) ? entity.definition.entities : entity.entities
+      points = {}
+      raw_faces = []
+      raw_edges = []
+
+      source.each do |item|
+        if item.is_a?(Sketchup::Face)
+          outer = loop_points(item.outer_loop, world, points)
+          next if outer.size < 3
+
+          holes = []
+          item.loops.each do |loop|
+            next if loop.equal?(item.outer_loop)
+
+            hole = loop_points(loop, world, points)
+            holes << hole if hole.size >= 3
+          end
+          raw_faces << {
+            "outer" => outer,
+            "holes" => holes,
+            "material" => material_name(item)
+          }
+        elsif item.is_a?(Sketchup::Edge)
+          a = add_point(points, item.start.position, world)
+          b = add_point(points, item.end.position, world)
+          raw_edges << [a, b] unless a == b
+        end
       end
+
+      keys = points.keys.sort
+      index = {}
+      vertices = keys.each_with_index.map do |key, i|
+        index[key] = i
+        key
+      end
+
+      edge_set = {}
+      raw_faces.each do |face|
+        [face["outer"], *face["holes"]].each do |loop|
+          loop.each_with_index do |key, i|
+            nxt = loop[(i + 1) % loop.size]
+            next if key == nxt
+
+            a, b = [index[key], index[nxt]].sort
+            edge_set[[a, b]] = true
+          end
+        end
+      end
+      raw_edges.each do |pair|
+        a, b = [index[pair[0]], index[pair[1]]].sort
+        edge_set[[a, b]] = true
+      end
+
+      faces = raw_faces.map do |face|
+        outer = canonical_loop(face["outer"].map { |key| index[key] })
+        holes = face["holes"].map { |hole| canonical_loop(hole.map { |key| index[key] }) }
+        normal, area = loop_metrics(outer, vertices)
+        holes.each do |hole|
+          _hole_normal, hole_area = loop_metrics(hole, vertices)
+          area -= hole_area
+        end
+        item = {
+          "outer" => outer,
+          "holes" => holes,
+          "normal" => normal,
+          "area_mm2" => round3(area)
+        }
+        item["material"] = face["material"] unless face["material"].nil?
+        item
+      end
+      faces.sort_by! { |face| [face["outer"], face["holes"]] }
+      faces.each_with_index { |face, i| face["id"] = format("f%04d", i) }
+
+      edges = edge_set.keys.sort
+      closed, oriented = manifold_state(faces)
+      geometry = {
+        "schema" => GEOMETRY_SCHEMA,
+        "scope" => "direct",
+        "status" => faces.empty? && edges.empty? ? "empty" : "ok",
+        "coordinate_space" => "world_mm",
+        "counts" => {
+          "vertices" => vertices.size,
+          "edges" => edges.size,
+          "faces" => faces.size,
+          "triangles" => faces.sum { |face| triangle_count(face["outer"], face["holes"]) }
+        },
+        "vertices" => vertices,
+        "edges" => edges,
+        "faces" => faces,
+        "closed" => closed,
+        "oriented" => oriented
+      }
+      volume = volume_mm3(faces, vertices) if closed && oriented
+      geometry["volume_mm3"] = volume unless volume.nil?
+      geometry["hash"] = geometry_hash(geometry)
+      geometry
+    rescue StandardError => e
+      @issues << {
+        "code" => "GEOMETRY_ERROR",
+        "severity" => "warn",
+        "uid" => uid,
+        "message" => "#{e.class}: #{e.message}"
+      }
+      {
+        "schema" => GEOMETRY_SCHEMA,
+        "scope" => "direct",
+        "coordinate_space" => "world_mm",
+        "status" => "error",
+        "counts" => { "vertices" => 0, "edges" => 0, "faces" => 0, "triangles" => 0 },
+        "vertices" => [],
+        "edges" => [],
+        "faces" => [],
+        "closed" => false,
+        "oriented" => false,
+        "hash" => nil
+      }
+    end
+
+    def loop_points(loop, world, points)
+      clean = []
+      loop.vertices.each do |vertex|
+        key = add_point(points, vertex.position, world)
+        clean << key unless clean.last == key
+      end
+      clean.pop if clean.size > 1 && clean.first == clean.last
+      clean
+    end
+
+    def add_point(points, point, world)
+      world_point = point.transform(world)
+      key = [round3(world_point.x * MM_PER_INCH), round3(world_point.y * MM_PER_INCH), round3(world_point.z * MM_PER_INCH)]
+      points[key] = true
+      key
+    end
+
+    def canonical_loop(ids)
+      return ids if ids.empty?
+
+      ids.rotate(ids.index(ids.min) || 0)
+    end
+
+    def loop_metrics(ids, vertices)
+      return [[0.0, 0.0, 0.0], 0.0] if ids.size < 3
+
+      nx = 0.0
+      ny = 0.0
+      nz = 0.0
+      ids.each_with_index do |id, i|
+        a = vertices[id]
+        b = vertices[ids[(i + 1) % ids.size]]
+        nx += (a[1] - b[1]) * (a[2] + b[2])
+        ny += (a[2] - b[2]) * (a[0] + b[0])
+        nz += (a[0] - b[0]) * (a[1] + b[1])
+      end
+      magnitude = Math.sqrt(nx * nx + ny * ny + nz * nz)
+      return [[0.0, 0.0, 0.0], 0.0] if magnitude < 1e-9
+
+      [[(nx / magnitude).round(6), (ny / magnitude).round(6), (nz / magnitude).round(6)], magnitude / 2.0]
+    end
+
+    def triangle_count(outer, holes)
+      base = [outer.size - 2, 0].max
+      base + holes.sum { |hole| [hole.size - 2, 0].max }
+    end
+
+    def manifold_state(faces)
+      tally = {}
+      faces.each do |face|
+        [face["outer"], *face["holes"]].each do |loop|
+          loop.each_with_index do |a, i|
+            b = loop[(i + 1) % loop.size]
+            next if a == b
+
+            key = [a, b].sort
+            entry = tally[key] ||= { "count" => 0, "balance" => 0 }
+            entry["count"] += 1
+            entry["balance"] += a < b ? 1 : -1
+          end
+        end
+      end
+      return [false, false] if tally.empty?
+
+      closed = tally.values.all? { |entry| entry["count"] == 2 }
+      [closed, closed && tally.values.all? { |entry| entry["balance"].zero? }]
+    end
+
+    def volume_mm3(faces, vertices)
+      return nil if faces.any? { |face| face["holes"].any? }
+
+      total = 0.0
+      faces.each do |face|
+        outer = face["outer"]
+        next if outer.size < 3
+
+        origin = vertices[outer[0]]
+        (1...(outer.size - 1)).each do |i|
+          a = vertices[outer[i]]
+          b = vertices[outer[i + 1]]
+          total += origin[0] * (a[1] * b[2] - a[2] * b[1]) -
+                   origin[1] * (a[0] * b[2] - a[2] * b[0]) +
+                   origin[2] * (a[0] * b[1] - a[1] * b[0])
+        end
+      end
+      (total.abs / 6.0).round(3)
+    end
+
+    def geometry_hash(geometry)
+      payload = {
+        "vertices" => geometry["vertices"],
+        "edges" => geometry["edges"],
+        "faces" => geometry["faces"]
+      }
+      Digest::SHA256.hexdigest(JSON.generate(payload))[0, 16]
+    end
+
+    def material_name(face)
+      material = face.material
+      return nil if material.nil?
+
+      name = material.respond_to?(:display_name) ? material.display_name : material.name
+      name.to_s.empty? ? nil : name.to_s
+    rescue StandardError
+      nil
     end
 
     def rotation_of(world)
@@ -275,21 +494,6 @@ module CAD2LLM
 
     def round3(value)
       value.round(3)
-    end
-
-    def legacy_doc(model, title, nodes, gps, now)
-      {
-        "schema_version" => LEGACY_VERSION,
-        "project_metadata" => {
-          "name" => title,
-          "export_date" => now.iso8601,
-          "global_origin_gps" => gps || [0.0, 0.0],
-          "units" => "meters",
-          "format_version" => "v3"
-        },
-        "nodes" => nodes,
-        "validation" => { "issues" => @issues }
-      }
     end
   end
 end

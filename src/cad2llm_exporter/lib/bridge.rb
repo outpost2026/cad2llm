@@ -445,36 +445,41 @@ module CAD2LLM
     end
 
     def export(model, params)
-      schema = params["schema"].to_s
-      schema = CAD2LLM::Exporter::SCHEMA_VERSION if schema.empty?
+      profile = params["profile"].to_s
+      profile = CAD2LLM::Exporter::PROFILE_SPATIAL if profile.empty?
+      unless CAD2LLM::Exporter::PROFILES.include?(profile)
+        raise ArgumentError, "unknown profile #{profile.inspect} (#{CAD2LLM::Exporter::PROFILES.join('|')})"
+      end
 
       if params["inline"] == true
-        doc = CAD2LLM::Exporter.build(model, schema: schema)
+        doc = CAD2LLM::Exporter.build(model, profile: profile)
         issues = doc["validation"]["issues"]
         return {
           "path" => nil,
           "bytes" => nil,
           "schema" => doc["schema_version"],
+          "profile" => doc["export_profile"],
           "nodes" => doc["nodes"].size,
           "issues" => issues.size,
           "errors" => issues.count { |i| i["severity"] == "error" },
-          "warnings" => issues.count { |i| i["severity"] == "warning" },
+          "warnings" => issues.count { |i| i["severity"] == "warn" },
           "document" => doc
         }
       end
 
       path = params["path"].to_s
-      path = default_export_path(model) if path.empty?
-      doc = CAD2LLM::Exporter.export_to_file(model, path, schema: schema)
+      path = default_export_path(model, profile) if path.empty?
+      doc = CAD2LLM::Exporter.export_to_file(model, path, profile: profile)
       issues = doc["validation"]["issues"]
       {
         "path" => path,
         "bytes" => File.size(path),
         "schema" => doc["schema_version"],
+        "profile" => doc["export_profile"],
         "nodes" => doc["nodes"].size,
         "issues" => issues.size,
         "errors" => issues.count { |i| i["severity"] == "error" },
-        "warnings" => issues.count { |i| i["severity"] == "warning" }
+        "warnings" => issues.count { |i| i["severity"] == "warn" }
       }
     end
 
@@ -580,12 +585,13 @@ module CAD2LLM
       { "undone" => true, "via" => "Sketchup.send_action('editUndo:')" }
     end
 
-    def default_export_path(model)
+    def default_export_path(model, profile = CAD2LLM::Exporter::PROFILE_SPATIAL)
       path = model.path.to_s
       dir = path.empty? ? Dir.pwd : File.dirname(path)
       base = path.empty? ? model.title.to_s.strip : File.basename(path, ".*")
       base = "SketchUp_Model" if base.empty?
-      File.join(dir, "#{base}_cad2llm_v4.json")
+      suffix = profile == CAD2LLM::Exporter::PROFILE_GEOMETRY ? "_cad2llm_v4_geometry.json" : "_cad2llm_v4.json"
+      File.join(dir, "#{base}#{suffix}")
     end
   end
 end

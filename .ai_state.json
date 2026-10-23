@@ -3,8 +3,12 @@
   "repo": "cad2llm",
   "branch": "main",
   "updated_at": "2026-10-23",
-  "status": "Commit d311209 (vocab overlay + stamp) pushnut. Geometry profil v4 (cad2llm/geometry/v1) implementovan v Ruby exporteru, bridge/CLI/menu, legacy v3 export odstranen. Ruby 239 checks, Python 106, schema validace OK, RBZ 4.3.0 prebuilt (20272 B). Extension 4.3.0 jeste neni nainstalovana.",
+  "status": "Commit 8e4b39a (geometry export profile) pushnut; predchozi d311209 (vocab overlay + stamp). Geometry profil v4 (cad2llm/geometry/v1) implementovan v Ruby exporteru, bridge/CLI/menu, legacy v3 export odstranen. Ruby 239 checks, Python 106, schema validace OK, RBZ 4.3.0 prebuilt (20272 B). Extension 4.3.0 jeste neni nainstalovana.",
   "last_commits": [
+    {
+      "hash": "8e4b39a",
+      "summary": "[CAD2LLM] feat: geometry export profile + retire legacy v3"
+    },
     {
       "hash": "d311209",
       "summary": "[CAD2LLM] feat: project vocab overlay + model stamp"

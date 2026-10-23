@@ -50,11 +50,12 @@ def derive_plan(
     doc: dict,
     rules: dict | None = None,
     *,
+    vocab_data: dict | None = None,
     names: bool = False,
     descriptions: bool = False,
     overwrite: bool = False,
 ) -> dict:
-    v = vocab.load_vocab(rules)
+    v = vocab_data if vocab_data is not None else vocab.load_vocab(rules)
     operations = []
     unresolved = []
     seen_descriptions = set()
@@ -178,6 +179,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", default=None)
     parser.add_argument("--rules", default=None)
     parser.add_argument(
+        "--vocab", default=None, help="project vocabulary overlay (JSON)"
+    )
+    parser.add_argument(
         "--names", action="store_true", help="rename generic/unsafe names to role_NN"
     )
     parser.add_argument(
@@ -194,10 +198,16 @@ def main(argv: list[str] | None = None) -> int:
     rules = None
     if args.rules:
         rules = json.loads(Path(args.rules).read_text(encoding="utf-8"))
+    try:
+        vocab_data = vocab.load_vocab(rules, overlay=args.vocab)
+    except (OSError, ValueError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 2
     doc = json.loads(Path(args.doc).read_text(encoding="utf-8"))
     result = derive_plan(
         doc,
         rules,
+        vocab_data=vocab_data,
         names=args.names,
         descriptions=args.descriptions,
         overwrite=args.overwrite,

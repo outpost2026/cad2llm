@@ -2,7 +2,7 @@
 """CAD2LLM CLI — deterministic CAD -> JSON pipeline (no LLM, no SketchUp).
 
 python tools/cad2llm.py convert  <model.dae> <out.json> [--rules rules.json] [--no-validate]
-python tools/cad2llm.py validate <doc.json> [--rules rules.json] [--out report.json]
+python tools/cad2llm.py validate <doc.json> [--rules rules.json] [--vocab overlay.json] [--out report.json]
 python tools/cad2llm.py summary  <doc.json> [--md report.md]
 python tools/cad2llm.py diff     <a.json> <b.json>
 python tools/cad2llm.py enrich   <doc.json> <out.json> [--excerpt]
@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import cad2llm_core as core
 import cad2llm_v5 as v5
+import cad2llm_vocab as vocab
 
 
 def _load_rules(path: str | None) -> dict:
@@ -30,6 +31,13 @@ def _load_rules(path: str | None) -> dict:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def _load_vocab(args, rules: dict) -> dict | None:
+    overlay = getattr(args, "vocab", None)
+    if not overlay:
+        return None
+    return vocab.load_vocab(rules, overlay=overlay)
+
+
 def _write_json(path: str, data: dict) -> None:
     Path(path).write_text(
         json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
@@ -38,8 +46,11 @@ def _write_json(path: str, data: dict) -> None:
 
 def cmd_convert(args) -> int:
     doc = core.parse_dae(args.dae)
+    rules = _load_rules(args.rules)
     if not args.no_validate:
-        doc["validation"] = core.validate(doc, _load_rules(args.rules))
+        doc["validation"] = core.validate(
+            doc, rules, vocab_data=_load_vocab(args, rules)
+        )
     else:
         doc["validation"] = {"issues": doc["validation"]["issues"]}
     _write_json(args.out, doc)
@@ -56,7 +67,8 @@ def cmd_convert(args) -> int:
 
 def cmd_validate(args) -> int:
     doc = core.load_any(args.doc)
-    v = core.validate(doc, _load_rules(args.rules))
+    rules = _load_rules(args.rules)
+    v = core.validate(doc, rules, vocab_data=_load_vocab(args, rules))
     doc["validation"] = v
     if args.out:
         _write_json(args.out, doc)
@@ -73,7 +85,10 @@ def cmd_validate(args) -> int:
 def cmd_summary(args) -> int:
     doc = core.load_any(args.doc)
     if not (doc.get("validation") or {}).get("z_table"):
-        doc["validation"] = core.validate(doc, _load_rules(args.rules))
+        rules = _load_rules(args.rules)
+        doc["validation"] = core.validate(
+            doc, rules, vocab_data=_load_vocab(args, rules)
+        )
     md = core.summarize(doc, max_rows=args.max_rows)
     print(md)
     if args.md:
@@ -122,12 +137,14 @@ def main(argv=None) -> int:
     c.add_argument("dae")
     c.add_argument("out")
     c.add_argument("--rules")
+    c.add_argument("--vocab", help="project vocabulary overlay (JSON)")
     c.add_argument("--no-validate", action="store_true")
     c.set_defaults(func=cmd_convert)
 
     v = sub.add_parser("validate", help="validate JSON (v4 or legacy v3)")
     v.add_argument("doc")
     v.add_argument("--rules")
+    v.add_argument("--vocab", help="project vocabulary overlay (JSON)")
     v.add_argument("--out")
     v.set_defaults(func=cmd_validate)
 
@@ -135,6 +152,7 @@ def main(argv=None) -> int:
     s.add_argument("doc")
     s.add_argument("--md")
     s.add_argument("--rules")
+    s.add_argument("--vocab", help="project vocabulary overlay (JSON)")
     s.add_argument("--max-rows", type=int, default=60)
     s.set_defaults(func=cmd_summary)
 
@@ -150,7 +168,11 @@ def main(argv=None) -> int:
     e.set_defaults(func=cmd_enrich)
 
     args = p.parse_args(argv)
-    return args.func(args)
+    try:
+        return args.func(args)
+    except (OSError, ValueError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":

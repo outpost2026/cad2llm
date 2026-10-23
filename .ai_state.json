@@ -2,7 +2,7 @@
   "schema": "ai_state/v1",
   "repo": "cad2llm",
   "branch": "main",
-  "updated_at": "2026-10-23T09:50:00Z",
+  "updated_at": "2026-10-23",
   "status": "Batch A-D hotovo: A drift guard v apply (snapshot + geometry_drift + rollback) + CLI verify; B derive generator planu z exportu (idempotentni, 0 ops na v41); C model target pro projektova metadata (exporter project_metadata.metadata, filtr GeoReference/GSU/temp); D sdileny vocab (rules.json) + validate + metadata-first classify. Ruby 197 (annotate 68, bridge 79, exporter 50), Python 84. Extension 4.2.2 nainstalovana a reloadnuta. Zmeny necommitnute.",
   "last_commits": [
     {
@@ -186,6 +186,24 @@
       ],
       "vocab_roles": 21,
       "vocab_zones": 8
+    },
+    "house_test02": {
+      "nodes": 8,
+      "ops_applied": 75,
+      "export_before_bytes": 13809,
+      "export_after_bytes": 16436,
+      "free_ratio": 0.735,
+      "overlaps_info": 2,
+      "python_tests": 86
+    },
+    "vocab_overlay_2026_10_23": {
+      "python_tests": 103,
+      "core_vocab_roles": 23,
+      "overlay_example_roles": 25,
+      "overlay_hash": "1b96827ae8e58209",
+      "house_test02_validate_errors": 0,
+      "house_test02_validate_warnings": 0,
+      "stamp_ops": 4
     }
   },
   "session_semantic_progress": [
@@ -279,7 +297,7 @@
     ],
     "gh_auth": "invalid token - HTTP 401 (no PR possible until gh auth login)",
     "bridge": "127.0.0.1:9877 (ephemeral port when port=0), token %LOCALAPPDATA%\\cad2llm\\bridge.json (temp fallback %TEMP%\\cad2llm_bridge.json), self-heal on poll; client tries both paths",
-    "annotate_plan": "cad2llm/annotate_plan/v1; target kind=entity|definition; transaction=per_op|single; resolution pid->hierarchy_path->name(+tag/definition), ambiguity refused; MAX_OPS 2000",
+    "annotate_plan": "cad2llm/annotate_plan/v1; target kind=entity|definition|model (model accepts only set_attribute, uid=model, SU_* reserved); transaction=per_op|single; resolution pid->hierarchy_path->name(+tag/definition), ambiguity refused; MAX_OPS 2000",
     "report_policy": "After every refactor/repo update: deliver a narrative dev report in chat = what changed (per file/area), what was achieved (metrics/tests), new features vs previous state, decisions/trade-offs, open risks, next step. Not just a changelog.",
     "v11_plan": "docs/plans/annotate_mistnost_2_v1_1.json - role/zone/system/ifc + tags + ASCII renames, 1 undo step",
     "reload_snippet": "load '<Plugins>/cad2llm_exporter/lib/annotate.rb'; load '<Plugins>/cad2llm_exporter/lib/bridge.rb'; CAD2LLM::Bridge.start",
@@ -303,7 +321,46 @@
       "annotate": 68,
       "bridge": 79,
       "exporter": 50
-    }
+    },
+    "house_test02": {
+      "export_before": "C:/Users/PC/Documents/SU2024/house_test02_cad2llm_v4.json (13809 B, 8 nodes)",
+      "export_after": "C:/Users/PC/Documents/SU2024/house_test02_cad2llm_v4_autofilled.json (16436 B, 8 nodes)",
+      "plan": "C:/Users/PC/Documents/SU2024/house_test02_autofill_plan.json (75 ops, single)",
+      "apply": {
+        "applied": 75,
+        "errors": 0,
+        "rolled_back": false,
+        "undo_steps": 1
+      },
+      "result": {
+        "names": "floor_01, wall_west, wall_east, wall_north, wall_south, ceiling_01, chimney_01, roof_01",
+        "definitions": "floor_slab, wall_side, wall_end, ceiling_slab, chimney_body, gable_roof",
+        "tags": {
+          "walls": 4,
+          "floor": 1,
+          "ceiling": 1,
+          "chimney": 1,
+          "roof": 1
+        },
+        "roles_known": 8,
+        "roles_unknown": 0,
+        "free_ratio": 0.735,
+        "relations": 1,
+        "validation": {
+          "errors": 0,
+          "warnings": 0,
+          "overlaps_info": 2
+        },
+        "verify_vs_live": "changed=0 missing=0 added=0",
+        "derive_again_ops": 0
+      },
+      "judgement_calls": [
+        "pid 39584 was tagged 'chimney' but bbox spans full footprint above ceiling -> retagged roof_01 (geometry evidence)",
+        "project metadata filled with test values purpose=test, phase=test, occupancy=0, note='pipeline smoke test'"
+      ]
+    },
+    "vocab_2026_10_23": "rules.json vocab: +roof (IfcRoof), +chimney (IfcBuildingElementProxy); aliases zaklady/foundation->floor, ceilling->ceiling, roof/strecha/střecha->roof, chimney/komin/komín->chimney. v5 now resolves tag role via shared vocab first (legacy TAG_ROLE_RULES only fallback) and parent inheritance runs before tag fallback.",
+    "vocab_overlay": "cad2llm/vocab_overlay/v1 add-only project overlay: validate/summary --vocab, derive --vocab, cad2llm_stamp.py writes project_id/vocab_version/vocab_base_version/vocab_hash to model cad2llm dict; core vocab immutable; deprecated_roles warn."
   },
   "proposals_M3_annotation": {
     "principle": "annotation must cost less than modeling; annotate component DEFINITIONS (28) not instances (46); infer the rest",

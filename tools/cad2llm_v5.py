@@ -18,6 +18,8 @@ import re
 import unicodedata
 from pathlib import Path
 
+import cad2llm_vocab as vocab
+
 SCHEMA_VERSION = "5.0"
 BRIEF_MAX_CHARS = 4000
 TOP_FINDINGS_MAX = 5
@@ -31,6 +33,8 @@ ROLE_RULES = [
     ("insulation", r"\b(izolace|izolacni|insulation)\b", "CLASS_B", 0.95),
     ("floor", r"\b(podlaha|podlahy|floor)\b", "CLASS_B", 0.9),
     ("ceiling", r"\b(strop|stropy|ceiling)\b", "CLASS_B", 0.9),
+    ("roof", r"\b(strecha|střecha|roof|krov)\b", "CLASS_B", 0.9),
+    ("chimney", r"\b(chimney|komin|komín|flue)\b", "CLASS_C", 0.8),
     ("beam", r"\b(nosnik|nosniky|beam|truss|sloup)\b", "CLASS_B", 0.85),
     ("window", r"\b(okno|okna|oken|windows?|window)\b", "CLASS_B", 0.9),
     ("door", r"\b(dvere|dveri|door|doors)\b", "CLASS_B", 0.9),
@@ -68,6 +72,8 @@ ROLE_ZONE_FALLBACK = {
     "void": "entry",
     "opening": "entry",
     "stove": "sleep",
+    "roof": "envelope",
+    "chimney": "envelope",
     "marker": "unknown",
 }
 
@@ -154,6 +160,20 @@ def _tag_lookup(rules: list, tag: str) -> tuple[str, str] | None:
     return None
 
 
+_VOCAB_CACHE: dict | None = None
+
+
+def _vocab_tag_role(tag: str) -> str | None:
+    """Shared vocabulary (rules.json) is the primary tag->role source."""
+    global _VOCAB_CACHE
+    if _VOCAB_CACHE is None:
+        try:
+            _VOCAB_CACHE = vocab.load_vocab()
+        except Exception:  # noqa: BLE001 - rules file is optional at runtime
+            _VOCAB_CACHE = {}
+    return vocab.tag_role(tag, _VOCAB_CACHE)
+
+
 def _apply_semantic_fallbacks(nodes: list) -> None:
     """Tag + parent-role fallback for nodes whose name gave no role/zone."""
     by_uid = {n.get("uid"): n for n in nodes}
@@ -168,21 +188,6 @@ def _apply_semantic_fallbacks(nodes: list) -> None:
         role_changed = False
 
         if role == "unknown":
-            found = _tag_lookup(TAG_ROLE_RULES, tag)
-            if found:
-                role, token = found
-                role_changed = True
-                s["confidence"] = max(float(s.get("confidence", 0.0)), 0.7)
-                evidence.append(
-                    {
-                        "rule_id": f"R_TAG_ROLE_{role.upper()}",
-                        "rule_class": "CLASS_C",
-                        "support_n": 1,
-                        "detail": f"tag token '{token}'",
-                    }
-                )
-
-        if role == "unknown":
             parent = by_uid.get(node.get("parent_uid"))
             parent_role = ((parent or {}).get("semantics") or {}).get("role")
             if parent_role in PARENT_INHERIT_ROLES:
@@ -195,6 +200,24 @@ def _apply_semantic_fallbacks(nodes: list) -> None:
                         "rule_class": "CLASS_C",
                         "support_n": 1,
                         "detail": f"parent {parent.get('uid')} role '{parent_role}'",
+                    }
+                )
+
+        if role == "unknown":
+            vocab_role = _vocab_tag_role(tag)
+            found = (
+                (vocab_role, tag) if vocab_role else _tag_lookup(TAG_ROLE_RULES, tag)
+            )
+            if found:
+                role, token = found
+                role_changed = True
+                s["confidence"] = max(float(s.get("confidence", 0.0)), 0.7)
+                evidence.append(
+                    {
+                        "rule_id": f"R_TAG_ROLE_{role.upper()}",
+                        "rule_class": "CLASS_C",
+                        "support_n": 1,
+                        "detail": f"tag token '{token}'",
                     }
                 )
 

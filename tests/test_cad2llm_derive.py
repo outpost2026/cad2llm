@@ -13,6 +13,25 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 
 import cad2llm_derive as derive  # noqa: E402
+import cad2llm_vocab as vocab  # noqa: E402
+
+
+def loft_overlay():
+    return {
+        "schema": vocab.OVERLAY_SCHEMA,
+        "project_id": "loft_demo",
+        "version": "1.0+loft",
+        "extends_version": "1.0",
+        "roles": {
+            "loft_ladder": {
+                "system": "furniture",
+                "zone": "sleep",
+                "ifc": "IfcStair",
+                "label_cs": "žebřík",
+            }
+        },
+        "tag_roles": {"zebrik": "loft_ladder"},
+    }
 
 
 def make_doc():
@@ -166,6 +185,33 @@ class DeriveTests(unittest.TestCase):
         blob = json.dumps(result["plan"])
         for forbidden in ("bbox", "spatial", "matrix", "size_mm"):
             self.assertNotIn(forbidden, blob)
+
+    def test_overlay_role_and_ifc_are_used(self):
+        doc = {
+            "nodes": [
+                {
+                    "persistent_id": 9,
+                    "uid": "9@ladder",
+                    "name": "ladder",
+                    "definition_name": "ladder",
+                    "definition_description": None,
+                    "tag": "zebrik",
+                    "metadata": {},
+                }
+            ]
+        }
+        merged = vocab.load_vocab(overlay=loft_overlay())
+        result = derive.derive_plan(doc, vocab_data=merged)
+        ops = result["plan"]["operations"]
+        attrs = {
+            (op["dict"], op["key"]): op["value"]
+            for op in ops
+            if op["op"] == "set_attribute"
+        }
+        self.assertEqual(attrs[("cad2llm", "role")], "loft_ladder")
+        self.assertEqual(attrs[("cad2llm", "zone")], "sleep")
+        self.assertEqual(attrs[("ifc", "type")], "IfcStair")
+        self.assertEqual(result["summary"]["unresolved"], 0)
 
     def test_cli_writes_plan(self):
         with tempfile.TemporaryDirectory() as tmp:

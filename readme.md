@@ -85,7 +85,14 @@ python tools\cad2llm_bridge.py apply plan.json           # plán + drift guard (
 python tools\cad2llm_bridge.py export baseline.json
 python tools\cad2llm_bridge.py verify --baseline baseline.json --live
 python tools\cad2llm_derive.py out.json --out plan.json  # skeleton plánu z exportu
+python tools\cad2llm_stamp.py out.json --vocab loft.vocab.json --out stamp.json
 ```
+
+Projektové termíny patří do **add-only overlaye** (`docs/VOCAB_OVERLAY.md`), ne do
+společného `rules.json`. Overlay se předává `validate`/`summary`/`derive` přes
+`--vocab`; `cad2llm_stamp.py` zapíše `project_id`, `vocab_version`,
+`vocab_base_version` a `vocab_hash` do modelového `cad2llm` dictionary, takže
+každý další export nese původ slovníku.
 
 `apply` před zápisem uloží snapshot exportu a po zápisu porovná geometrii; při driftu
 provede undo dávky a report označí `rolled_back`. `verify` vrací exit 3 při rozdílu
@@ -96,7 +103,7 @@ invariant (name, tag, role, zóna, IFC) — vhodné pro CI i pro kontrolu po ru�
 ## Testy
 
 ```powershell
-python -m unittest discover -s tests -v    # 84 testů (parse, matice, bbox, legacy, v5, vocab, derive, bridge)
+python -m unittest discover -s tests -v    # 103 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge)
 C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 197 checků (exporter, anotace, bridge)
 ```
 
@@ -147,7 +154,8 @@ cad2llm/
 │   ├── cad2llm_bridge.py           ← bridge klient: ping/export/apply/verify/undo
 │   ├── cad2llm_verify.py           ← invariantní diff exportů (exit 3 při driftu)
 │   ├── cad2llm_derive.py           ← skeleton plánu z exportu (derive)
-│   ├── cad2llm_vocab.py            ← sdílený slovník rolí/zón/IFC (rules.json)
+│   ├── cad2llm_stamp.py            ← modelový vocab stamp (project_id + hash)
+│   ├── cad2llm_vocab.py            ← sdílený slovník + projektový overlay
 │   └── cad2llm_rules.json          ← pravidla (name_pattern, clearance, overlaps, vocab)
 ├── src/
 │   ├── cad2llm_exporter.rb         ← loader + menu (Extensions → CAD2LLM)

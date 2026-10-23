@@ -595,7 +595,9 @@ def _overlap_volume(a, b) -> float:
     return v
 
 
-def validate(doc: dict, rules: dict | None = None) -> dict:
+def validate(
+    doc: dict, rules: dict | None = None, vocab_data: dict | None = None
+) -> dict:
     rules = {**DEFAULT_RULES, **(rules or {})}
     nodes = doc.get("nodes", [])
     issues = []
@@ -604,7 +606,7 @@ def validate(doc: dict, rules: dict | None = None) -> dict:
     ovl_min = float(rules["overlap_min_volume_mm3"])
 
     with_bbox = [n for n in nodes if _bbox(n)]
-    vocab = load_vocab(rules)
+    vocab = vocab_data if vocab_data is not None else load_vocab(rules)
     for n in nodes:
         s = n.get("spatial") or {}
         for vocab_issue in vocab_check_node(n, vocab):

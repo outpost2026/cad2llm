@@ -1,0 +1,32 @@
+{
+  "schema": "cad2llm/vocab_overlay/v1",
+  "project_id": "loft_demo",
+  "name": "Loft demo",
+  "description": "Example project overlay: loft ladder and guardrail.",
+  "version": "1.0+loft",
+  "extends_version": "1.0",
+  "roles": {
+    "loft_ladder": {
+      "system": "furniture",
+      "zone": "sleep",
+      "ifc": "IfcStair",
+      "label_cs": "žebřík"
+    },
+    "guardrail": {
+      "system": "envelope",
+      "zone": "envelope",
+      "ifc": "IfcRailing",
+      "label_cs": "zábradlí"
+    }
+  },
+  "tag_roles": {
+    "zebrik": "loft_ladder",
+    "ladder": "loft_ladder",
+    "madlo": "guardrail",
+    "railing": "guardrail"
+  },
+  "zones": [
+    "sleep"
+  ],
+  "deprecated_roles": []
+}

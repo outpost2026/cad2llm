@@ -11,5 +11,53 @@
       "why": "fire safety: radiant heat vs bedding (Outpost rule of thumb)"
     }
   ],
-  "required_metadata": {}
+  "required_metadata": {},
+  "vocab": {
+    "version": "1.0",
+    "zones": ["work", "sleep", "dining", "entry", "energy", "envelope", "storage", "space", "unknown"],
+    "roles": {
+      "wall": {"system": "envelope", "zone": "envelope", "ifc": "IfcWall", "label_cs": "stěna"},
+      "insulation": {"system": "envelope", "zone": "envelope", "ifc": "IfcCovering", "label_cs": "izolace"},
+      "floor": {"system": "envelope", "zone": "envelope", "ifc": "IfcSlab", "label_cs": "podlaha"},
+      "ceiling": {"system": "envelope", "zone": "envelope", "ifc": "IfcCovering", "label_cs": "strop"},
+      "beam": {"system": "envelope", "zone": "envelope", "ifc": "IfcBeam", "label_cs": "nosník"},
+      "window": {"system": "envelope", "zone": "envelope", "ifc": "IfcWindow", "label_cs": "okno"},
+      "door": {"system": "envelope", "zone": "envelope", "ifc": "IfcDoor", "label_cs": "dveře"},
+      "opening": {"system": "envelope", "zone": "entry", "ifc": "IfcOpeningElement", "label_cs": "otvor"},
+      "void": {"system": "space", "zone": "entry", "ifc": "IfcAnnotation", "label_cs": "průchod"},
+      "marker": {"system": "space", "zone": "unknown", "ifc": "IfcAnnotation", "label_cs": "pomocný objekt"},
+      "boundary": {"system": "space", "zone": "unknown", "ifc": "IfcAnnotation", "label_cs": "hranice prostoru"},
+      "space_boundary": {"system": "space", "zone": "unknown", "ifc": "IfcAnnotation", "label_cs": "půdorys místnosti"},
+      "stove": {"system": "energy", "zone": "sleep", "ifc": "IfcEnergyConversionDevice", "label_cs": "kamna"},
+      "bed": {"system": "furniture", "zone": "sleep", "ifc": "IfcFurniture", "label_cs": "postel"},
+      "worktop": {"system": "furniture", "zone": "work", "ifc": "IfcSystemFurnitureElement", "label_cs": "pracovní deska"},
+      "table": {"system": "furniture", "zone": "dining", "ifc": "IfcFurniture", "label_cs": "stůl"},
+      "furniture": {"system": "furniture", "zone": "unknown", "ifc": "IfcFurniture", "label_cs": "nábytek"},
+      "storage": {"system": "furniture", "zone": "storage", "ifc": "IfcFurniture", "label_cs": "úložný prvek"},
+      "battery": {"system": "energy", "zone": "energy", "ifc": "IfcElectricFlowStorageDevice", "label_cs": "baterie"},
+      "inverter": {"system": "energy", "zone": "energy", "ifc": "IfcEnergyConversionDevice", "label_cs": "střídač"},
+      "appliance": {"system": "energy", "zone": "energy", "ifc": "IfcElectricAppliance", "label_cs": "spotřebič"}
+    },
+    "tag_roles": {
+      "wall": "wall",
+      "walls": "wall",
+      "insulation": "insulation",
+      "floor": "floor",
+      "ceiling": "ceiling",
+      "beam": "beam",
+      "window": "window",
+      "door": "door",
+      "opening": "opening",
+      "stove": "stove",
+      "bed": "bed",
+      "worktop": "worktop",
+      "table": "table",
+      "furniture": "furniture",
+      "storage": "storage",
+      "battery": "battery",
+      "energy_nodes": "battery",
+      "inverter": "inverter",
+      "space_boundary": "space_boundary"
+    }
+  }
 }

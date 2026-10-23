@@ -27,6 +27,7 @@ module CAD2LLM
     TOKEN_FILE = "cad2llm_bridge.json"
     MAX_REQUEST_BYTES = 1_048_576
     MAX_OPS = 2000
+    GEOMETRY_TOL_MM = 0.001
     POLL_INTERVAL = 0.05
 
     module_function
@@ -444,10 +445,26 @@ module CAD2LLM
     end
 
     def export(model, params)
-      path = params["path"].to_s
-      path = default_export_path(model) if path.empty?
       schema = params["schema"].to_s
       schema = CAD2LLM::Exporter::SCHEMA_VERSION if schema.empty?
+
+      if params["inline"] == true
+        doc = CAD2LLM::Exporter.build(model, schema: schema)
+        issues = doc["validation"]["issues"]
+        return {
+          "path" => nil,
+          "bytes" => nil,
+          "schema" => doc["schema_version"],
+          "nodes" => doc["nodes"].size,
+          "issues" => issues.size,
+          "errors" => issues.count { |i| i["severity"] == "error" },
+          "warnings" => issues.count { |i| i["severity"] == "warning" },
+          "document" => doc
+        }
+      end
+
+      path = params["path"].to_s
+      path = default_export_path(model) if path.empty?
       doc = CAD2LLM::Exporter.export_to_file(model, path, schema: schema)
       issues = doc["validation"]["issues"]
       {
@@ -473,9 +490,65 @@ module CAD2LLM
         raise ArgumentError, "plan has #{normalized['operations'].size} operations (max #{MAX_OPS})"
       end
 
-      report = CAD2LLM::Annotate.run(normalized, model: model, dry_run: params["dry_run"] == true)
-      report["post_check"] = post_check(model) unless report["dry_run"]
+      dry_run = params["dry_run"] == true
+      pre = post_check(model)
+      snapshot = dry_run ? nil : write_snapshot(model, normalized)
+      report = CAD2LLM::Annotate.run(normalized, model: model, dry_run: dry_run)
+      return report if dry_run
+
+      post = post_check(model)
+      drift = geometry_drift(pre, post)
+      report["pre_check"] = pre
+      report["snapshot"] = snapshot
+      report["snapshot_error"] = @snapshot_error
+      if drift
+        steps = normalized["transaction"] == "single" ? 1 : report.dig("summary", "applied").to_i
+        steps = 1 if steps < 1
+        steps.times { undo }
+        report["rolled_back"] = true
+        report["rollback_reason"] = drift
+        report["rollback_undo_steps"] = steps
+        report["post_check"] = post_check(model)
+      else
+        report["rolled_back"] = false
+        report["post_check"] = post
+      end
       report
+    end
+
+    # Annotation plans are metadata-only. Any geometry delta between the
+    # pre-apply and post-apply snapshot means something else touched the model
+    # (or an op has a side effect) -> the caller rolls the transaction back.
+    def geometry_drift(pre, post)
+      return "node_count #{pre['nodes']} -> #{post['nodes']}" if pre["nodes"] != post["nodes"]
+
+      a = pre["union_bbox_mm"]
+      b = post["union_bbox_mm"]
+      return nil if a.nil? && b.nil?
+      return "union_bbox appeared/disappeared" if a.nil? || b.nil?
+
+      %w[min max].each do |edge|
+        a[edge].each_with_index do |value, axis|
+          delta = (b[edge][axis].to_f - value.to_f).abs
+          return "union_bbox #{edge}[#{axis}] #{value} -> #{b[edge][axis]}" if delta > GEOMETRY_TOL_MM
+        end
+      end
+      nil
+    end
+
+    def write_snapshot(model, plan)
+      @snapshot_error = nil
+      dir = File.join(File.dirname(default_token_path), "snapshots")
+      Dir.mkdir(dir) unless Dir.exist?(dir)
+      stamp = Time.now.utc.strftime("%Y%m%dT%H%M%SZ")
+      slug = plan["name"].to_s.gsub(/[^A-Za-z0-9._-]+/, "_").sub(/\A_+/, "").slice(0, 40)
+      slug = "plan" if slug.nil? || slug.empty?
+      path = File.join(dir, "#{stamp}_#{slug}.json")
+      CAD2LLM::Exporter.export_to_file(model, path)
+      path
+    rescue StandardError => e
+      @snapshot_error = "#{e.class}: #{e.message}"
+      nil
     end
 
     # In-memory re-export: the agent diffs this against the pre-apply export.

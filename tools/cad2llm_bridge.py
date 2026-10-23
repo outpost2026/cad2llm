@@ -24,6 +24,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+import cad2llm_verify as verify
+
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 9877
 TOKEN_FILE = "cad2llm_bridge.json"
@@ -157,6 +159,9 @@ class BridgeClient:
             params["schema"] = schema
         return self.call("export", params)
 
+    def export_inline(self) -> dict:
+        return self.call("export", {"inline": True})
+
     def apply(self, plan: dict | str | Path, dry_run: bool = False) -> dict:
         if isinstance(plan, (str, Path)):
             plan = json.loads(Path(plan).read_text(encoding="utf-8"))
@@ -167,7 +172,9 @@ class BridgeClient:
 
     def describe(self, *, pids=None, definitions=None) -> dict:
         targets = [{"persistent_id": pid} for pid in (pids or [])]
-        targets += [{"kind": "definition", "name": name} for name in (definitions or [])]
+        targets += [
+            {"kind": "definition", "name": name} for name in (definitions or [])
+        ]
         return self.call("describe", {"targets": targets} if targets else {})
 
     def purge_unused_tags(self) -> dict:
@@ -217,6 +224,28 @@ def _print_result(args, result: dict) -> None:
                 f"    post: nodes={post.get('nodes')} tags={post.get('tag_distribution')} "
                 f"issues={post.get('issues')}"
             )
+        if result.get("snapshot"):
+            print(f"    snapshot: {result.get('snapshot')}")
+        if result.get("rolled_back"):
+            print(f"    ROLLED BACK: {result.get('rollback_reason')}")
+    elif method == "verify":
+        counts = result.get("counts") or {}
+        status = "OK  " if result.get("ok") else "DRIFT"
+        print(
+            f"{status} nodes {counts.get('baseline')} vs {counts.get('current')} "
+            f"changed={counts.get('changed')} missing={counts.get('missing')} "
+            f"added={counts.get('added')}"
+        )
+        for item in result.get("drift") or []:
+            if item.get("field"):
+                print(
+                    f"    pid {item.get('pid')} {item.get('name')} {item.get('field')}: "
+                    f"expected={item.get('expected')!r} actual={item.get('actual')!r}"
+                )
+            else:
+                print(
+                    f"    pid {item.get('pid')} {item.get('name')}: {item.get('status')}"
+                )
     elif method == "attributes":
         print(
             f"OK  entities={result.get('entities_total')} "
@@ -236,14 +265,18 @@ def _print_result(args, result: dict) -> None:
         print(f"OK  items={result.get('count')}")
         for item in result.get("items") or []:
             if item.get("error"):
-                print(f"    ERROR {item.get('error')}: {item.get('name') or item.get('message')}")
+                print(
+                    f"    ERROR {item.get('error')}: {item.get('name') or item.get('message')}"
+                )
                 continue
             label = item.get("name")
             if item.get("persistent_id") is not None:
                 label = f"{label} (pid {item.get('persistent_id')})"
             print(f"    {item.get('kind')}: {label}")
             if item.get("tag"):
-                print(f"      tag: {item.get('tag')}  definition: {item.get('definition_name')}")
+                print(
+                    f"      tag: {item.get('tag')}  definition: {item.get('definition_name')}"
+                )
             description = item.get("description") or item.get("definition_description")
             if description:
                 print(f"      popis: {description}")
@@ -251,7 +284,9 @@ def _print_result(args, result: dict) -> None:
                 pairs = ", ".join(f"{k}={v}" for k, v in values.items())
                 print(f"      [{dict_name}] {pairs}")
     elif method == "purge-tags":
-        print(f"OK  purged={result.get('purged')}  tags {result.get('before')} -> {result.get('after')}")
+        print(
+            f"OK  purged={result.get('purged')}  tags {result.get('before')} -> {result.get('after')}"
+        )
     elif method == "undo":
         print(f"OK  undo via {result.get('via')}")
 
@@ -281,6 +316,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_apply.add_argument("--dry-run", action="store_true")
     p_apply.add_argument("--report", default=None)
 
+    p_verify = sub.add_parser("verify")
+    p_verify.add_argument("--baseline", required=True)
+    p_verify.add_argument("--current", default=None)
+    p_verify.add_argument("--live", action="store_true")
+    p_verify.add_argument("--fields", default=None)
+
     p_attr = sub.add_parser("attributes")
     p_attr.add_argument("--limit", type=int, default=200)
 
@@ -296,6 +337,28 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
+        if args.command == "verify":
+            baseline = verify.load_document(args.baseline)
+            if args.live:
+                if args.current:
+                    raise ValueError("--live and --current are mutually exclusive")
+                client = BridgeClient(
+                    host=args.host,
+                    port=args.port,
+                    token=args.token,
+                    timeout=args.timeout,
+                )
+                current = client.export_inline()["document"]
+            else:
+                if not args.current:
+                    raise ValueError("verify needs --current PATH or --live")
+                current = verify.load_document(args.current)
+            result = verify.compare_invariants(
+                baseline, current, verify.parse_fields(args.fields)
+            )
+            _print_result(args, result)
+            return 0 if result["ok"] else 3
+
         client = BridgeClient(
             host=args.host, port=args.port, token=args.token, timeout=args.timeout
         )
@@ -325,12 +388,14 @@ def main(argv: list[str] | None = None) -> int:
             if exc.code not in ("unreachable", "no_token_file", "bad_token_file")
             else 2
         )
-    except (OSError, json.JSONDecodeError) as exc:
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
         print(f"ERROR {exc}", file=sys.stderr)
         return 2
 
     _print_result(args, result)
-    if args.command == "apply" and (result.get("summary") or {}).get("errors"):
+    if args.command == "apply" and (
+        (result.get("summary") or {}).get("errors") or result.get("rolled_back")
+    ):
         return 3
     return 0
 

@@ -37,6 +37,7 @@ Pro analýzy závislé na `energy`/`zone`/`safety` je nutný export z SketchUpu.
     "units": "mm",
     "up_axis": "Z_UP",
     "global_origin_gps": [50.150888, 14.42336652],
+    "metadata": { "cad2llm": { "purpose": "bydleni", "phase": "studie" } },
     "source": {
       "channel": "sketchup",
       "file": "mistnost_2_sk24.skp",
@@ -52,6 +53,11 @@ Pro analýzy závislé na `energy`/`zone`/`safety` je nutný export z SketchUpu.
   "validation": { ... }
 }
 ```
+
+`project_metadata.metadata` nese slovníky **modelu** (projektová úroveň: účel,
+fáze, obsazenost, klima). Model se plní plánem s `target.kind = "model"`; export
+i annotátor čtou stejné slovníky, takže round-trip je idempotentní. `SU_*`
+slovníky se vynechávají stejně jako u uzlů.
 
 ## 3. Uzel
 

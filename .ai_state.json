@@ -2,8 +2,8 @@
   "schema": "ai_state/v1",
   "repo": "cad2llm",
   "branch": "main",
-  "updated_at": "2026-10-23T09:15:00Z",
-  "status": "M1+M2+M3 hotove (Ruby 178, Python 57). v1.1 anotace + popisy aplikovane, model ulozen. Exporter 4.1: definition_description v exportu (46/46, 28 unikatnich). IFC2x3 fix: inverter + stove -> IfcEnergyConversionDevice ve vsech 4 vrstvach (28/28 konzistentni). HTML Inspector funguje. Export mistnost_2_v1.1_cad2llm_v41.json (105836 B).",
+  "updated_at": "2026-10-23T09:50:00Z",
+  "status": "Batch A-D hotovo: A drift guard v apply (snapshot + geometry_drift + rollback) + CLI verify; B derive generator planu z exportu (idempotentni, 0 ops na v41); C model target pro projektova metadata (exporter project_metadata.metadata, filtr GeoReference/GSU/temp); D sdileny vocab (rules.json) + validate + metadata-first classify. Ruby 197 (annotate 68, bridge 79, exporter 50), Python 84. Extension 4.2.2 nainstalovana a reloadnuta. Zmeny necommitnute.",
   "last_commits": [
     {
       "hash": "940eeaa",
@@ -98,13 +98,13 @@
     "gui_sk24_file_bytes": 79592,
     "gui_sk24_md5": "FA7F16EDBFC6088B1306117B0EF111E8",
     "m1_m2_checks": {
-      "ruby_checks": 178,
+      "ruby_checks": 197,
       "ruby_files": {
-        "annotate": 60,
-        "bridge": 68,
+        "annotate": 68,
+        "bridge": 79,
         "exporter": 50
       },
-      "python_tests": 57,
+      "python_tests": 84,
       "suite": "SUITE OK (3 files)"
     },
     "v11_apply": {
@@ -173,6 +173,19 @@
       "brief_chars": 370,
       "errors": 0,
       "warnings": 0
+    },
+    "batch_abcd": {
+      "derived_ops_v41": 0,
+      "derived_ops_v41_with_descriptions": 0,
+      "derived_ops_v4_with_descriptions": 28,
+      "derived_unresolved_v41": 0,
+      "live_v42_export_bytes": 106157,
+      "live_v42_nodes": 46,
+      "live_project_metadata_keys": [
+        "IfcGUIDs"
+      ],
+      "vocab_roles": 21,
+      "vocab_zones": 8
     }
   },
   "session_semantic_progress": [
@@ -217,15 +230,16 @@
     "Author: save model (Ctrl+S) - descriptions applied in memory",
     "M4 option: flatten nested layers onto role tags (would allow purging 12 legacy tags, but loses per-nested-part visibility)",
     "Reload extension in SU (load annotate.rb, bridge.rb, Bridge.start) to activate set_description/describe/purge",
-    "Author approval to commit M1+M2+M3 as one change set",
     "Author: save model in SketchUp (Ctrl+S) - 728 changes live, single undo available",
-    "Author approval to commit M1+M2+plan+v1.1 results as one change set",
-    "M5: extend v5 vocab with storage/space_boundary (1 unknown role now), unify zone vocab (tech vs energy)",
     "M4: FastMCP wrapper (server name cad2llm) around tools/cad2llm_bridge.py",
     "M5: geometry ops (move/scale/create) with 1 mm diff gate",
     "M6: release 5.0.0 - RBZ rebuild, README refresh (cp1250, stale 42/40 test counts), zone vocab unify (tech vs energy)",
     "Optional: sanitize GPS 50.150888, 14.42336652 in examples before further public pushes (explicit approval needed)",
-    "Optional: clean stray artifacts outside workspace (blocked by deny guardrail)"
+    "Optional: clean stray artifacts outside workspace (blocked by deny guardrail)",
+    "Author: review + commit batch A-D (uncommitted: bridge/annotate/exporter, verify/vocab/derive tools, tests, docs, .ai_state)",
+    "M4 option: FastMCP wrapper (server name cad2llm) around tools/cad2llm_bridge.py",
+    "M5: geometry ops (move/scale/create) with 1 mm diff gate",
+    "M6: release 5.0.0 - RBZ rebuild, README refresh (stale counts fixed), zone vocab unify (tech vs energy)"
   ],
   "key_files": {
     "semantics_relations": "tools/cad2llm_v5.py",
@@ -248,12 +262,12 @@
     "bridge_client": "tools/cad2llm_bridge.py"
   },
   "notes": {
-    "tests_python": "python -m unittest discover -s tests -v",
-    "tests_ruby": "C:\\Ruby32-x64\\bin\\ruby.exe spec\\run_all.rb",
+    "tests_python": 84,
+    "tests_ruby": 197,
     "validate_export": "python tools\\cad2llm.py validate <file.json>",
     "diff_export": "python tools\\cad2llm.py diff <a.json> <b.json>",
     "ascii_check": "pwsh ..\\.scripts\\ascii_filenames_check.ps1",
-    "extension_version": "4.1.0",
+    "extension_version": "4.2.2",
     "extension_install_mode": "manual copy to Plugins (RBZ unchanged in releases/)",
     "skp_source_dir": "C:\\Users\\PC\\Documents\\SU2024",
     "skp_primary_model": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.0.skp",
@@ -279,7 +293,17 @@
     "exporter_v41_proposal": "Přidat do v4 exportu definition_description (z definition.description) + volitelně metadata.cad2llm.source/confidence. Bez toho LLM nevidí popisy, které jsme zapsali.",
     "exporter_41": "Exporter 4.2.1 (schema_version zustava 4.0, aditivni revize 4.1): node nese definition_description z ComponentDefinition#description, capabilities.definition_description=true. Skupiny = null. Overeno 46/46 nodes.",
     "ifc2x3_storage": "IFC typ existuje ve 4 vrstvach: (1) instance ifc/type = co cte exporter, (2) definition ifc/type = nekdo ho tam zapsal, nikdo ho necte, (3) definition AppliedSchemaTypes['IFC 2x3'], (4) definition 'IFC 2x3'/SchemaType URL = IFC Manager, (5) text v definition.description. IfcTransformer a IfcSpaceHeater jsou IFC4-only -> vsechny vrstvy prepsany na IfcEnergyConversionDevice. Fix plan: docs/plans/ifc2x3_fix_v2_mistnost_2_v1_1.json (8 ops, applied).",
-    "extension_installed": "Plugins: cad2llm_exporter.rb 4.2.1 + lib/exporter.rb (definition_description), annotate.rb, bridge.rb, html/inspector.html; SHA256 shodne se src."
+    "extension_installed": "Plugins: cad2llm_exporter.rb 4.2.1 + lib/exporter.rb (definition_description), annotate.rb, bridge.rb, html/inspector.html; SHA256 shodne se src.",
+    "apply_drift_guard": "Bridge apply: pre_check -> snapshot (<token dir>/snapshots/<stamp>_<slug>.json) -> apply -> geometry_drift(pre, post) s toleranci GEOMETRY_TOL_MM = 0.001; pri driftu undo (single=1, jinak pocet applied) a report nese rolled_back=true, rollback_reason, rollback_undo_steps. export RPC umi inline=true (bez zapisu).",
+    "verify_cli": "cad2llm_bridge.py verify --baseline B [--current C | --live] [--fields a,b]; exit 0 clean / 3 drift / 2 usage. DEFAULT_FIELDS: name, tag, definition_name, definition_description, metadata.cad2llm.role, metadata.cad2llm.zone, metadata.ifc.type.",
+    "derive_tool": "tools/cad2llm_derive.py: role = existujici metadata -> tag_roles -> v5.classify; zapisuje jen rozdily; --names prejmenuje genericka/jine nez [A-Za-z0-9_.-] jmena na <role>_NN; --descriptions sablona '<label_cs> · zona <zone> · <ifc>' (existing popis se neprepisuje bez --overwrite); --overwrite; set_description dedupovano per definice; vystup annotate_plan/v1 (transaction single).",
+    "project_metadata": "target.kind='model' povoluje jen set_attribute; model target -> uid='model'. Exporter uklada project_metadata.metadata = metadata_of(model, skip: SKIP_DICT_EXACT + ['GeoReference','GSU_ContributorsInfo','temp']). IfcGUIDs zustava. Priklad planu: docs/plans/project_metadata_example.json (hodnoty jsou placeholder, neaplikovano).",
+    "vocab_shared": "tools/cad2llm_rules.json -> vocab {version, zones, roles:{system,zone,ifc,label_cs}, tag_roles}; tools/cad2llm_vocab.py check_node -> UNKNOWN_ROLE/UNKNOWN_ZONE/IFC_ROLE_MISMATCH/TAG_ROLE_MISMATCH; cad2llm_core.validate pridava vocab issue pro kazdy uzel (i bez bboxu); v5.classify je metadata-first (CLASS_A, confidence 0.95, evidence R_METADATA_ROLE/R_METADATA_ZONE).",
+    "tests_ruby_breakdown": {
+      "annotate": 68,
+      "bridge": 79,
+      "exporter": 50
+    }
   },
   "proposals_M3_annotation": {
     "principle": "annotation must cost less than modeling; annotate component DEFINITIONS (28) not instances (46); infer the rest",

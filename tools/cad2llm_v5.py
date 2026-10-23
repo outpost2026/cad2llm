@@ -43,6 +43,7 @@ ROLE_RULES = [
     ("battery", r"\b(lfp|battery|baterie|baterka)\b", "CLASS_C", 0.8),
     ("inverter", r"\b(inverter|menic|mppt|victron)\b", "CLASS_C", 0.85),
     ("appliance", r"\b(lednice|fridge|spotrebic|appliance)\b", "CLASS_C", 0.8),
+    ("opening", r"\b(opening|otvor|otvory|prostup)\b", "CLASS_B", 0.85),
     ("void", r"\b(void|otvor|entry point|pruchod)\b", "CLASS_B", 0.85),
     ("marker", r"\b(marker|helper|pomocny)\b", "CLASS_C", 0.6),
     ("boundary", r"\b(boundary|hranice|pudorys)\b", "CLASS_C", 0.7),
@@ -65,6 +66,8 @@ ROLE_ZONE_FALLBACK = {
     "appliance": "tech",
     "storage": "storage",
     "void": "entry",
+    "opening": "entry",
+    "stove": "sleep",
     "marker": "unknown",
 }
 
@@ -216,8 +219,14 @@ def _apply_semantic_fallbacks(nodes: list) -> None:
             s["intent"] = "ARTIFACT" if degenerate else _intent_for(role)
 
 
-def classify(name: str, spatial: dict | None = None) -> dict:
-    """Deterministic role/zone/intent for one node. Unknown stays UNKNOWN."""
+def classify(
+    name: str, spatial: dict | None = None, metadata: dict | None = None
+) -> dict:
+    """Deterministic role/zone/intent for one node.
+
+    Authored metadata (cad2llm.role/zone) wins over name heuristics: the plan
+    already encodes the human decision. Unknown stays UNKNOWN.
+    """
     norm = _norm(name)
     evidence = []
 
@@ -259,6 +268,33 @@ def classify(name: str, spatial: dict | None = None) -> dict:
                 break
         if zone is None:
             zone = ROLE_ZONE_FALLBACK.get(role, "unknown")
+
+    cad = (metadata or {}).get("cad2llm") if metadata else None
+    cad = cad or {}
+    if cad.get("role"):
+        role = cad["role"]
+        rule_class = "CLASS_A"
+        confidence = max(confidence, 0.95)
+        evidence.append(
+            {
+                "rule_id": "R_METADATA_ROLE",
+                "rule_class": "CLASS_A",
+                "support_n": 1,
+                "detail": f"metadata role '{role}'",
+            }
+        )
+    if cad.get("zone") and cad["zone"] != "unknown":
+        zone = cad["zone"]
+        evidence.append(
+            {
+                "rule_id": "R_METADATA_ZONE",
+                "rule_class": "CLASS_A",
+                "support_n": 1,
+                "detail": f"metadata zone '{zone}'",
+            }
+        )
+    elif zone in (None, "unknown"):
+        zone = ROLE_ZONE_FALLBACK.get(role, "unknown")
 
     size = (spatial or {}).get("size_mm") or {}
     degenerate = bool(size) and any(float(size.get(ax, 0)) < 1.0 for ax in "xyz")
@@ -954,7 +990,9 @@ def enrich(doc: dict, source_hash: str | None = None, basis: str = "full") -> di
         )
 
     for node in out.get("nodes", []):
-        node["semantics"] = classify(node.get("name", ""), node.get("spatial"))
+        node["semantics"] = classify(
+            node.get("name", ""), node.get("spatial"), node.get("metadata")
+        )
         node.setdefault("metadata", {})
 
     _apply_semantic_fallbacks(out.get("nodes", []))

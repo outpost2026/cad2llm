@@ -168,6 +168,18 @@ js = dlg.scripts.last.to_s
 check("inspector panel renders selection") { js.include?("cad2llmRender(") && js.include?("990") }
 check("inspector panel no error message") { $ui_messages.none? { |m| m.to_s.include?("Inspector panel failed") } }
 
+# ---------------------------------------------------------------- 10. model metadata
+project_model = model_with([mk_group(name: "bed_m", pid: 991, size_in: [1, 1, 1])])
+project_model.set_attribute("cad2llm", "purpose", "bydleni")
+project_model.set_attribute("cad2llm", "phase", "studie")
+project_model.set_attribute("GeoReference", "Latitude", 50.1)
+project_model.set_attribute("SU_meta", "x", 1)
+proj = CAD2LLM::Exporter.build(project_model)["project_metadata"]
+eq("model metadata exported", proj["metadata"]["cad2llm"]["purpose"], "bydleni")
+eq("model metadata phase", proj["metadata"]["cad2llm"]["phase"], "studie")
+check("model GeoReference skipped") { !proj["metadata"].key?("GeoReference") }
+check("model SU_ dict skipped") { !proj["metadata"].key?("SU_meta") }
+
 puts
 if $failures.empty?
   puts "ALL OK (#{$checks} checks)"

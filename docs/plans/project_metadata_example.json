@@ -1,0 +1,36 @@
+{
+  "schema": "cad2llm/annotate_plan/v1",
+  "name": "project metadata example",
+  "note": "EXAMPLE ONLY - placeholder values. Confirm project facts before apply; model target writes model-level dictionaries exported as project_metadata.metadata.",
+  "transaction": "single",
+  "operations": [
+    {
+      "op": "set_attribute",
+      "target": { "kind": "model" },
+      "dict": "cad2llm",
+      "key": "purpose",
+      "value": "bydleni"
+    },
+    {
+      "op": "set_attribute",
+      "target": { "kind": "model" },
+      "dict": "cad2llm",
+      "key": "phase",
+      "value": "studie"
+    },
+    {
+      "op": "set_attribute",
+      "target": { "kind": "model" },
+      "dict": "cad2llm",
+      "key": "occupancy",
+      "value": "2_osoby"
+    },
+    {
+      "op": "set_attribute",
+      "target": { "kind": "model" },
+      "dict": "cad2llm",
+      "key": "climate_zone",
+      "value": "Cfb"
+    }
+  ]
+}

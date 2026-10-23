@@ -12,7 +12,7 @@ module CAD2LLM
   unless file_loaded?(__FILE__)
     ex = SketchupExtension.new("CAD2LLM Exporter", "cad2llm_exporter/main")
     ex.description = "Export SketchUp models to deterministic spatial JSON (schema v4) for LLM/RAG pipelines."
-    ex.version     = "4.2.1"
+    ex.version     = "4.2.2"
     ex.copyright   = "MIT License"
     ex.creator     = "CAD2LLM Community"
     Sketchup.register_extension(ex, true)

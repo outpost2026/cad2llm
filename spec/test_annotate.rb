@@ -268,6 +268,33 @@ def_bad_kind = CAD2LLM::Annotate.run(plan(
 ), model: model) rescue $!
 check("bad target kind raises") { def_bad_kind.is_a?(ArgumentError) }
 
+# ------------------------------------------------- 8. model target (project metadata)
+model_ops = CAD2LLM::Annotate.run(plan(
+  op("set_attribute", { "kind" => "model" }, "dict" => "cad2llm", "key" => "purpose", "value" => "bydleni"),
+  op("set_attribute", { "kind" => "model" }, "dict" => "cad2llm", "key" => "phase", "value" => "studie")
+), model: model)
+eq("model attrs applied", model_ops["summary"]["applied"], 2)
+eq("model uid", model_ops["operations"][0]["uid"], "model")
+eq("model attr stored", model.get_attribute("cad2llm", "purpose"), "bydleni")
+eq("model resolved title", model_ops["operations"][0]["resolved_model"], "mistnost_2_v1")
+exported = CAD2LLM::Exporter.build(model)
+eq("export project metadata", exported["project_metadata"]["metadata"]["cad2llm"]["phase"], "studie")
+
+model_same = CAD2LLM::Annotate.run(plan(
+  op("set_attribute", { "kind" => "model" }, "dict" => "cad2llm", "key" => "purpose", "value" => "bydleni")
+), model: model)
+eq("model attr idempotent", model_same["operations"][0]["status"], "unchanged")
+
+model_bad = CAD2LLM::Annotate.run(plan(
+  op("rename", { "kind" => "model" }, "name" => "x")
+), model: model)
+eq("model rename refused", model_bad["operations"][0]["code"], "INVALID_OP")
+
+model_reserved = CAD2LLM::Annotate.run(plan(
+  op("set_attribute", { "kind" => "model" }, "dict" => "SU_meta", "key" => "x", "value" => 1)
+), model: model)
+eq("model reserved dict refused", model_reserved["operations"][0]["code"], "RESERVED_DICT")
+
 puts
 if $failures.empty?
   puts "ALL OK (#{$checks} checks)"

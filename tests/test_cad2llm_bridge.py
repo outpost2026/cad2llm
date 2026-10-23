@@ -242,5 +242,131 @@ class CliTests(unittest.TestCase):
             server.close()
 
 
+class VerifyTests(unittest.TestCase):
+    @staticmethod
+    def node(pid, name, tag, role, zone, ifc_type):
+        return {
+            "persistent_id": pid,
+            "name": name,
+            "tag": tag,
+            "definition_name": name,
+            "definition_description": None,
+            "metadata": {
+                "cad2llm": {"role": role, "zone": zone},
+                "ifc": {"type": ifc_type},
+            },
+        }
+
+    def doc(self, *nodes):
+        return {"schema_version": "4.0", "nodes": list(nodes)}
+
+    def setUp(self):
+        self.base = self.doc(
+            self.node(
+                1,
+                "battery_main",
+                "battery",
+                "battery",
+                "energy",
+                "IfcElectricFlowStorageDevice",
+            ),
+            self.node(2, "wall_west", "wall", "wall", "envelope", "IfcWall"),
+        )
+        self.verify = __import__("cad2llm_verify")
+
+    def test_identical_is_clean(self):
+        result = self.verify.compare_invariants(
+            self.base, json.loads(json.dumps(self.base))
+        )
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["counts"]["changed"], 0)
+        self.assertEqual(result["nodes_compared"], 2)
+
+    def test_changed_field(self):
+        cur = json.loads(json.dumps(self.base))
+        cur["nodes"][1]["tag"] = "walls"
+        result = self.verify.compare_invariants(self.base, cur)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["counts"]["changed"], 1)
+        self.assertEqual(result["drift"][0]["field"], "tag")
+        self.assertEqual(result["drift"][0]["expected"], "wall")
+        self.assertEqual(result["drift"][0]["actual"], "walls")
+
+    def test_missing_and_added(self):
+        cur = self.doc(
+            self.node(2, "wall_west", "wall", "wall", "envelope", "IfcWall"),
+            self.node(
+                3, "stove", "stove", "stove", "sleep", "IfcEnergyConversionDevice"
+            ),
+        )
+        result = self.verify.compare_invariants(self.base, cur)
+        statuses = sorted(item["status"] for item in result["drift"])
+        self.assertEqual(statuses, ["added", "missing"])
+        self.assertEqual(result["counts"]["missing"], 1)
+        self.assertEqual(result["counts"]["added"], 1)
+
+    def test_missing_key_equals_null(self):
+        base = self.doc(self.node(1, "x", "t", "r", "z", "IfcWall"))
+        cur = json.loads(json.dumps(base))
+        del cur["nodes"][0]["definition_description"]
+        result = self.verify.compare_invariants(base, cur)
+        self.assertTrue(result["ok"])
+
+    def test_custom_fields(self):
+        cur = json.loads(json.dumps(self.base))
+        cur["nodes"][0]["name"] = "battery_renamed"
+        result = self.verify.compare_invariants(self.base, cur, ["name"])
+        self.assertEqual(result["counts"]["changed"], 1)
+        self.assertEqual(result["fields"], ["name"])
+
+    def test_parse_fields(self):
+        self.assertEqual(self.verify.parse_fields("name, tag ,"), ["name", "tag"])
+        self.assertIn("metadata.ifc.type", self.verify.parse_fields(None))
+
+    def test_cli_clean_and_drift_exit_codes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            base_path = tmp_path / "base.json"
+            cur_path = tmp_path / "cur.json"
+            base_path.write_text(json.dumps(self.base), encoding="utf-8")
+            cur_path.write_text(json.dumps(self.base), encoding="utf-8")
+
+            out = io.StringIO()
+            with redirect_stdout(out):
+                code = bridge.main(
+                    [
+                        "--json",
+                        "verify",
+                        "--baseline",
+                        str(base_path),
+                        "--current",
+                        str(cur_path),
+                    ]
+                )
+            self.assertEqual(code, 0)
+            self.assertTrue(json.loads(out.getvalue())["ok"])
+
+            drifted = json.loads(json.dumps(self.base))
+            drifted["nodes"][0]["metadata"]["ifc"]["type"] = "IfcTransformer"
+            cur_path.write_text(json.dumps(drifted), encoding="utf-8")
+            out = io.StringIO()
+            with redirect_stdout(out):
+                code = bridge.main(
+                    ["verify", "--baseline", str(base_path), "--current", str(cur_path)]
+                )
+            self.assertEqual(code, 3)
+            self.assertIn("DRIFT", out.getvalue())
+
+    def test_cli_requires_current_or_live(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base_path = Path(tmp) / "base.json"
+            base_path.write_text(json.dumps(self.base), encoding="utf-8")
+            err = io.StringIO()
+            with redirect_stderr(err):
+                code = bridge.main(["verify", "--baseline", str(base_path)])
+            self.assertEqual(code, 2)
+            self.assertIn("--current", err.getvalue())
+
+
 if __name__ == "__main__":
     unittest.main()

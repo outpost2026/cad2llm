@@ -48,10 +48,11 @@
         "kind": {
           "enum": [
             "entity",
-            "definition"
+            "definition",
+            "model"
           ],
           "default": "entity",
-          "description": "definition targets match target.name against component definition names."
+          "description": "definition targets match target.name against component definition names; model targets write model-level dictionaries and accept only set_attribute."
         },
         "persistent_id": {
           "type": "integer",

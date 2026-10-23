@@ -17,6 +17,8 @@ module CAD2LLM
     MM_PER_INCH = 25.4
     SKIP_DICT_PREFIX = "SU_"
     SKIP_DICT_EXACT = ["FormFonts", "BIM", "BIM_Ifc", "DynamicComponents"].freeze
+    # model-level system dictionaries: GPS duplicate, Trimble contributor noise, scratchpad
+    SKIP_MODEL_DICT_EXACT = ["GeoReference", "GSU_ContributorsInfo", "temp"].freeze
 
     module_function
 
@@ -46,6 +48,7 @@ module CAD2LLM
             "units" => "mm",
             "up_axis" => "Z_UP",
             "global_origin_gps" => gps,
+            "metadata" => metadata_of(model, skip: SKIP_DICT_EXACT + SKIP_MODEL_DICT_EXACT),
             "source" => {
               "channel" => "sketchup",
               "file" => model.path.to_s.empty? ? nil : File.basename(model.path),
@@ -233,14 +236,14 @@ module CAD2LLM
        [qw.round(6), qx.round(6), qy.round(6), qz.round(6)]]
     end
 
-    def metadata_of(entity)
+    def metadata_of(entity, skip: SKIP_DICT_EXACT)
       out = {}
       dicts = entity.attribute_dictionaries
       return out if dicts.nil?
 
       dicts.each do |dict|
         name = dict.name.to_s
-        next if name.start_with?(SKIP_DICT_PREFIX) || SKIP_DICT_EXACT.include?(name)
+        next if name.start_with?(SKIP_DICT_PREFIX) || skip.include?(name)
 
         values = {}
         dict.each_pair do |key, value|

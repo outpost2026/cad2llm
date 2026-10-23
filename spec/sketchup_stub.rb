@@ -310,7 +310,7 @@ module Sketchup
   end
 
   class Model
-    attr_accessor :entities, :title, :path, :shadow_info, :selection
+    attr_accessor :entities, :title, :path, :shadow_info, :selection, :attribute_dictionaries
     attr_reader :operation_log
 
     def initialize
@@ -370,6 +370,19 @@ module Sketchup
     def start_operation(name = nil, *rest)
       @operation_log << { "name" => name, "state" => "open", "args" => rest, "undo_seen" => true }
       true
+    end
+
+    def get_attribute(dict_name, key, default = nil)
+      dict = @attribute_dictionaries.find { |d| d.name == dict_name }
+      return default if dict.nil? || !dict.key?(key)
+
+      dict[key]
+    end
+
+    def set_attribute(dict_name, key, value)
+      dict = (@attribute_dictionaries.find { |d| d.name == dict_name } ||
+              (@attribute_dictionaries << AttrDict.new(dict_name)).last)
+      dict[key] = value
     end
 
     def commit_operation

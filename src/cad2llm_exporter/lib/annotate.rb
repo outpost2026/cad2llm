@@ -92,8 +92,8 @@ module CAD2LLM
         raise ArgumentError, "operation #{i}: unknown op #{kind.inspect} (allowed: #{OPS.join(', ')})" unless OPS.include?(kind)
         raise ArgumentError, "operation #{i}: missing target" unless op["target"].is_a?(Hash)
         kind = op["target"]["kind"]
-        unless kind.nil? || %w[entity definition].include?(kind)
-          raise ArgumentError, "operation #{i}: target.kind must be entity or definition"
+        unless kind.nil? || %w[entity definition model].include?(kind)
+          raise ArgumentError, "operation #{i}: target.kind must be entity, definition or model"
         end
       end
 
@@ -152,8 +152,13 @@ module CAD2LLM
     end
 
     # Returns [entry, nil] or [nil, [code, message]]
-    def resolve(entries, defs, target)
+    def resolve(entries, defs, target, model = nil)
       return resolve_definition(defs, target) if target["kind"] == "definition"
+      if target["kind"] == "model"
+        return [nil, ["INVALID_TARGET", "model target needs an active model"]] if model.nil?
+
+        return [{ "kind" => "model", "model" => model, "name" => "model" }, nil]
+      end
 
       strategies = []
       strategies << :persistent_id if target.key?("persistent_id")
@@ -249,20 +254,35 @@ module CAD2LLM
     # ------------------------------------------------------------------
     def apply_one(op, index, entries, defs, model, dry_run, in_transaction = false)
       result = { "index" => index, "op" => op["op"], "target" => op["target"] }
-      entry, error = resolve(entries, defs, op["target"])
+      entry, error = resolve(entries, defs, op["target"], model)
       if entry.nil?
         code, message = error
         return result.merge("status" => "error", "code" => code, "message" => message)
       end
 
-      definition = entry["kind"] == "definition"
-      subject = definition ? entry["definition"] : entry["entity"]
-      if definition
+      kind = entry["kind"]
+      definition = kind == "definition"
+      subject = if kind == "model"
+                  entry["model"]
+                elsif definition
+                  entry["definition"]
+                else
+                  entry["entity"]
+                end
+      if kind == "model"
+        result["uid"] = "model"
+        result["resolved_model"] = subject.title.to_s
+      elsif definition
         result["uid"] = "definition:#{entry['name']}"
         result["resolved_definition"] = entry["name"]
       else
         result["uid"] = "#{entry['persistent_id']}@#{entry['path'].join('/')}"
         result["resolved_path"] = entry["path"]
+      end
+
+      if kind == "model" && op["op"] != "set_attribute"
+        return result.merge("status" => "error", "code" => "INVALID_OP",
+                            "message" => "model target supports only set_attribute")
       end
 
       case op["op"]

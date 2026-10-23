@@ -19,6 +19,9 @@ from pathlib import Path
 
 from lxml import etree
 
+from cad2llm_vocab import check_node as vocab_check_node
+from cad2llm_vocab import load_vocab
+
 NS = "{http://www.collada.org/2005/11/COLLADASchema}"
 SCHEMA_VERSION = "4.0"
 MISSING = object()
@@ -601,8 +604,11 @@ def validate(doc: dict, rules: dict | None = None) -> dict:
     ovl_min = float(rules["overlap_min_volume_mm3"])
 
     with_bbox = [n for n in nodes if _bbox(n)]
+    vocab = load_vocab(rules)
     for n in nodes:
         s = n.get("spatial") or {}
+        for vocab_issue in vocab_check_node(n, vocab):
+            issues.append({**vocab_issue, "uid": n.get("uid")})
         if not _bbox(n):
             issues.append(
                 {

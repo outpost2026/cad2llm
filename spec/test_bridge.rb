@@ -100,6 +100,13 @@ Dir.mktmpdir do |dir|
   eq("export explicit path", out2["result"]["path"], explicit)
   check("export explicit file") { File.exist?(explicit) }
 
+  inline = call("export", { "inline" => true }, token: token)
+  eq("export inline ok", inline["ok"], true)
+  eq("export inline nodes", inline["result"]["nodes"], 2)
+  eq("export inline path nil", inline["result"]["path"], nil)
+  eq("export inline document nodes", inline["result"]["document"]["nodes"].size, 2)
+  eq("export inline schema", inline["result"]["document"]["schema_version"], "4.0")
+
   # -------------------------------------------------------------- 5. apply
   plan = {
     "schema" => "cad2llm/annotate_plan/v1",
@@ -124,6 +131,21 @@ Dir.mktmpdir do |dir|
   eq("apply post_check nodes", real["result"]["post_check"]["nodes"], 2)
   eq("apply post_check tags", real["result"]["post_check"]["tag_distribution"], { "bed_m2" => 1, "walls" => 1 })
   check("apply post_check union") { !real["result"]["post_check"]["union_bbox_mm"].nil? }
+  check("apply snapshot written") { real["result"]["snapshot"] && File.exist?(real["result"]["snapshot"]) }
+  eq("apply pre_check nodes", real["result"]["pre_check"]["nodes"], 2)
+  eq("apply rolled_back false", real["result"]["rolled_back"], false)
+  eq("geometry_drift nil when metadata-only",
+     CAD2LLM::Bridge.geometry_drift(real["result"]["pre_check"], real["result"]["post_check"]), nil)
+  drifted_bbox = Marshal.load(Marshal.dump(real["result"]["post_check"]))
+  drifted_bbox["union_bbox_mm"]["max"][2] += 10
+  check("geometry_drift detects union change") do
+    CAD2LLM::Bridge.geometry_drift(real["result"]["pre_check"], drifted_bbox)&.include?("union_bbox")
+  end
+  drifted_count = Marshal.load(Marshal.dump(real["result"]["post_check"]))
+  drifted_count["nodes"] += 1
+  check("geometry_drift detects node count") do
+    CAD2LLM::Bridge.geometry_drift(real["result"]["pre_check"], drifted_count)&.include?("node_count")
+  end
 
   # --------------------------------------------------------------- 6. undo
   Sketchup.actions.clear

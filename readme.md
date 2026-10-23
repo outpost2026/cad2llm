@@ -71,14 +71,33 @@ Schémata a návrh: [`docs/DESIGN_v5.md`](docs/DESIGN_v5.md), [`docs/schema/`](d
    - **Export (v4)** — aktuální schema, tagy + metadata
    - **Export legacy JSON (v3)** — jen pro kompatibilitu se starými konzumenty
    - **Export selection (v4)** — jen vybrané entity
+   - **Bridge: start/stop, Inspector panel** — živé RPC nad otevřeným modelem
+
+## Bridge + anotace (M1–M3)
+
+Extension naslouchá na `127.0.0.1:9877` (token v `%LOCALAPPDATA%\cad2llm\bridge.json`).
+Veškeré úpravy jsou **jen metadata** (atributy, tagy, jména, popisy definic), geometrie se nemění.
+
+```powershell
+python tools\cad2llm_bridge.py ping                      # stav + verze SU
+python tools\cad2llm_bridge.py export out.json           # v4 export živého modelu
+python tools\cad2llm_bridge.py apply plan.json           # plán + drift guard (snapshot, rollback)
+python tools\cad2llm_bridge.py export baseline.json
+python tools\cad2llm_bridge.py verify --baseline baseline.json --live
+python tools\cad2llm_derive.py out.json --out plan.json  # skeleton plánu z exportu
+```
+
+`apply` před zápisem uloží snapshot exportu a po zápisu porovná geometrii; při driftu
+provede undo dávky a report označí `rolled_back`. `verify` vrací exit 3 při rozdílu
+invariant (name, tag, role, zóna, IFC) — vhodné pro CI i pro kontrolu po ručním zásahu.
 
 * * *
 
 ## Testy
 
 ```powershell
-python -m unittest discover -s tests -v    # 42 testů (parse, matice, bbox, legacy, v5)
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 40 checků (exporter bez SketchUpu)
+python -m unittest discover -s tests -v    # 84 testů (parse, matice, bbox, legacy, v5, vocab, derive, bridge)
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 197 checků (exporter, anotace, bridge)
 ```
 
 Ruby testy běží proti `spec/sketchup_stub.rb` (world-space `Group#bounds`,
@@ -125,12 +144,19 @@ cad2llm/
 │   ├── cad2llm.py                  ← CLI: convert | validate | summary | diff | enrich
 │   ├── cad2llm_core.py             ← DAE parser, schema v4, validace
 │   ├── cad2llm_v5.py               ← F1+F2: sémantika, relace, metrics, brief
-│   └── cad2llm_rules.json          ← pravidla (name_pattern, clearance, overlaps)
+│   ├── cad2llm_bridge.py           ← bridge klient: ping/export/apply/verify/undo
+│   ├── cad2llm_verify.py           ← invariantní diff exportů (exit 3 při driftu)
+│   ├── cad2llm_derive.py           ← skeleton plánu z exportu (derive)
+│   ├── cad2llm_vocab.py            ← sdílený slovník rolí/zón/IFC (rules.json)
+│   └── cad2llm_rules.json          ← pravidla (name_pattern, clearance, overlaps, vocab)
 ├── src/
 │   ├── cad2llm_exporter.rb         ← loader + menu (Extensions → CAD2LLM)
 │   ├── cad2llm_exporter/
 │   │   ├── main.rb                 ← entry point
-│   │   └── lib/exporter.rb         ← exportér (v4 + legacy v3)
+│   │   └── lib/
+│   │       ├── exporter.rb         ← exportér (v4 + legacy v3)
+│   │       ├── annotate.rb         ← plánovač anotací (entity/definition/model)
+│   │       └── bridge.rb           ← TCP RPC server + drift guard
 │   ├── legacy_python/              ← historický konvertor v3 (deprecated)
 │   └── _archive/console/           ← 7 původních konzolových skriptů (archiv)
 ├── tests/                          ← Python testy + fixture mini.dae + golden/

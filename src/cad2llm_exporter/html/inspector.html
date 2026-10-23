@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>CAD2LLM Inspector</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 12px/1.45 "Segoe UI", system-ui, sans-serif; margin: 0; padding: 10px 12px; }
+  h1 { font-size: 13px; margin: 0 0 2px; letter-spacing: .02em; }
+  .sub { opacity: .6; margin-bottom: 10px; }
+  .card { border: 1px solid rgba(128,128,128,.35); border-radius: 6px; padding: 8px 10px; margin-bottom: 10px; }
+  .name { font-weight: 600; font-size: 13px; }
+  .row { display: flex; gap: 8px; padding: 1px 0; }
+  .k { width: 78px; opacity: .65; flex: none; }
+  .v { word-break: break-word; }
+  .dict { margin-top: 8px; }
+  .dict-name { font-weight: 600; opacity: .8; margin-bottom: 2px; }
+  table { border-collapse: collapse; width: 100%; }
+  td { padding: 1px 4px 1px 0; vertical-align: top; }
+  td.k2 { width: 42%; opacity: .65; }
+  .empty { opacity: .5; font-style: italic; }
+  .badge { display: inline-block; padding: 0 6px; border-radius: 9px; background: rgba(0,120,200,.15); }
+  .pill { display:inline-block; padding:1px 7px; border-radius:8px; background:rgba(128,128,128,.2); margin-right:4px; }
+</style>
+</head>
+<body>
+  <h1>CAD2LLM Inspector</h1>
+  <div class="sub" id="status">načítám…</div>
+  <div id="content"></div>
+<script>
+  function esc(value) {
+    return String(value).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function pairRows(dict) {
+    var keys = Object.keys(dict || {});
+    if (!keys.length) return '<div class="empty">(prázdný)</div>';
+    return "<table>" + keys.map(function (k) {
+      return '<tr><td class="k2">' + esc(k) + "</td><td>" + esc(dict[k]) + "</td></tr>";
+    }).join("") + "</table>";
+  }
+  function itemCard(item) {
+    if (item.error) {
+      return '<div class="card"><div class="name">' + esc(item.error) + "</div>" +
+             '<div class="empty">' + esc(item.name || item.message || "") + "</div></div>";
+    }
+    var html = '<div class="card">';
+    if (item.kind === "definition") {
+      html += '<div class="name">DEFINICE: ' + esc(item.name) + "</div>";
+      if (item.description) html += '<div class="row"><span class="k">description</span><span class="v">' + esc(item.description) + "</span></div>";
+    } else {
+      html += '<div class="name">' + esc(item.name) + ' <span class="badge">pid ' + esc(item.persistent_id) + "</span></div>";
+      html += '<div class="row"><span class="k">tag</span><span class="v">' + esc(item.tag || "-") + "</span></div>";
+      html += '<div class="row"><span class="k">definition</span><span class="v">' + esc(item.definition_name || "-") + "</span></div>";
+      if (item.definition_description) {
+        html += '<div class="row"><span class="k">popis</span><span class="v">' + esc(item.definition_description) + "</span></div>";
+      }
+    }
+    var dicts = item.dicts || {};
+    Object.keys(dicts).forEach(function (name) {
+      html += '<div class="dict"><div class="dict-name">[' + esc(name) + "]</div>" + pairRows(dicts[name]) + "</div>";
+    });
+    if (!Object.keys(dicts).length) html += '<div class="empty">žádné attribute dictionaries</div>';
+    return html + "</div>";
+  }
+  window.cad2llmRender = function (data) {
+    var items = (data && data.items) || [];
+    document.getElementById("status").textContent = items.length
+      ? items.length + " položka(y) ve výběru"
+      : "nic nevybráno — vyber entitu v modelu";
+    document.getElementById("content").innerHTML = items.map(itemCard).join("");
+  };
+  setInterval(function () { sketchup.refresh(); }, 700);
+</script>
+</body>
+</html>

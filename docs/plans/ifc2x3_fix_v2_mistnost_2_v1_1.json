@@ -1,0 +1,60 @@
+{
+  "schema": "cad2llm/annotate_plan/v1",
+  "name": "IFC2x3 type fix v2 (all layers: instance, definition, description)",
+  "note": "v1 wrote only definition dict 'ifc', which neither the exporter nor IFC Manager reads. This plan aligns all four storage layers: instance ifc/type, definition AppliedSchemaTypes, definition 'IFC 2x3'/SchemaType URL, and definition description text. Metadata-only.",
+  "transaction": "single",
+  "operations": [
+    {
+      "op": "set_attribute",
+      "target": { "kind": "entity", "persistent_id": 3354 },
+      "dict": "ifc",
+      "key": "type",
+      "value": "IfcEnergyConversionDevice"
+    },
+    {
+      "op": "set_attribute",
+      "target": { "kind": "definition", "name": "inverter_hybrid_3_2kw" },
+      "dict": "AppliedSchemaTypes",
+      "key": "IFC 2x3",
+      "value": "IfcEnergyConversionDevice"
+    },
+    {
+      "op": "set_attribute",
+      "target": { "kind": "definition", "name": "inverter_hybrid_3_2kw" },
+      "dict": "IFC 2x3",
+      "key": "SchemaType",
+      "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcEnergyConversionDevice"
+    },
+    {
+      "op": "set_description",
+      "target": { "kind": "definition", "name": "inverter_hybrid_3_2kw" },
+      "description": "Hybridní střídač 3,2 kW · energy · IfcEnergyConversionDevice"
+    },
+    {
+      "op": "set_attribute",
+      "target": { "kind": "entity", "persistent_id": 3349 },
+      "dict": "ifc",
+      "key": "type",
+      "value": "IfcEnergyConversionDevice"
+    },
+    {
+      "op": "set_attribute",
+      "target": { "kind": "definition", "name": "stove_01_wood" },
+      "dict": "AppliedSchemaTypes",
+      "key": "IFC 2x3",
+      "value": "IfcEnergyConversionDevice"
+    },
+    {
+      "op": "set_attribute",
+      "target": { "kind": "definition", "name": "stove_01_wood" },
+      "dict": "IFC 2x3",
+      "key": "SchemaType",
+      "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcEnergyConversionDevice"
+    },
+    {
+      "op": "set_description",
+      "target": { "kind": "definition", "name": "stove_01_wood" },
+      "description": "Kamna na dřevo · zóna sleep · IfcEnergyConversionDevice"
+    }
+  ]
+}

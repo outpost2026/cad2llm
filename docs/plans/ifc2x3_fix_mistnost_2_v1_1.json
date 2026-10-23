@@ -1,0 +1,22 @@
+{
+  "schema": "cad2llm/annotate_plan/v1",
+  "name": "IFC2x3 type fix (inverter, stove)",
+  "note": "IfcTransformer and IfcSpaceHeater are IFC4 entities; IFC2x3 has neither. Both devices map to IfcEnergyConversionDevice, which is valid in IFC 2x3. Metadata-only change, geometry untouched.",
+  "transaction": "single",
+  "operations": [
+    {
+      "op": "set_attribute",
+      "target": { "kind": "definition", "name": "inverter_hybrid_3_2kw" },
+      "dict": "ifc",
+      "key": "type",
+      "value": "IfcEnergyConversionDevice"
+    },
+    {
+      "op": "set_attribute",
+      "target": { "kind": "definition", "name": "stove_01_wood" },
+      "dict": "ifc",
+      "key": "type",
+      "value": "IfcEnergyConversionDevice"
+    }
+  ]
+}

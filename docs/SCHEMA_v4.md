@@ -1,6 +1,6 @@
 # Schema v4 — deterministický JSON pro LLM/RAG
 
-**Verze:** 4.0 | **Datum:** 2026-10-22 | **Jednotky:** mm | **Osy:** Z-up (SketchUp)
+**Verze:** 4.1 (aditivní; `schema_version` zůstává `"4.0"`) | **Datum:** 2026-10-23 | **Jednotky:** mm | **Osy:** Z-up (SketchUp)
 
 Schema v4 sjednocuje dva historické kanály (Python/DAE a Ruby/SketchUp) do jednoho
 tvaru a doplňuje data, která metodika vyžaduje, ale starší exporty neměly.
@@ -13,6 +13,7 @@ tvaru a doplňuje data, která metodika vyžaduje, ale starší exporty neměly.
 | `bbox_mm` min/max | ✅ | ✅ |
 | rotace (Euler + quaternion + matice) | ✅ | ✅ |
 | jméno instance vs. jméno definice | ✅ | ✅ |
+| **popis definice** (`definition_description`) | ✅ | ❌ |
 | **tagy (vrstvy)** | ✅ | ❌ |
 | **attribute dictionaries** (`energy`, `zone`, `safety`, `thermal`) | ✅ | ❌ |
 | `persistent_id` | ✅ | ❌ |
@@ -43,7 +44,8 @@ Pro analýzy závislé na `energy`/`zone`/`safety` je nutný export z SketchUpu.
       "sketchup_version": "24.0.0"
     },
     "capabilities": { "hierarchy": true, "bbox_mm": true, "rotation": true,
-                      "tags": true, "metadata_dictionaries": true,
+                      "tags": true, "definition_description": true,
+                      "metadata_dictionaries": true,
                       "persistent_ids": true, "gps": true }
   },
   "nodes": [ ... ],
@@ -59,6 +61,7 @@ Pro analýzy závislé na `energy`/`zone`/`safety` je nutný export z SketchUpu.
 | `persistent_id` | SU persistent ID, `null` u DAE |
 | `name` | jméno **instance** (to, co uživatel vidí ve SketchUpu) |
 | `definition_name` | jméno **definice** komponenty (`null` u skupin) |
+| `definition_description` | popis definice z panelu Komponenty (`null` u skupin a u definic bez popisu) — od 4.1 |
 | `entity_type` | `group` \| `component` \| `node` |
 | `tag` | vrstva/tag, `null` u DAE |
 | `hierarchy_path` | pole jmen od kořene, např. `["Battery","cell"]` |
@@ -74,6 +77,11 @@ Pro analýzy závislé na `energy`/`zone`/`safety` je nutný export z SketchUpu.
 
 `bbox_mm` u kontejnerů (komponenta se dětmi, skupina) = sjednocení potomků —
 parita s `definition.bounds` ve SketchUpu.
+
+`metadata` čte slovníky **instance**. Definiční slovníky (`AppliedSchemaTypes`,
+`IFC 2x3`) jsou data IFC Managera a exportér je neslévá — u komponent se proto
+`ifc/type` drží synchronně na instanci i na definici (viz
+`docs/plans/ifc2x3_fix_v2_mistnost_2_v1_1.json`).
 
 ## 4. Validační blok
 

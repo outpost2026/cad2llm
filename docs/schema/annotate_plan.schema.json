@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/outpost2026/cad2llm/docs/schema/annotate_plan.schema.json",
+  "title": "CAD2LLM annotation plan v1",
+  "description": "Declarative metadata-only edit plan applied by CAD2LLM::Annotate. Geometry is never touched.",
+  "type": "object",
+  "required": [
+    "schema",
+    "operations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "cad2llm/annotate_plan/v1"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable plan name, copied into the report."
+    },
+    "note": {
+      "type": "string",
+      "description": "Free-form rationale (why the plan exists)."
+    },
+    "transaction": {
+      "enum": [
+        "per_op",
+        "single"
+      ],
+      "default": "per_op",
+      "description": "single = one undo step for the whole plan."
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2000,
+      "items": {
+        "$ref": "#/$defs/operation"
+      }
+    }
+  },
+  "$defs": {
+    "target": {
+      "type": "object",
+      "description": "Resolution order: persistent_id -> hierarchy_path -> name. Ambiguous matches are refused, never guessed.",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "kind": {
+          "enum": [
+            "entity",
+            "definition"
+          ],
+          "default": "entity",
+          "description": "definition targets match target.name against component definition names."
+        },
+        "persistent_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "hierarchy_path": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "description": "Names from the model root to the entity, e.g. [\"zone_bed\", \"bed_v1\"]."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tag": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "definition_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "required": [
+        "op",
+        "target"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "enum": [
+            "set_attribute",
+            "set_tag",
+            "rename",
+            "set_description"
+          ]
+        },
+        "target": {
+          "$ref": "#/$defs/target"
+        },
+        "dict": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?![Ss][Uu]_).+$",
+          "description": "Attribute dictionary name. SU_-prefixed dictionaries are reserved by SketchUp."
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ],
+          "description": "JSON scalar; numeric strings are normalised by the exporter."
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ComponentDefinition description (visible in Components tray)."
+        },
+        "preserve_original": {
+          "type": "boolean",
+          "default": false,
+          "description": "Copy current description to cad2llm/original_description first."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "set_attribute"
+              }
+            },
+            "required": [
+              "op"
+            ]
+          },
+          "then": {
+            "required": [
+              "dict",
+              "key",
+              "value"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "set_tag"
+              }
+            },
+            "required": [
+              "op"
+            ]
+          },
+          "then": {
+            "required": [
+              "tag"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "rename"
+              }
+            },
+            "required": [
+              "op"
+            ]
+          },
+          "then": {
+            "required": [
+              "name"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "set_description"
+              }
+            },
+            "required": [
+              "op"
+            ]
+          },
+          "then": {
+            "required": [
+              "description"
+            ]
+          }
+        }
+      ],
+      "maxItems": 2000
+    }
+  },
+  "examples": [
+    {
+      "schema": "cad2llm/annotate_plan/v1",
+      "name": "mistnost_2 semantics",
+      "operations": [
+        {
+          "op": "set_attribute",
+          "target": {
+            "persistent_id": 3348
+          },
+          "dict": "zone",
+          "key": "type",
+          "value": "sleep"
+        },
+        {
+          "op": "set_tag",
+          "target": {
+            "hierarchy_path": [
+              "zone_bed",
+              "bed_v1"
+            ]
+          },
+          "tag": "bed_m2"
+        },
+        {
+          "op": "rename",
+          "target": {
+            "name": "bed_v1",
+            "tag": "bed_m2"
+          },
+          "name": "bed_m2_01"
+        }
+      ]
+    }
+  ]
+}

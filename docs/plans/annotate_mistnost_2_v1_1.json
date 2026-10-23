@@ -1,0 +1,6404 @@
+{
+ "schema": "cad2llm/annotate_plan/v1",
+ "name": "mistnost_2_v1.1 nomenclature v1",
+ "note": "role/zone/system/IFC metadata + canonical tags + ASCII names; definitions renamed and IFC classes corrected",
+ "transaction": "single",
+ "operations": [
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "24V_secondary_100ah_lfp"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "24V_secondary_100ah_lfp"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "24V_secondary_100ah_lfp"
+   },
+   "name": "battery_secondary_100ah_lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": ";"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcWall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": ";"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcWall"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": ";"
+   },
+   "name": "wall_inner_south_sleep"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "Beam_east_wall"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcBeam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "Beam_east_wall"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcBeam"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "Beam_east_wall"
+   },
+   "name": "beam_east_wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "Beam_truss_main_5_m"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcBeam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "Beam_truss_main_5_m"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcBeam"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "Beam_truss_main_5_m"
+   },
+   "name": "beam_truss_5m"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "Ceiling_m2"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "Ceiling_m2"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcCovering"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "Ceiling_m2"
+   },
+   "name": "ceiling_01_textile"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "East_wall#1"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcWall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "East_wall#1"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcWall"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "East_wall#1"
+   },
+   "name": "wall_east_entry"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "Entry_opening_raw_frame_east_wall"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcOpeningElement"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "Entry_opening_raw_frame_east_wall"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcOpeningElement"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "Entry_opening_raw_frame_east_wall"
+   },
+   "name": "opening_entry_east"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "HVM3.2H_hybrid_invertor"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcTransformer"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "HVM3.2H_hybrid_invertor"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcTransformer"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "HVM3.2H_hybrid_invertor"
+   },
+   "name": "inverter_hybrid_3_2kw"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "Main_battery_of_the_house"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "Main_battery_of_the_house"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "Main_battery_of_the_house"
+   },
+   "name": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_mineral_ceiling_10_cm"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_mineral_ceiling_10_cm"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcCovering"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_mineral_ceiling_10_cm"
+   },
+   "name": "insulation_ceiling_100"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_mineral_floor_10_cm"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_mineral_floor_10_cm"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcCovering"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_mineral_floor_10_cm"
+   },
+   "name": "insulation_floor_100"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_east_7_cm"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_east_7_cm"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcCovering"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_east_7_cm"
+   },
+   "name": "insulation_wall_east_70"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_north_7_cm"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_north_7_cm"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcCovering"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_north_7_cm"
+   },
+   "name": "insulation_wall_north_70"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_south_7_cm"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_south_7_cm"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcCovering"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_south_7_cm"
+   },
+   "name": "insulation_wall_south_70"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_west_7_cm"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_west_7_cm"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcCovering"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_west_7_cm"
+   },
+   "name": "insulation_wall_west_70"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "lfp_cell_314ah_3.2V"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "lfp_cell_314ah_3.2V"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "lfp_cell_314ah_3.2V"
+   },
+   "name": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "lfp_main_worktop_policka_na_main_battery"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "lfp_main_worktop_policka_na_main_battery"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcFurniture"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "lfp_main_worktop_policka_na_main_battery"
+   },
+   "name": "battery_base_shelf"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "room#1_pergola_area_boundary"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcAnnotation"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "room#1_pergola_area_boundary"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcAnnotation"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "room#1_pergola_area_boundary"
+   },
+   "name": "space_boundary_room_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "sleep_zone"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "sleep_zone"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcFurniture"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "sleep_zone"
+   },
+   "name": "bed_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "stove_main"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcFlowTerminal"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "stove_main"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcFlowTerminal"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "stove_main"
+   },
+   "name": "stove_01_wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "table_main"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "table_main"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcFurniture"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "table_main"
+   },
+   "name": "table_main_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "wall_inner_north_wooden"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcWall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "wall_inner_north_wooden"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcWall"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "wall_inner_north_wooden"
+   },
+   "name": "wall_inner_north_entry"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "wall_inner_west_wooden_windows_openings"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcWall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "wall_inner_west_wooden_windows_openings"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcWall"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "wall_inner_west_wooden_windows_openings"
+   },
+   "name": "wall_inner_west_sleep"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "windos_south_west"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcWindow"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "windos_south_west"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcWindow"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "windos_south_west"
+   },
+   "name": "window_west_sleep_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "window_south"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcWindow"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "window_south"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcWindow"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "window_south"
+   },
+   "name": "window_south_sleep_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "window_west"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcWindow"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "window_west"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcWindow"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "window_west"
+   },
+   "name": "window_west_dining_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "wooden_floor"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcSlab"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "wooden_floor"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcSlab"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "wooden_floor"
+   },
+   "name": "floor_main_wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "worktop_user"
+   },
+   "dict": "AppliedSchemaTypes",
+   "key": "IFC 2x3",
+   "value": "IfcSystemFurnitureElement"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "kind": "definition",
+    "name": "worktop_user"
+   },
+   "dict": "IFC 2x3",
+   "key": "SchemaType",
+   "value": "http://www.iai-tech.org/ifcXML/IFC2x3/FINAL:IfcSystemFurnitureElement"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "kind": "definition",
+    "name": "worktop_user"
+   },
+   "name": "worktop_01_wood"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3347
+   },
+   "tag": "worktop"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3347
+   },
+   "name": "worktop_01_wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3347
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "worktop"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3347
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "work"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3347
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "furniture"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3347
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3347
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "Worktop #01 hlavní pracovni plocha dřevěná"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3347
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcSystemFurnitureElement"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3347
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3347
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3347
+   },
+   "dict": "furniture",
+   "key": "subtype",
+   "value": "worktop"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3347
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3348
+   },
+   "tag": "bed"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3348
+   },
+   "name": "bed_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3348
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "bed"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3348
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "sleep"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3348
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "furniture"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3348
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3348
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "Bed_01_mattres_with_light_frame"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3348
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3348
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3348
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3348
+   },
+   "dict": "furniture",
+   "key": "subtype",
+   "value": "bed"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3349
+   },
+   "tag": "stove"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3349
+   },
+   "name": "stove_01_wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3349
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "stove"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3349
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "sleep"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3349
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3349
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3349
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "Kamna Priti mini D_zone_bed_energy wall primary wood fuel"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3349
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcFlowTerminal"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3349
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3349
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3349
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "stove"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3349
+   },
+   "dict": "energy",
+   "key": "fuel",
+   "value": "wood"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3350
+   },
+   "tag": "storage"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3350
+   },
+   "name": "battery_base_shelf"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3350
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "storage"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3350
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3350
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "furniture"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3350
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3350
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "LFP_main_base"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3350
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3350
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3350
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3350
+   },
+   "dict": "furniture",
+   "key": "subtype",
+   "value": "shelf"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3350
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3351
+   },
+   "tag": "table"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3351
+   },
+   "name": "table_main_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3351
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "table"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3351
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "dining"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3351
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "furniture"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3351
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3351
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "main_table_rectangel_food_work_dump_place"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3351
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3351
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3351
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3351
+   },
+   "dict": "furniture",
+   "key": "subtype",
+   "value": "table"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3353
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3353
+   },
+   "name": "battery_secondary_100ah_lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "24V gokwh 100ah lfp battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 24
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3353
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 100
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3354
+   },
+   "tag": "inverter"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3354
+   },
+   "name": "inverter_hybrid_3_2kw"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3354
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "inverter"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3354
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3354
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3354
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3354
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "Energy source main power invertor mppt dc -ac max load 3,2 kw"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3354
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcTransformer"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3354
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3354
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3354
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "inverter"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3354
+   },
+   "dict": "energy",
+   "key": "rated_power_kw",
+   "value": 3.2
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3355
+   },
+   "tag": "floor"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3355
+   },
+   "name": "floor_main_wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "floor"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "floor_m2"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcSlab"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "ifc",
+   "key": "predefined_type",
+   "value": "FLOOR"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "floor"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3355
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 20
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3356
+   },
+   "tag": "wall"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3356
+   },
+   "name": "wall_inner_west_sleep"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "sleep"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "wall vnitřní west wooden prostupy pro okna zone bed"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcWall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3356
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 24
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3357
+   },
+   "tag": "wall"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3357
+   },
+   "name": "wall_inner_south_sleep"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "sleep"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "wall vnitřní inner jih south prostup pro okno zone postel stove"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcWall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3357
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 24
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3358
+   },
+   "tag": "wall"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3358
+   },
+   "name": "wall_inner_north_entry"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "entry"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "wall inner vnitřní zone entry"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcWall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3358
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 24
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3359
+   },
+   "tag": "ceiling"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3359
+   },
+   "name": "ceiling_01_textile"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "ceiling"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "ceiling_guttafol_135_bottom_layer_ceiling_textile"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "ifc",
+   "key": "predefined_type",
+   "value": "CEILING"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "ceiling"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "textile"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 100.999
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3359
+   },
+   "dict": "construction",
+   "key": "note",
+   "value": "bbox depth 100.999 mm (sloped build-up); name mentions guttafol 135"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3360
+   },
+   "tag": "window"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3360
+   },
+   "name": "window_south_sleep_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "window"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "sleep"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "windows jižní dvojokno bez rámu zone sleeping stove"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcWindow"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "opening",
+   "key": "kind",
+   "value": "window"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "opening",
+   "key": "glazing",
+   "value": "double"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3360
+   },
+   "dict": "opening",
+   "key": "frame",
+   "value": "none"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3361
+   },
+   "tag": "window"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3361
+   },
+   "name": "window_west_sleep_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "window"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "sleep"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "windows západní dvojokno bez rámu zone sleeping"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcWindow"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "opening",
+   "key": "kind",
+   "value": "window"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "opening",
+   "key": "glazing",
+   "value": "double"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3361
+   },
+   "dict": "opening",
+   "key": "frame",
+   "value": "none"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3362
+   },
+   "tag": "window"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3362
+   },
+   "name": "window_west_dining_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "window"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "dining"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "windows západní dvojokno bez rámu zóna dinning dump"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcWindow"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "opening",
+   "key": "kind",
+   "value": "window"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "opening",
+   "key": "glazing",
+   "value": "double"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3362
+   },
+   "dict": "opening",
+   "key": "frame",
+   "value": "none"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3363
+   },
+   "tag": "beam"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3363
+   },
+   "name": "beam_east_wall_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "beam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "beam_nosnik_01_wppde"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcBeam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "beam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3363
+   },
+   "dict": "construction",
+   "key": "section_mm",
+   "value": "120x50"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3364
+   },
+   "tag": "beam"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3364
+   },
+   "name": "beam_truss_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "beam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "truss překlad pozednice #01 east wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcBeam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "beam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3364
+   },
+   "dict": "construction",
+   "key": "section_mm",
+   "value": "80x80"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3365
+   },
+   "tag": "opening"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3365
+   },
+   "name": "opening_entry_east"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3365
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "opening"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3365
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "entry"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3365
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3365
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3365
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "void_entry_point"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3365
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcOpeningElement"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3365
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3365
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3365
+   },
+   "dict": "opening",
+   "key": "kind",
+   "value": "entry"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3365
+   },
+   "dict": "opening",
+   "key": "frame",
+   "value": "raw"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3366
+   },
+   "tag": "wall"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3366
+   },
+   "name": "wall_east_entry"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "entry"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "east_wall_with_entrance_opening_no_windows"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcWall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3366
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 24
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3367
+   },
+   "tag": "beam"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3367
+   },
+   "name": "beam_east_wall_02"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "beam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "beam_nosnik_02"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcBeam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "beam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3367
+   },
+   "dict": "construction",
+   "key": "section_mm",
+   "value": "120x50"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3368
+   },
+   "tag": "beam"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3368
+   },
+   "name": "beam_east_wall_03"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "beam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "beam_nosnik_03"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcBeam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "beam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3368
+   },
+   "dict": "construction",
+   "key": "section_mm",
+   "value": "120x50"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3369
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3369
+   },
+   "name": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "LFP battery DIY 630 Ah Cornex 24V 2S2P 16 pcs cells"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 24
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 630
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "energy",
+   "key": "configuration",
+   "value": "2S2P"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3369
+   },
+   "dict": "energy",
+   "key": "cells",
+   "value": 16
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3370
+   },
+   "tag": "beam"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3370
+   },
+   "name": "beam_truss_02"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "beam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "truss překlad pozednice #02 west wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcBeam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "beam"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "wood"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3370
+   },
+   "dict": "construction",
+   "key": "section_mm",
+   "value": "80x80"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3371
+   },
+   "tag": "insulation"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3371
+   },
+   "name": "insulation_wall_east"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "insulation"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "izolace minerální 7cm východní stěna"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "ifc",
+   "key": "predefined_type",
+   "value": "INSULATION"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "mineral_wool"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 60
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "construction",
+   "key": "declared_thickness_mm",
+   "value": 70
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3371
+   },
+   "dict": "construction",
+   "key": "note",
+   "value": "name says 7 cm, bbox says 60 mm"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3372
+   },
+   "tag": "insulation"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3372
+   },
+   "name": "insulation_wall_north"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "insulation"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "izolace minerální 7cm severní stěna"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "ifc",
+   "key": "predefined_type",
+   "value": "INSULATION"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "mineral_wool"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 70
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3372
+   },
+   "dict": "construction",
+   "key": "declared_thickness_mm",
+   "value": 70
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3373
+   },
+   "tag": "insulation"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3373
+   },
+   "name": "insulation_wall_west"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "insulation"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "izolace minerální 7cm západní stěna"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "ifc",
+   "key": "predefined_type",
+   "value": "INSULATION"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "mineral_wool"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 70
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3373
+   },
+   "dict": "construction",
+   "key": "declared_thickness_mm",
+   "value": 70
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3374
+   },
+   "tag": "insulation"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3374
+   },
+   "name": "insulation_wall_south"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "insulation"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "izolace minerální 7cm jižní stěna"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "ifc",
+   "key": "predefined_type",
+   "value": "INSULATION"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "wall"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "mineral_wool"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 70
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3374
+   },
+   "dict": "construction",
+   "key": "declared_thickness_mm",
+   "value": 70
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3375
+   },
+   "tag": "insulation"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3375
+   },
+   "name": "insulation_floor_100"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "insulation"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "izolace minerální isover domo plus 10 cm podlaha Lamb.D 0,038 W."
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "ifc",
+   "key": "predefined_type",
+   "value": "INSULATION"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "floor"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "mineral_wool"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 100
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "construction",
+   "key": "declared_thickness_mm",
+   "value": 100
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3375
+   },
+   "dict": "construction",
+   "key": "lambda_w_mk",
+   "value": 0.038
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3376
+   },
+   "tag": "insulation"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3376
+   },
+   "name": "insulation_ceiling_100"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "insulation"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "envelope"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "izolace minerální isover domo plus 10 cm strop Lamb.D 0,038 W."
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "ifc",
+   "key": "predefined_type",
+   "value": "INSULATION"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "construction",
+   "key": "assembly",
+   "value": "ceiling"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "construction",
+   "key": "material",
+   "value": "mineral_wool"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "construction",
+   "key": "thickness_mm",
+   "value": 100
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "construction",
+   "key": "declared_thickness_mm",
+   "value": 100
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "construction",
+   "key": "lambda_w_mk",
+   "value": 0.038
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3376
+   },
+   "dict": "construction",
+   "key": "note",
+   "value": "thickness 100 mm; bbox depth 210 mm because the assembly is sloped"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 3377
+   },
+   "tag": "space_boundary"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 3377
+   },
+   "name": "space_boundary_room_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "space_boundary"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "unknown"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "space"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "room#1 půdorys area boundary pergola"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcAnnotation"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "space",
+   "key": "kind",
+   "value": "room_boundary"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "space",
+   "key": "room",
+   "value": "room_1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 3377
+   },
+   "dict": "space",
+   "key": "status",
+   "value": "unfinished_plan"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 304
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 304
+   },
+   "name": "lfp_cell_314ah_01"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 304
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 305
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 305
+   },
+   "name": "lfp_cell_314ah_02"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 305
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 306
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 306
+   },
+   "name": "lfp_cell_314ah_03"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 306
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 307
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 307
+   },
+   "name": "lfp_cell_314ah_04"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 307
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 308
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 308
+   },
+   "name": "lfp_cell_314ah_05"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 308
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 309
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 309
+   },
+   "name": "lfp_cell_314ah_06"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "Unnamed"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 309
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 310
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 310
+   },
+   "name": "lfp_cell_314ah_07"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 310
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 311
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 311
+   },
+   "name": "lfp_cell_314ah_08"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 311
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 312
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 312
+   },
+   "name": "lfp_cell_314ah_09"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 312
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 313
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 313
+   },
+   "name": "lfp_cell_314ah_10"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 313
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 314
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 314
+   },
+   "name": "lfp_cell_314ah_11"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 314
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 315
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 315
+   },
+   "name": "lfp_cell_314ah_12"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 315
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 316
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 316
+   },
+   "name": "lfp_cell_314ah_13"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 316
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 317
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 317
+   },
+   "name": "lfp_cell_314ah_14"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 317
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 318
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 318
+   },
+   "name": "lfp_cell_314ah_15"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 318
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  },
+  {
+   "op": "set_tag",
+   "target": {
+    "persistent_id": 319
+   },
+   "tag": "battery"
+  },
+  {
+   "op": "rename",
+   "target": {
+    "persistent_id": 319
+   },
+   "name": "lfp_cell_314ah_16"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "cad2llm",
+   "key": "role",
+   "value": "battery"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "cad2llm",
+   "key": "zone",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "cad2llm",
+   "key": "system",
+   "value": "energy"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "cad2llm",
+   "key": "nomenclature",
+   "value": "cad2llm/1"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "cad2llm",
+   "key": "original_name",
+   "value": "lfp_cell_314ah"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "ifc",
+   "key": "type",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "ifc",
+   "key": "schema",
+   "value": "IFC 2x3"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "ifc",
+   "key": "source",
+   "value": "definition"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "energy",
+   "key": "device",
+   "value": "battery_cell"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "energy",
+   "key": "chemistry",
+   "value": "lfp"
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "energy",
+   "key": "nominal_voltage_v",
+   "value": 3.2
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "energy",
+   "key": "capacity_ah",
+   "value": 314
+  },
+  {
+   "op": "set_attribute",
+   "target": {
+    "persistent_id": 319
+   },
+   "dict": "energy",
+   "key": "parent_pack",
+   "value": "battery_main_630ah_lfp"
+  }
+ ]
+}

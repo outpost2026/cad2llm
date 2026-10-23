@@ -58,7 +58,8 @@ eq("tag exported", bed["tag"], "walls")
 
 # ------------------------------------------------------------ 2. components
 comp = mk_component(name: "stove_main", pid: 102, def_name: "Kamna_Priti_mini",
-                    pos: [10, 20, 30], size_in: [10, 20, 30])
+                    pos: [10, 20, 30], size_in: [10, 20, 30],
+                    def_description: "Kachlova kamna Prity mini, 4 kW, topeni drevem")
 rot = mk_component(name: "beam_rotated", pid: 103, def_name: "Beam",
                    size_in: [10, 20, 30],
                    transformation: Geom::Transformation.rotation_z_deg(90, Geom::Point3d.new(0, 0, 0)))
@@ -68,6 +69,10 @@ stove = doc["nodes"].find { |n| n["name"] == "stove_main" }
 rotn = doc["nodes"].find { |n| n["name"] == "beam_rotated" }
 
 eq("component definition_name", stove["definition_name"], "Kamna_Priti_mini")
+eq("component definition_description", stove["definition_description"],
+   "Kachlova kamna Prity mini, 4 kW, topeni drevem")
+check("group definition_description is nil") { bed.key?("definition_description") && bed["definition_description"].nil? }
+check("capability definition_description") { doc["project_metadata"]["capabilities"]["definition_description"] == true }
 eq("component entity_type", stove["entity_type"], "component")
 eq("component origin mm", stove["spatial"]["origin_mm"], { "x" => 254.0, "y" => 508.0, "z" => 762.0 })
 eq("component size mm", stove["spatial"]["size_mm"], { "x" => 254.0, "y" => 508.0, "z" => 762.0 })
@@ -146,7 +151,22 @@ require File.join(ROOT, "src", "cad2llm_exporter.rb")
 items = UI.menu("Extensions").items
 sub = items.find { |name, _| name == "CAD2LLM" }
 check("loader registered CAD2LLM submenu") { !sub.nil? }
-check("loader has v4 + v3 + selection items") { sub && sub[1].items.count { |i| i[0] != :separator } == 3 }
+items = sub ? sub[1].items.reject { |i| i[0] == :separator } : []
+check("loader has export + bridge items") { items.size == 8 }
+check("loader exposes bridge start/stop") { items.count { |i| i[0].to_s.include?("bridge") } == 2 }
+check("loader exposes inspector + purge") { items.count { |i| i[0].to_s =~ /Inspector|Purge/ } == 3 }
+panel_model = model_with([mk_component(name: "comp_panel", pid: 990, def_name: "panel_def", size_in: [1, 1, 1])])
+Sketchup.model = panel_model
+panel_model.selection = Sketchup::Selection.new(panel_model.entities.to_a)
+CAD2LLM.show_inspector_panel
+dlg = CAD2LLM.instance_variable_get(:@inspector_dialog)
+check("inspector panel created") { dlg && dlg.shown }
+check("inspector panel html exists") { dlg && File.exist?(dlg.file) }
+check("inspector panel refresh callback") { dlg && dlg.callbacks.key?("refresh") }
+dlg.callbacks["refresh"].call(nil)
+js = dlg.scripts.last.to_s
+check("inspector panel renders selection") { js.include?("cad2llmRender(") && js.include?("990") }
+check("inspector panel no error message") { $ui_messages.none? { |m| m.to_s.include?("Inspector panel failed") } }
 
 puts
 if $failures.empty?

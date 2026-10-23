@@ -1,0 +1,260 @@
+{
+ "schema": "cad2llm/annotate_plan/v1",
+ "name": "mistnost_2_v1.1 definition descriptions",
+ "note": "human-readable ComponentDefinition#description (visible in Components tray); original text preserved in cad2llm/original_description",
+ "transaction": "single",
+ "operations": [
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "worktop_01_wood"
+   },
+   "description": "Pracovní deska · zóna work · dřevo · IfcSystemFurnitureElement",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "bed_01"
+   },
+   "description": "Postel · zóna sleep · IfcFurniture",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "stove_01_wood"
+   },
+   "description": "Kamna na dřevo · zóna sleep · IfcFlowTerminal",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "battery_base_shelf"
+   },
+   "description": "Police pod hlavní baterií · zóna energy · dřevo · IfcFurniture",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "table_main_01"
+   },
+   "description": "Hlavní stůl · zóna dining · IfcFurniture",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "battery_secondary_100ah_lfp"
+   },
+   "description": "Sekundární LFP baterie 24 V 100 Ah · energy · IfcElectricFlowStorageDevice",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "inverter_hybrid_3_2kw"
+   },
+   "description": "Hybridní střídač 3,2 kW · energy · IfcTransformer",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "floor_main_wood"
+   },
+   "description": "Podlaha · dřevo 20 mm · IfcSlab (FLOOR)",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "wall_inner_west_sleep"
+   },
+   "description": "Vnitřní stěna západní · sleep · dřevo 24 mm · IfcWall",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "wall_inner_south_sleep"
+   },
+   "description": "Vnitřní stěna jižní · sleep · dřevo 24 mm · IfcWall",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "wall_inner_north_entry"
+   },
+   "description": "Vnitřní stěna severní · entry · dřevo 24 mm · IfcWall",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "ceiling_01_textile"
+   },
+   "description": "Strop · textil (guttafol 135) · 101 mm · IfcCovering (CEILING)",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "window_south_sleep_01"
+   },
+   "description": "Okno jižní · sleep · dvojsklo, bez rámu · IfcWindow",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "window_west_sleep_01"
+   },
+   "description": "Okno západní · sleep · dvojsklo, bez rámu · IfcWindow",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "window_west_dining_01"
+   },
+   "description": "Okno západní · dining · dvojsklo, bez rámu · IfcWindow",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "beam_east_wall"
+   },
+   "description": "Nosník u východní stěny · 120x50 mm · dřevo · IfcBeam",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "beam_truss_5m"
+   },
+   "description": "Příhradový nosník 5 m · 80x80 mm · dřevo · IfcBeam",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "opening_entry_east"
+   },
+   "description": "Vstupní otvor (hrubý rám) · entry · IfcOpeningElement",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "wall_east_entry"
+   },
+   "description": "Východní stěna · entry · dřevo 24 mm · IfcWall",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "battery_main_630ah_lfp"
+   },
+   "description": "Hlavní LFP baterie 24 V 630 Ah (2S2P, 16 článků) · energy · IfcElectricFlowStorageDevice",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "lfp_cell_314ah"
+   },
+   "description": "LFP článek 3,2 V 314 Ah · energy · IfcElectricFlowStorageDevice",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_east_70"
+   },
+   "description": "Izolace východní stěny · minerální vlna · 60 mm (deklarováno 70) · IfcCovering",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_north_70"
+   },
+   "description": "Izolace severní stěny · minerální vlna · 70 mm · IfcCovering",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_west_70"
+   },
+   "description": "Izolace západní stěny · minerální vlna · 70 mm · IfcCovering",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_wall_south_70"
+   },
+   "description": "Izolace jižní stěny · minerální vlna · 70 mm · IfcCovering",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_floor_100"
+   },
+   "description": "Izolace podlahy · minerální vlna Isover Domo Plus · 100 mm, lambda 0,038 · IfcCovering",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "insulation_ceiling_100"
+   },
+   "description": "Izolace stropu · minerální vlna · 100 mm (bbox 210 mm kvůli sklonu) · IfcCovering",
+   "preserve_original": true
+  },
+  {
+   "op": "set_description",
+   "target": {
+    "kind": "definition",
+    "name": "space_boundary_room_01"
+   },
+   "description": "Hranice místnosti room_1 (nedokončený půdorys) · IfcAnnotation",
+   "preserve_original": true
+  }
+ ]
+}

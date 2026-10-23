@@ -143,18 +143,33 @@ module Sketchup
   end
 
   class ComponentDefinition
-    attr_accessor :name, :bounds, :entities
+    attr_accessor :name, :description, :bounds, :entities, :attribute_dictionaries
 
     def initialize(name, bounds = nil)
       @name = name
+      @description = ""
       @bounds = bounds || BoundingBox.sized(0, 0, 0)
       @entities = []
+      @attribute_dictionaries = []
+    end
+
+    def set_attribute(dict_name, key, value)
+      dict = (@attribute_dictionaries.find { |d| d.name == dict_name } ||
+              (@attribute_dictionaries << AttrDict.new(dict_name)).last)
+      dict[key] = value
+    end
+
+    def get_attribute(dict_name, key, default = nil)
+      dict = @attribute_dictionaries.find { |d| d.name == dict_name }
+      return default if dict.nil? || !dict.key?(key)
+
+      dict[key]
     end
   end
 
   class Group
     attr_accessor :name, :layer, :transformation, :persistent_id,
-                  :attribute_dictionaries, :entities
+                  :attribute_dictionaries, :entities, :definition
 
     def initialize(name: "", pid: 0, transformation: nil)
       @name = name
@@ -167,6 +182,19 @@ module Sketchup
 
     def typename
       "Group"
+    end
+
+    def set_attribute(dict_name, key, value)
+      dict = (@attribute_dictionaries.find { |d| d.name == dict_name } ||
+              (@attribute_dictionaries << AttrDict.new(dict_name)).last)
+      dict[key] = value
+    end
+
+    def get_attribute(dict_name, key, default = nil)
+      dict = @attribute_dictionaries.find { |d| d.name == dict_name }
+      return default if dict.nil? || !dict.key?(key)
+
+      dict[key]
     end
 
     def own_size=(size)
@@ -202,6 +230,19 @@ module Sketchup
       "ComponentInstance"
     end
 
+    def set_attribute(dict_name, key, value)
+      dict = (@attribute_dictionaries.find { |d| d.name == dict_name } ||
+              (@attribute_dictionaries << AttrDict.new(dict_name)).last)
+      dict[key] = value
+    end
+
+    def get_attribute(dict_name, key, default = nil)
+      dict = @attribute_dictionaries.find { |d| d.name == dict_name }
+      return default if dict.nil? || !dict.key?(key)
+
+      dict[key]
+    end
+
     def bounds
       @definition.bounds
     end
@@ -226,8 +267,51 @@ module Sketchup
     end
   end
 
+  class Layers
+    include Enumerable
+
+    def initialize
+      @list = []
+      @used = Hash.new(0)
+    end
+
+    def use(layer)
+      return if layer.nil?
+
+      @used[layer.name] += 1
+    end
+
+    def purge_unused
+      unused = @list.select { |l| @used[l.name].to_i.zero? }
+      @list -= unused
+      unused
+    end
+
+    def add(name)
+      existing = self[name]
+      return existing if existing
+
+      layer = Layer.new(name)
+      @list << layer
+      layer
+    end
+
+    def [](name)
+      @list.find { |l| l.name == name }
+    end
+
+    def each(&blk)
+      @list.each(&blk)
+    end
+
+    def to_a
+      @list.dup
+    end
+  end
+
   class Model
     attr_accessor :entities, :title, :path, :shadow_info, :selection
+    attr_reader :operation_log
 
     def initialize
       @entities = []
@@ -235,6 +319,69 @@ module Sketchup
       @path = ""
       @shadow_info = { "Latitude" => 0.0, "Longitude" => 0.0 }
       @selection = Selection.new([])
+      @layers = Layers.new
+      @operation_log = []
+      @attribute_dictionaries = []
+    end
+
+    def layers
+      @layers ||= Layers.new
+    end
+
+    # real SketchUp keeps every layer in model.layers; mirror that on assignment
+    def entities=(list)
+      @entities = list
+      register_layers(list)
+    end
+
+    def definitions
+      collect = lambda do |list, acc|
+        Array(list).each do |entity|
+          definition = entity.respond_to?(:definition) ? entity.definition : nil
+          if definition
+            acc << definition unless acc.include?(definition)
+            collect.call(definition.entities, acc)
+          elsif entity.is_a?(Group)
+            collect.call(entity.entities, acc)
+          end
+        end
+        acc
+      end
+      collect.call(@entities, [])
+    end
+
+    def register_layers(list)
+      Array(list).each do |entity|
+        next unless entity.respond_to?(:layer)
+
+        if entity.layer
+          layers.add(entity.layer.name)
+          layers.use(entity.layer)
+        end
+        kids = if entity.is_a?(Group)
+                 entity.entities
+               elsif entity.respond_to?(:definition) && entity.definition
+                 entity.definition.entities
+               end
+        register_layers(kids) if kids
+      end
+    end
+
+    def start_operation(name = nil, *rest)
+      @operation_log << { "name" => name, "state" => "open", "args" => rest, "undo_seen" => true }
+      true
+    end
+
+    def commit_operation
+      entry = @operation_log.reverse.find { |op| op["state"] == "open" }
+      entry["state"] = "committed" if entry
+      true
+    end
+
+    def abort_operation
+      entry = @operation_log.reverse.find { |op| op["state"] == "open" }
+      entry["state"] = "aborted" if entry
+      true
     end
   end
 
@@ -248,6 +395,15 @@ module Sketchup
 
   def self.version
     VERSION
+  end
+
+  def self.send_action(action)
+    (@actions ||= []) << action
+    true
+  end
+
+  def self.actions
+    @actions ||= []
   end
 
   def self.load(path)
@@ -290,13 +446,29 @@ end
 class AttrDict
   attr_reader :name
 
-  def initialize(name, pairs)
+  def initialize(name, pairs = {})
     @name = name
     @pairs = pairs
   end
 
   def each_pair(&blk)
     @pairs.each_pair(&blk)
+  end
+
+  def [](key)
+    @pairs[key]
+  end
+
+  def []=(key, value)
+    @pairs[key] = value
+  end
+
+  def key?(key)
+    @pairs.key?(key)
+  end
+
+  def to_h
+    @pairs.dup
   end
 end
 
@@ -309,8 +481,75 @@ module UI
     $savepanel_path
   end
 
+  def self.start_timer(interval, repeat = false, &blk)
+    @timers ||= {}
+    id = (@timer_seq ||= 0) + 1
+    @timer_seq = id
+    @timers[id] = { "interval" => interval, "repeat" => repeat, "block" => blk }
+    id
+  end
+
+  def self.stop_timer(id)
+    @timers&.delete(id)
+    true
+  end
+
+  def self.timers
+    @timers ||= {}
+  end
+
   def self.menu(*)
     @menu ||= Menu.new
+  end
+
+  class HtmlDialog
+    attr_reader :options, :file, :callbacks, :scripts, :shown, :closed
+
+    def initialize(options = {})
+      @options = options
+      @callbacks = {}
+      @scripts = []
+      @shown = false
+      @closed = false
+    end
+
+    def set_file(path)
+      @file = path.to_s
+    end
+
+    def add_action_callback(name, &blk)
+      @callbacks[name.to_s] = blk
+    end
+
+    def show
+      @shown = true
+    end
+
+    def visible?
+      @shown && !@closed
+    end
+
+    def bring_to_front
+      @front = true
+    end
+
+    def front?
+      @front
+    end
+
+    def execute_script(js)
+      @scripts << js.to_s
+    end
+
+    def set_on_closed(&blk)
+      @on_closed = blk
+    end
+
+    def close
+      @closed = true
+      @shown = false
+      @on_closed&.call
+    end
   end
 
   class Menu
@@ -353,8 +592,9 @@ def mk_group(name:, pid:, pos: [0, 0, 0], size_in: [0, 0, 0], dicts: {}, world_p
   g
 end
 
-def mk_component(name:, pid:, pos: [0, 0, 0], size_in: [0, 0, 0], def_name: nil, dicts: {}, transformation: nil)
+def mk_component(name:, pid:, pos: [0, 0, 0], size_in: [0, 0, 0], def_name: nil, dicts: {}, transformation: nil, def_description: nil)
   d = Sketchup::ComponentDefinition.new(def_name || name, Sketchup::BoundingBox.sized(*size_in))
+  d.description = def_description if def_description
   c = Sketchup::ComponentInstance.new(name: name, pid: pid,
                                       transformation: transformation || t_in(*pos), definition: d)
   dicts.each { |dn, pr| c.attribute_dictionaries << AttrDict.new(dn, pr) }

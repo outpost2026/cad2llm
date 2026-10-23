@@ -57,6 +57,7 @@ module CAD2LLM
               "bbox_mm" => true,
               "rotation" => true,
               "tags" => true,
+              "definition_description" => true,
               "metadata_dictionaries" => true,
               "persistent_ids" => true,
               "gps" => !gps.nil?
@@ -87,6 +88,10 @@ module CAD2LLM
         name = "Unnamed" if name.empty?
         type = entity.is_a?(Sketchup::ComponentInstance) ? "component" : "group"
         definition_name = entity.is_a?(Sketchup::ComponentInstance) ? entity.definition.name.to_s : nil
+        definition_description = if entity.is_a?(Sketchup::ComponentInstance)
+                                  entity.definition.description.to_s.strip
+                                end
+        definition_description = nil if definition_description&.empty?
         node_path = path + [name]
         uid = "#{entity.persistent_id}@#{node_path.join('/')}"
         world = parent_world * entity.transformation
@@ -99,6 +104,7 @@ module CAD2LLM
           "persistent_id" => entity.persistent_id,
           "name" => name,
           "definition_name" => definition_name,
+          "definition_description" => definition_description,
           "entity_type" => type,
           "tag" => tag_of(entity),
           "hierarchy_path" => node_path,

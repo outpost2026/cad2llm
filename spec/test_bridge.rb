@@ -240,6 +240,52 @@ Dir.mktmpdir do |dir|
   eq("tag audit mismatch definition", audit["mismatches"][0]["definition_name"], "bad_def")
   eq("tag audit clean definition", audit["definitions_detail"].find { |r| r["definition_name"] == "clean_def" }["status"], "ok")
 
+  # ---------------------------------------------------- 7e. tag normalize
+  norm_model = Sketchup::Model.new
+  norm_outer = norm_model.layers.add("outer_tag")
+  norm_inner = norm_model.layers.add("inner_tag")
+
+  norm_bad_def = Sketchup::ComponentDefinition.new("norm_bad")
+  mk_box_geometry(norm_bad_def, size_in: [10, 10, 10])
+  norm_bad_def.entities.each do |entity|
+    entity.layer = norm_inner if entity.is_a?(Sketchup::Face) || entity.is_a?(Sketchup::Edge)
+  end
+  norm_nested = mk_group(name: "inner_nested", pid: 971)
+  norm_nested.layer = norm_inner
+  norm_bad_def.entities << norm_nested
+  norm_bad = Sketchup::ComponentInstance.new(name: "norm_bad", pid: 970, definition: norm_bad_def)
+  norm_bad.layer = norm_outer
+
+  norm_clean_def = Sketchup::ComponentDefinition.new("norm_clean")
+  mk_box_geometry(norm_clean_def, size_in: [10, 10, 10])
+  norm_clean_def.entities.each do |entity|
+    entity.layer = norm_outer if entity.is_a?(Sketchup::Face) || entity.is_a?(Sketchup::Edge)
+  end
+  norm_clean = Sketchup::ComponentInstance.new(name: "norm_clean", pid: 972, definition: norm_clean_def)
+  norm_clean.layer = norm_outer
+
+  norm_model.entities = [norm_bad, norm_clean]
+  dry = call("tag_normalize", {}, token: token, model: norm_model)["result"]
+  eq("normalize default mode", dry["mode"], "dry_run")
+  eq("normalize dry_run flag", dry["dry_run"], true)
+  eq("normalize plan definitions", dry["summary"]["definitions_plan"], 1)
+  eq("normalize ok definitions", dry["summary"]["definitions_ok"], 1)
+  eq("normalize faces", dry["summary"]["faces"], 6)
+  eq("normalize edges", dry["summary"]["edges"], 12)
+  eq("normalize nested", dry["summary"]["nested"], 1)
+  eq("normalize no mutation", norm_bad_def.entities.find { |e| e.is_a?(Sketchup::Face) }.layer.name, "inner_tag")
+  eq("normalize no operation", norm_model.operation_log.size, 0)
+
+  applied = call("tag_normalize", { "dry_run" => false }, token: token, model: norm_model)["result"]
+  eq("normalize applied mode", applied["mode"], "applied")
+  eq("normalize applied faces", applied["summary"]["faces"], 6)
+  eq("normalize applied face layer", norm_bad_def.entities.find { |e| e.is_a?(Sketchup::Face) }.layer.name, "outer_tag")
+  eq("normalize applied nested layer", norm_nested.layer.name, "outer_tag")
+  eq("normalize committed", norm_model.operation_log.last["state"], "committed")
+
+  again = call("tag_normalize", { "dry_run" => false }, token: token, model: norm_model)["result"]
+  eq("normalize idempotent changes", again["summary"]["changes_total"], 0)
+
   # ------------------------------------------------- 8. wire framing (TCP)
   client = TCPSocket.new(CAD2LLM::Bridge::HOST, CAD2LLM::Bridge.port)
   line1 = JSON.generate({ "id" => 11, "method" => "ping", "params" => {} })

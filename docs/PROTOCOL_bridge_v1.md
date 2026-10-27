@@ -129,6 +129,27 @@ Vrací `instances`, `definitions`, `mismatch_instances`, `mismatches[]`
  "model_root":{"inner_tags":[],"nested_tags":["wall","beam"]}}
 ```
 
+### `tag_normalize`
+Dry-run/apply normalizace tagů uvnitř definic na tag parent instance.
+**Default je `dry_run: true`** — nic nemění, jen vrací plán. Mutace vyžaduje
+explicitní `{"dry_run": false}` (CLI `--apply`).
+
+Pro každou definici vrací `status` (`plan` | `ok` | `ambiguous`) a `changes[]`
+(`kind` = `faces` | `edges` | `nested`, `from`, `to`, `count`). Definice použitá
+s více různými instance tagy je `ambiguous` a vyžaduje ruční rozhodnutí.
+Souhrn: `definitions_total`, `definitions_plan`, `definitions_ok`,
+`definitions_ambiguous`, `faces`, `edges`, `nested`, `changes_total`.
+
+```json
+{"mode":"dry_run","dry_run":true,
+ "summary":{"definitions_total":30,"definitions_plan":16,"definitions_ok":14,
+   "definitions_ambiguous":0,"faces":109,"edges":247,"nested":0,"changes_total":356},
+ "definitions":[{"definition_name":"lfp_cell_314ah","instance_tags":["battery"],
+   "instances":16,"status":"plan","changes":[
+     {"kind":"faces","from":"energy_nodes","to":"battery","count":6},
+     {"kind":"edges","from":"energy_nodes","to":"battery","count":12}]}]}
+```
+
 ### `export`
 Parametry: `path` (volitelné, default vedle `.skp` jako `<basename>_cad2llm_v4.json`),
 `profile` (`"spatial"` | `"geometry"`), `inline` (bool). Profil `geometry` přidá
@@ -226,6 +247,8 @@ python tools\cad2llm_bridge.py describe --pid 3348
 python tools\cad2llm_bridge.py describe --definition bed_01
 python tools\cad2llm_bridge.py purge-tags
 python tools\cad2llm_bridge.py tag-audit
+python tools\cad2llm_bridge.py tag-normalize            # dry-run (default)
+python tools\cad2llm_bridge.py tag-normalize --apply    # zapíše změny
 python tools\cad2llm_bridge.py export
 python tools\cad2llm_bridge.py export out.json --profile geometry
 python tools\cad2llm_bridge.py apply plan.json --dry-run
@@ -238,7 +261,7 @@ Exit kódy: `0` ok, `2` bridge nedostupný / chybí token file, `3` bridge vrát
 ## 8. Testy
 
 ```powershell
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 258 checks
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 273 checks
 python -m unittest discover -s tests -v           # 106 testů
 ```
 

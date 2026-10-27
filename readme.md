@@ -93,6 +93,7 @@ python tools\cad2llm_bridge.py export out.json           # v4 spatial export ži
 python tools\cad2llm_bridge.py export geo.json --profile geometry
 python tools\cad2llm_bridge.py apply plan.json           # plán + drift guard (snapshot, rollback)
 python tools\cad2llm_bridge.py tag-audit                 # audyt tagů uvnitř definic (inner vs parent)
+python tools\cad2llm_bridge.py tag-normalize             # dry-run plán normalizace tagů
 python tools\cad2llm_bridge.py export baseline.json
 python tools\cad2llm_bridge.py verify --baseline baseline.json --live
 python tools\cad2llm_derive.py out.json --out plan.json  # skeleton plánu z exportu

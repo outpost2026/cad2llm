@@ -218,6 +218,7 @@ module CAD2LLM
         when "attributes" then attributes(model, params)
         when "describe" then describe(model, params)
         when "tag_audit" then tag_audit(model)
+        when "tag_normalize" then tag_normalize(model, params)
         when "purge_unused_tags" then purge_unused_tags(model)
         when "reload" then reload
         when "export" then export(model, params)
@@ -350,6 +351,125 @@ module CAD2LLM
           "nested_tags" => root[:nested_tags]
         }
       }
+    end
+
+    # Dry-run/apply normalization of inner geometry tags to the parent instance
+    # tag. Default is dry-run; mutation requires params["dry_run"] == false.
+    def tag_normalize(model, params = {})
+      dry_run = params.key?("dry_run") ? params["dry_run"] == true : true
+      instances = []
+      collect_instances(model.entities, [], instances)
+
+      definitions = {}
+      tags_by_definition = Hash.new { |hash, key| hash[key] = [] }
+      counts_by_definition = Hash.new(0)
+      instances.each do |entry|
+        entity = entry[:entity]
+        definition = entity.respond_to?(:definition) ? entity.definition : nil
+        next if definition.nil?
+
+        key = definition_key(definition)
+        definitions[key] = definition
+        tags_by_definition[key] |= [layer_name(entity)]
+        counts_by_definition[key] += 1
+      end
+
+      plans = []
+      definitions.each do |key, definition|
+        instance_tags = tags_by_definition[key]
+        row = {
+          "definition_name" => definition.name.to_s,
+          "instance_tags" => instance_tags,
+          "instances" => counts_by_definition[key],
+          "changes" => []
+        }
+
+        if instance_tags.size != 1
+          row["status"] = "ambiguous"
+          row["note"] = "definition is used with multiple instance tags; manual decision required"
+          plans << { key: key, definition: definition, row: row }
+          next
+        end
+
+        target = instance_tags.first
+        counters = Hash.new(0)
+        definition.entities.each do |entity|
+          kind = normalize_kind(entity)
+          next if kind.nil?
+
+          from = layer_name(entity)
+          next if from == target
+
+          counters[[kind, from]] += 1
+        end
+        counters.each do |(kind, from), count|
+          row["changes"] << { "kind" => kind, "from" => from, "to" => target, "count" => count }
+        end
+        row["changes"].sort_by! { |change| [change["kind"], change["from"].to_s] }
+        row["status"] = row["changes"].empty? ? "ok" : "plan"
+        plans << { key: key, definition: definition, row: row }
+      end
+
+      rows = plans.map { |plan| plan[:row] }
+      rows.sort_by! { |row| [row["status"] == "plan" ? 0 : 1, row["definition_name"]] }
+
+      summary = {
+        "definitions_total" => rows.size,
+        "definitions_plan" => rows.count { |row| row["status"] == "plan" },
+        "definitions_ok" => rows.count { |row| row["status"] == "ok" },
+        "definitions_ambiguous" => rows.count { |row| row["status"] == "ambiguous" },
+        "faces" => 0,
+        "edges" => 0,
+        "nested" => 0,
+        "changes_total" => 0
+      }
+      rows.each do |row|
+        row["changes"].each do |change|
+          summary[change["kind"]] += change["count"]
+          summary["changes_total"] += change["count"]
+        end
+      end
+
+      applied = false
+      if !dry_run && summary["definitions_plan"].positive?
+        model.start_operation("CAD2LLM normalize inner tags", true)
+        begin
+          plans.each do |plan|
+            next unless plan[:row]["status"] == "plan"
+
+            target_name = plan[:row]["instance_tags"].first
+            target_layer = model.layers[target_name]
+            next if target_layer.nil?
+
+            plan[:definition].entities.each do |entity|
+              next if normalize_kind(entity).nil?
+              next if layer_name(entity) == target_name
+
+              entity.layer = target_layer
+            end
+          end
+          model.commit_operation
+          applied = true
+        rescue StandardError
+          model.abort_operation
+          raise
+        end
+      end
+
+      {
+        "mode" => applied ? "applied" : "dry_run",
+        "dry_run" => !applied,
+        "summary" => summary,
+        "definitions" => rows
+      }
+    end
+
+    def normalize_kind(entity)
+      case entity
+      when Sketchup::Face then "faces"
+      when Sketchup::Edge then "edges"
+      when Sketchup::Group, Sketchup::ComponentInstance then "nested"
+      end
     end
 
     def collect_instances(entities, path, out)

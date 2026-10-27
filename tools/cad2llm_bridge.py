@@ -194,6 +194,9 @@ class BridgeClient:
     def tag_audit(self) -> dict:
         return self.call("tag_audit")
 
+    def tag_normalize(self, *, dry_run: bool = True) -> dict:
+        return self.call("tag_normalize", {"dry_run": dry_run})
+
     def undo(self) -> dict:
         return self.call("undo")
 
@@ -324,6 +327,28 @@ def _print_result(args, result: dict) -> None:
                 f"    {row.get('definition_name')}: parent={row.get('instance_tags')} "
                 f"inner={row.get('inner_tags')} affected={row.get('mismatch_instances')}/{row.get('instances')}"
             )
+    elif method == "tag-normalize":
+        summary = result.get("summary") or {}
+        print(
+            f"OK  mode={result.get('mode')} definitions={summary.get('definitions_total')} "
+            f"plan={summary.get('definitions_plan')} ok={summary.get('definitions_ok')} "
+            f"ambiguous={summary.get('definitions_ambiguous')}"
+        )
+        print(
+            f"    changes: faces={summary.get('faces')} edges={summary.get('edges')} "
+            f"nested={summary.get('nested')} total={summary.get('changes_total')}"
+        )
+        for row in result.get("definitions") or []:
+            if row.get("status") != "plan":
+                continue
+            parts = ", ".join(
+                f"{change.get('kind')} {change.get('from')}->{change.get('to')} x{change.get('count')}"
+                for change in row.get("changes") or []
+            )
+            print(
+                f"    {row.get('definition_name')}: {parts} "
+                f"(instances={row.get('instances')})"
+            )
     elif method == "undo":
         print(f"OK  undo via {result.get('via')}")
 
@@ -373,6 +398,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("purge-tags")
     sub.add_parser("tag-audit")
+    p_normalize = sub.add_parser("tag-normalize")
+    p_normalize.add_argument(
+        "--apply",
+        action="store_true",
+        help="write changes (default is dry-run report only)",
+    )
     sub.add_parser("undo")
     return parser
 
@@ -422,6 +453,8 @@ def main(argv: list[str] | None = None) -> int:
             result = client.purge_unused_tags()
         elif args.command == "tag-audit":
             result = client.tag_audit()
+        elif args.command == "tag-normalize":
+            result = client.tag_normalize(dry_run=not args.apply)
         elif args.command == "export":
             result = client.export(args.path, args.profile, compact=args.compact)
         else:

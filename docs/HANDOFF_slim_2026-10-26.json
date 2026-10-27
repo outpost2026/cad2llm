@@ -9,13 +9,13 @@
     "purpose": "Deterministic CAD (SketchUp) -> LLM handoff pipeline. Eliminates spatial hallucination by sending precomputed bbox, semantics, relations, and metrics instead of raw geometry."
   },
   "current_state": {
-    "extension_version": "4.3.3",
+    "extension_version": "4.3.4",
     "schema_version": "4.0",
     "slim_version": "cad2llm/slim/v1",
     "slim_file": "tools/cad2llm_slim.py",
     "slim_status": "IMPLEMENTED_AND_TESTED for design-chat handoff; enrich bugs A+B still block energy/fire analysis",
     "tests_python": 115,
-    "tests_ruby": 258,
+    "tests_ruby": 273,
     "working_pipeline": [
       "SketchUp GUI -> extension 4.3.1 -> v4 geometry export (376317 B fixture, sanitized)",
       "v4 geometry -> cad2llm.py enrich -> v5 (buggy energy/clearance still present)",
@@ -424,6 +424,21 @@
       "mismatch_instances": 34,
       "mismatch_definitions": 16,
       "verdict": "Inner geometry tags do not follow parent instance tags in 16 definitions; fix requires a separate approved mutation pass."
+    },
+    "release_4_3_4": {
+      "rbz": "releases/cad2llm_exporter.rbz",
+      "bytes": 21987,
+      "sha256": "754b37a2afb8fd7708e75d508ee3bf164ff3926a09264a4bbf36718503e413ad",
+      "backup": "C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261027_122424"
+    },
+    "tag_normalize_dryrun_v1_3": {
+      "definitions_plan": 16,
+      "changes_total": 356,
+      "faces": 109,
+      "edges": 247,
+      "nested": 0,
+      "ambiguous": 0,
+      "applied": false
     }
   }
 }

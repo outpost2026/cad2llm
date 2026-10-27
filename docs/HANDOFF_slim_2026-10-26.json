@@ -1,0 +1,409 @@
+{
+  "schema": "agent_handoff/v1",
+  "generated_at": "2026-10-27",
+  "project": {
+    "name": "cad2llm",
+    "repo_root": "C:\\Users\\PC\\Documents\\Repozitar_Dev\\_github\\cad2llm",
+    "primary_model": "mistnost_2_v1.2.skp",
+    "primary_export": "examples/mistnost_2_v1.2_cad2llm_v4_geometry.json",
+    "purpose": "Deterministic CAD (SketchUp) -> LLM handoff pipeline. Eliminates spatial hallucination by sending precomputed bbox, semantics, relations, and metrics instead of raw geometry."
+  },
+  "current_state": {
+    "extension_version": "4.3.1",
+    "schema_version": "4.0",
+    "slim_version": "cad2llm/slim/v1",
+    "slim_file": "tools/cad2llm_slim.py",
+    "slim_status": "IMPLEMENTED_AND_TESTED for design-chat handoff; enrich bugs A+B still block energy/fire analysis",
+    "tests_python": 115,
+    "tests_ruby": 241,
+    "working_pipeline": [
+      "SketchUp GUI -> extension 4.3.1 -> v4 geometry export (376317 B fixture, sanitized)",
+      "v4 geometry -> cad2llm.py enrich -> v5 (buggy energy/clearance still present)",
+      "v4/v5 -> cad2llm_slim.py -> slim (32001 B default compact on v1.2 fixture; 34360 B on v7 v5)"
+    ]
+  },
+  "conversation_semantics": {
+    "opening_question": "Analýza trim JSON outputu v CAD2LLM repu — kde vzniká bloat a jak ho eliminovat.",
+    "pivot_1": "Nalezena 3-vrstvá architektura: v4 spatial (~80 KB), v4 geometry (~318 KB), v5 enrich (~423 KB). LLM by měl dostat slim (~45 KB), ne full.",
+    "pivot_2": "Composer 2.5 vyčerpal kvótu během psaní cad2llm_slim.py — nutno auditovat, co stihl.",
+    "pivot_3": "CLI-ready slim was written by the user and is now present in the repo as tools/cad2llm_slim.py with tests.",
+    "pivot_4": "Slim v1.1 funguje správně (100% checklist), ale enrich má 4 bugy (A-D) a 3 dluhy (E-G).",
+    "pivot_5": "CLI-ready slim v1.2 is deployed in repo and tested; enrich bugs A-D remain.",
+    "final_assessment": "Slim is implemented, tested and fast to use; energy/fire analysis still requires enrich fixes A+B."
+  },
+  "deliverables_produced": [
+    {
+      "file": "tools/cad2llm_slim_v1_1.py",
+      "status": "REPLACED",
+      "location": "tools/cad2llm_slim.py (CLI-ready version)",
+      "description": "Superseded by the CLI-ready slim in the repo; do not look for v1_1.",
+      "tested_on": "mistnost_2_v1.2_cad2llm_v4_geometry.json (53 nodes) -> out_slim.json (28 defs, 0 relations, 0 metrics)",
+      "next_action": "Use tools/cad2llm_slim.py."
+    },
+    {
+      "file": "tools/cad2llm_slim.py",
+      "status": "IN_REPO_WORKING",
+      "location": "tools/cad2llm_slim.py",
+      "description": "Deterministic v4/v5 -> slim v1 transform with argparse CLI, stdin/stdout, geometry/rotation/domain flags, --compact, --dry-run, --print-stats.",
+      "next_action": "None; committed candidate.",
+      "tested_on": "examples/mistnost_2_v1.2_cad2llm_v4_geometry.json (49 nodes) -> 32001 B default compact; deterministic repeat byte-identical"
+    },
+    {
+      "file": "out_slim.json",
+      "status": "REFERENCE_ONLY_NOT_IN_REPO",
+      "description": "Slim output from prior session; regenerate from examples/mistnost_2_v1.2_cad2llm_v4_geometry.json."
+    },
+    {
+      "file": "out_v5.json",
+      "status": "REFERENCE_ONLY_NOT_IN_REPO",
+      "size_bytes": 423000,
+      "description": "Enriched v5 from prior session; contains bugs A-D."
+    },
+    {
+      "file": "out_slim_v5.json",
+      "status": "REFERENCE_ONLY_NOT_IN_REPO",
+      "size_bytes": 45000,
+      "description": "Slim v5 from prior session; contains enrich bugs A-D."
+    }
+  ],
+  "slim_v1_1_verification": {
+    "checklist_all_passed": true,
+    "details": {
+      "geometry_dropped": "yes (0 blocks)",
+      "matrix_4x4_dropped": "yes (0)",
+      "size_center_origin_dropped": "yes",
+      "hierarchy_path_dropped": "yes",
+      "rotation_deg_dropped_by_default": "yes (0 rotation_deg, 21 quaternion only)",
+      "metadata_cad2llm_whitelisted": "yes (role/zone/system/nomenclature/source/confidence)",
+      "metadata_ifc_whitelisted": "yes (type/schema/source)",
+      "domain_dicts_dropped_by_default": "yes",
+      "original_name_dropped_by_default": "yes",
+      "definitions_deduplicated": "yes (28 unique)",
+      "definitions_sorted": "yes (ASCII: 'Stove pipe' < 'battery_base_shelf')",
+      "project_metadata_gps_dropped": "yes",
+      "project_metadata_capabilities_dropped": "yes",
+      "project_metadata_ifcguids_dropped": "yes",
+      "relations_id_dropped": "yes",
+      "relations_evidence_dropped": "yes",
+      "metrics_z_table_dropped": "yes",
+      "metrics_clearances_dropped": "yes",
+      "evidence_reduced_to_rule_ids": "yes",
+      "deterministic_sorted_keys": "yes"
+    }
+  },
+  "enrich_bugs": [
+    {
+      "id": "A",
+      "severity": "HIGH",
+      "where": "tools/cad2llm_v5.py :: build_metrics()",
+      "symptom": "metrics.energy is hardcoded {kwh_nominal: null, peak_load_kw: null, notes: 'DAE channel: no attribute dictionaries, not derivable'} even for sketchup channel with full metadata.energy",
+      "evidence": "out_slim_v5.json shows energy=null, but source has battery_main_630ah_lfp (630Ah * 24V = 15.12 kWh), battery_secondary_100ah_lfp (2.4 kWh), inverter_hybrid_3_2kw (3.2 kW). Total 17.52 kWh.",
+      "impact": "LLM cannot see house has 17.5 kWh battery capacity + 3.2 kW inverter. Blocks energy analysis.",
+      "fix_sketch": "Read metadata.energy.{capacity_ah, nominal_voltage_v, rated_power_kw} per node. Sum kWh = sum(cap*volt/1000). Peak = max(rated_power_kw). Set notes based on channel and whether metadata was found.",
+      "estimated_effort": "30 minutes",
+      "blocking": "energy/fire analysis use case"
+    },
+    {
+      "id": "B",
+      "severity": "HIGH",
+      "where": "tools/cad2llm_rules.json :: clearance_rules",
+      "symptom": "Regex '^kamna' no longer matches 'stove_01_wood' after v1.1 rename. Clearance rule broken. brief.facts.narrowest_passage_mm = null, metrics.free_space.passages = [].",
+      "evidence": "v7 had stove-bed: 642.4 mm passage; v1.2 has none because regex needs 'kamna' but node name is 'stove_01_wood'.",
+      "impact": "Missing clearance info in brief. LLM cannot say 'stove is 642mm from bed, OK'.",
+      "fix_sketch": "Option 1: add alias '^(kamna|stove)' / '^(bed|postel)' to rules.json. Option 2 (preferred): role-based rules: match metadata.cad2llm.role instead of regex. Option 3: add vocab aliases kamna->stove.",
+      "estimated_effort": "15 minutes (option 1) / 45 minutes (option 2, more robust)",
+      "blocking": "fire safety analysis use case"
+    },
+    {
+      "id": "C",
+      "severity": "MEDIUM",
+      "where": "tools/cad2llm_v5.py :: _free_space()",
+      "symptom": "When no role=floor node exists, free_space falls back to envelope bbox, giving free_ratio=0.886 (nonsensical for 10 m² room with 4 m² furniture). cells_total=3600 (60x60) but floor_area=10.37 m².",
+      "evidence": "v1.2 has no 'floor_m2' node; only insulation_floor_100 (role=insulation, assembly=floor). v7 had floor_m2 (role=floor).",
+      "impact": "free_ratio incorrect. Metrics misleading.",
+      "fix_sketch": "Fallback chain: role=floor -> role=insulation with assembly=floor -> null with note. Or use space_boundary_room_01 footprint (but it's 23.5 m², wrong). Best: derive from insulation_floor_100 bbox, subtract furniture.",
+      "estimated_effort": "1 hour",
+      "blocking": "quality metric, not blocker"
+    },
+    {
+      "id": "D",
+      "severity": "MEDIUM",
+      "where": "tools/cad2llm_v5.py :: build_relations()",
+      "symptom": "space_boundary_room_01 (zero-thickness 2D annotation) pollutes adjacency relations (~8 of 32). E.g., stove adjacent to space_boundary at 150mm.",
+      "evidence": "out_slim_v5.json relations include: 3349@stove_01_wood -> 3377@space_boundary (150mm), 3353@battery -> space_boundary (74mm), 3357@wall -> space_boundary (74mm), etc.",
+      "impact": "Adjacency count inflated (32 vs expected ~24). LLM may misinterpret spatial relationships.",
+      "fix_sketch": "Exclude roles [space_boundary, boundary, void] from adjacency/contact kinds in build_relations(). Keep only for containment if at all.",
+      "estimated_effort": "20 minutes",
+      "blocking": "quality metric, not blocker"
+    },
+    {
+      "id": "E",
+      "severity": "LOW",
+      "where": "model annotation (annotate plan)",
+      "symptom": "4880@Unnamed (definition 'Stove pipe') has role=stove, zone=sleep via tag fallback. Should be role=duct or role=chimney, zone=envelope.",
+      "impact": "LLM may confuse stove pipe with stove.",
+      "fix_sketch": "Annotate in model: cad2llm.role=duct, zone=envelope, ifc.type=IfcPipeFitting. Add 'duct'/'chimney' to core vocab.",
+      "estimated_effort": "15 minutes (model edit + rules.json)",
+      "blocking": "annotation debt"
+    },
+    {
+      "id": "F",
+      "severity": "LOW",
+      "where": "model annotation",
+      "symptom": "3635@Unnamed (definition 'bed_frame') has no metadata.cad2llm/ifc, only tag fallback role=bed, confidence 0.7. definition_description is null.",
+      "impact": "LLM has low-confidence role, definitions[] entry missing metadata.",
+      "fix_sketch": "Annotate: cad2llm.role=bed, ifc.type=IfcFurniture, description='Rám postele'.",
+      "estimated_effort": "15 minutes",
+      "blocking": "annotation debt"
+    },
+    {
+      "id": "G",
+      "severity": "LOW",
+      "where": "tools/cad2llm.py :: cmd_enrich()",
+      "symptom": "enrich output grew 359 -> 423 KB (+18%) because geometry block is preserved. Not a bug (additive by design), but inefficient for handoff.",
+      "impact": "Enrich on geometry export is wasteful. Not blocking because slim drops geometry anyway.",
+      "fix_sketch": "Add --drop-geometry flag to enrich. Then v5 ~140 KB instead of 423 KB. Optional optimization.",
+      "estimated_effort": "15 minutes",
+      "blocking": "optional"
+    }
+  ],
+  "pending_tasks": [
+    {
+      "id": "P1",
+      "priority": "HIGH",
+      "task": "Fix enrich bug A (energy metrics)",
+      "target_file": "tools/cad2llm_v5.py",
+      "function": "build_metrics",
+      "test_after_fix": "Re-run enrich + slim on mistnost_2_v1.2. Assert out_slim_v5.json metrics.energy.kwh_nominal == 17.52, peak_load_kw == 3.2"
+    },
+    {
+      "id": "P2",
+      "priority": "HIGH",
+      "task": "Fix enrich bug B (clearance regex)",
+      "target_file": "tools/cad2llm_rules.json",
+      "preferred_approach": "Add role-based rule support; keep regex as fallback",
+      "test_after_fix": "Re-run enrich + slim. Assert brief.facts.narrowest_passage_mm is not null, ~642.4 mm"
+    },
+    {
+      "id": "P3",
+      "priority": "MEDIUM",
+      "task": "Deploy CLI-ready slim v1.2",
+      "source": "conversation code block (this handoff contains full source)",
+      "target_file": "tools/cad2llm_slim.py",
+      "action": "Save, delete v1_1.py, update any imports to cad2llm_slim",
+      "test": "python tools/cad2llm_slim.py examples/mistnost_2_v1.2_cad2llm_v4_geometry.json /tmp/out.json --print-stats",
+      "status": "DONE",
+      "evidence": "tools/cad2llm_slim.py present with argparse/stdin/stdout/dry-run/print-stats"
+    },
+    {
+      "id": "P4",
+      "priority": "MEDIUM",
+      "task": "Wire slim into cad2llm.py CLI",
+      "target_file": "tools/cad2llm.py",
+      "action": "Add `slim` subcommand that calls cad2llm_slim.cmd_slim; argparse flags mirror slim's",
+      "status": "DONE",
+      "evidence": "tools/cad2llm.py has slim subcommand with --geometry and --compact"
+    },
+    {
+      "id": "P5",
+      "priority": "MEDIUM",
+      "task": "Write tests/test_cad2llm_slim.py",
+      "coverage_required": [
+        "deterministic output (2x same input => same sha256)",
+        "geometry_mode drop/summary/keep",
+        "rotation_mode quaternion/euler/both",
+        "keep_domain_dicts=True preserves energy/construction",
+        "CLI stdin/stdout (- -)",
+        "CLI --dry-run does not write",
+        "CLI --print-stats emits to stderr",
+        "golden against examples/mistnost_2_v7_v5_gui.json"
+      ],
+      "target_file": "tests/test_cad2llm_slim.py",
+      "estimated_effort": "2 hours",
+      "status": "DONE",
+      "evidence": "tests/test_cad2llm_slim.py present; 9 tests pass (suite 115)"
+    },
+    {
+      "id": "P6",
+      "priority": "LOW",
+      "task": "Fix bug C (free_space fallback)",
+      "target_file": "tools/cad2llm_v5.py",
+      "function": "_free_space"
+    },
+    {
+      "id": "P7",
+      "priority": "LOW",
+      "task": "Fix bug D (space_boundary in relations)",
+      "target_file": "tools/cad2llm_v5.py",
+      "function": "build_relations"
+    },
+    {
+      "id": "P8",
+      "priority": "LOW",
+      "task": "Annotate bed_frame and Stove pipe (bugs E, F)",
+      "target_file": "docs/plans/*.json (new annotate plan)",
+      "action": "Apply via bridge or manual"
+    },
+    {
+      "id": "P9",
+      "priority": "LOW",
+      "task": "Optional: enrich --drop-geometry flag (bug G)",
+      "target_file": "tools/cad2llm.py",
+      "function": "cmd_enrich"
+    }
+  ],
+  "file_map": {
+    "slim_current": "tools/cad2llm_slim.py",
+    "slim_proposed": "tools/cad2llm_slim.py (deployed)",
+    "slim_tests_pending": "none (tests present)",
+    "enrich": "tools/cad2llm_v5.py",
+    "enrich_rules": "tools/cad2llm_rules.json",
+    "cli": "tools/cad2llm.py",
+    "semantics": "tools/cad2llm_v5.py",
+    "core": "tools/cad2llm_core.py",
+    "extension": "src/cad2llm_exporter/lib/exporter.rb",
+    "bridge": "src/cad2llm_exporter/lib/bridge.rb",
+    "slim_docs": "docs/SLIM_v1.md",
+    "design_v5": "docs/DESIGN_v5.md",
+    "geometry_docs": "docs/GEOMETRY_v1.md",
+    "schema_v4": "docs/SCHEMA_v4.md",
+    "primary_export": "examples/mistnost_2_v1.2_cad2llm_v4_geometry.json",
+    "reference_v7_export": "examples/mistnost_2_v7_v5_gui.json",
+    "reference_v5_fragment": "docs/schema/example_mistnost_2_v5_fragment.json",
+    "out_slim": "out_slim.json",
+    "out_v5": "out_v5.json",
+    "out_slim_v5": "out_slim_v5.json",
+    "ai_state": ".ai_state.json",
+    "readme": "readme.md",
+    "slim_tests": "tests/test_cad2llm_slim.py"
+  },
+  "verification_commands": {
+    "slim_basic": "python tools/cad2llm_slim.py examples/mistnost_2_v1.2_cad2llm_v4_geometry.json /tmp/out.json --compact --print-stats",
+    "slim_full_pipeline": "python tools/cad2llm.py enrich examples/mistnost_2_v1.2_cad2llm_v4_geometry.json /tmp/v5.json && python tools/cad2llm_slim.py /tmp/v5.json /tmp/slim.json --compact --print-stats",
+    "slim_with_domains": "python tools/cad2llm_slim.py /tmp/v5.json /tmp/slim.json --keep-domain-dicts --print-stats",
+    "determinism_check": "python tools/cad2llm_slim.py /tmp/v5.json /tmp/a.json --compact && python tools/cad2llm_slim.py /tmp/v5.json /tmp/b.json --compact && fc /tmp/a.json /tmp/b.json  # (Windows) or cmp on unix",
+    "test_suite_python": "python -m unittest discover -s tests -v",
+    "test_suite_ruby": "ruby spec\\run_all.rb"
+  },
+  "decision_log": [
+    {
+      "decision": "Slim is transform, not enrich",
+      "rationale": "Keeps concerns separated. Enrich = deterministic semantic layer (v4->v5). Slim = compression layer (v5->slim). User can run either independently.",
+      "consequence": "Slim on v4 has no relations/metrics/brief (correct, they don't exist in v4)."
+    },
+    {
+      "decision": "Default drop geometry",
+      "rationale": "Design chat doesn't need mesh. Geometry is 318/359 KB (88%). Drop by default, keep via --geometry summary or --geometry keep.",
+      "consequence": "Slim default output 45 KB vs 423 KB v5. But no collision analysis without --geometry keep."
+    },
+    {
+      "decision": "Default drop domain dicts",
+      "rationale": "For design chat, role/zone/system suffice. Energy/fire analysis needs --keep-domain-dicts.",
+      "consequence": "Same file, two use cases, explicit flag."
+    },
+    {
+      "decision": "Default rotation quaternion only",
+      "rationale": "One representation, not two. Avoids duplicity. Euler is readable but loses precision; quaternion is precise.",
+      "consequence": "Slim outputs quaternion only for non-identity rotations. --rotation euler switches."
+    },
+    {
+      "decision": "Definitions deduplicated per definition_name",
+      "rationale": "46 instances share 28 definitions. Sending metadata 46x is waste.",
+      "consequence": "definitions[] table + nodes reference by definition_name. If two instances have conflicting metadata (rare, annotation mistake), first instance wins (deterministic by source order)."
+    },
+    {
+      "decision": "Do NOT fix enrich bugs in slim",
+      "rationale": "Bugs A-D are in enrich, not in slim. Slim faithfully reflects enrich output.",
+      "consequence": "Slim on buggy v5 output will show energy=null. Fix in cad2llm_v5.py, then re-enrich."
+    }
+  ],
+  "known_limitations": {
+    "slim": [
+      "On v4 input, metrics/relations/brief are absent (they are v5 artifacts). Run enrich first for full handoff.",
+      "Definitions use ASCII sort ('Stove pipe' before 'battery_base_shelf'). Deterministic but may surprise humans.",
+      "Two instances of same definition with different metadata: first wins. No merge logic.",
+      "If neither quaternion nor rotation_deg present in spatial (rare), no rotation emitted."
+    ],
+    "enrich": [
+      "Bug A: metrics.energy hardcoded null.",
+      "Bug B: clearance regex broken after rename.",
+      "Bug C: free_space fallback wrong when no role=floor.",
+      "Bug D: space_boundary pollutes relations.",
+      "Bug G: enrich preserves geometry (wasteful but not wrong)."
+    ],
+    "pipeline": [
+      "SketchUp is single-threaded Ruby; bridge must dispatch via UI.start_timer.",
+      "SU 2024 = Ruby 3.2.2; SU 2027 = Ruby 3.4.9 (future upgrade path).",
+      "DAE channel is legacy fallback; sketchup channel is primary."
+    ]
+  },
+  "agent_instructions": {
+    "step_1": "Read this handoff JSON and .ai_state.json in the repo.",
+    "step_2": "Verify current slim works: run `python tools/cad2llm_slim_v1_1.py examples/mistnost_2_v1.2_cad2llm_v4_geometry.json /tmp/out.json --print-stats` (if v1_1 has no CLI, use `python -c` workaround from conversation).",
+    "step_3": "If user asks 'make slim production-ready', deploy P3 (CLI-ready v1.2 from this conversation).",
+    "step_4": "If user asks 'fix energy analysis', deploy P1 (fix enrich bug A), verify with pipeline test.",
+    "step_5": "If user asks 'fix fire analysis', deploy P2 (fix enrich bug B).",
+    "step_6": "Always run test suite after changes: `python -m unittest discover -s tests -v`.",
+    "step_7": "Update docs/SLIM_v1.md and .ai_state.json after any change to slim or enrich.",
+    "step_8": "Do NOT modify src/cad2llm_exporter/* unless explicitly asked (extension is production, bridge is stable).",
+    "step_9": "When in doubt, prefer adding a flag over changing default behavior (backward compat)."
+  },
+  "communication_style_for_agent": {
+    "user_role": "junior dev, AI-assisted coding, prefers Czech, wants to understand each line",
+    "response_style": "Explain each line or decision. Use tables for comparisons. Flag bugs vs design decisions. Recommend concrete next step. Do not over-engineer.",
+    "known_preferences": [
+      "Prefers working code over theoretical discussion",
+      "Wants to understand the 'why' not just the 'what'",
+      "Uses PowerShell on Windows",
+      "Tests on real data (mistnost_2_v1.2), not toy fixtures"
+    ]
+  },
+  "immediate_next_action": {
+    "recommended": "P1 (fix enrich bug A) — 30 minutes, unlocks energy analysis for LLM",
+    "alternative": "P3 (deploy CLI-ready v1.2) — 15 minutes, improves developer workflow",
+    "do_not": "Refactor slim before fixing enrich bugs. Slim is correct; enrich is not."
+  },
+  "repo_audit_2026_10_27": {
+    "modified": [
+      "readme.md",
+      "spec/test_exporter.rb",
+      "src/cad2llm_exporter/lib/bridge.rb",
+      "src/cad2llm_exporter/lib/exporter.rb",
+      "tools/cad2llm.py",
+      "tools/cad2llm_bridge.py"
+    ],
+    "added": [
+      "tools/cad2llm_slim.py",
+      "tests/test_cad2llm_slim.py",
+      "docs/SLIM_v1.md",
+      "docs/HANDOFF_slim_2026-10-26.json",
+      "examples/mistnost_2_v1.2_cad2llm_v4_geometry.json",
+      "tools/compare_size.py",
+      "context_indexer_v2.py",
+      "index_cad2llm.md"
+    ],
+    "verification": [
+      "python -m unittest discover -s tests -v -> 115 OK",
+      "ruby spec\\run_all.rb -> SUITE OK (68 + 85 + 88 = 241 checks)",
+      "cad2llm_slim.py determinism -> fc /b no differences",
+      "cad2llm.py slim on v1.2 geometry -> 38490 B with --geometry summary"
+    ],
+    "decisions_needed": [
+      "Whether to push after commit (needs explicit approval)",
+      "Whether to add bridge/Python compact-export tests",
+      "Whether to keep tools/compare_size.py as a utility or replace with a proper report tool"
+    ],
+    "decisions_resolved": [
+      "GPS and absolute model_path sanitized in new fixture before commit",
+      "index_cad2llm.md and context_indexer_v2.py gitignored as generated context artifacts",
+      "RBZ rebuilt as 4.3.1 and installed into SU2024 Plugins"
+    ],
+    "release_4_3_1": {
+      "rbz": "releases/cad2llm_exporter.rbz",
+      "bytes": 20254,
+      "sha256": "fe3e3eac205ba35648e64ab5bda2da972d56484ee44897e8e1bf8392db8f14ee",
+      "installed_path": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins",
+      "backup": "C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261027_111808"
+    }
+  }
+}

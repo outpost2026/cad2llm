@@ -6,6 +6,7 @@ python tools/cad2llm.py validate <doc.json> [--rules rules.json] [--vocab overla
 python tools/cad2llm.py summary  <doc.json> [--md report.md]
 python tools/cad2llm.py diff     <a.json> <b.json>
 python tools/cad2llm.py enrich   <doc.json> <out.json> [--excerpt]
+python tools/cad2llm.py slim     <doc.json> <out.json> [--geometry drop|summary|keep] [--compact]
 """
 
 from __future__ import annotations
@@ -18,6 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import cad2llm_core as core
+import cad2llm_slim as slim
 import cad2llm_v5 as v5
 import cad2llm_vocab as vocab
 
@@ -103,6 +105,22 @@ def cmd_diff(args) -> int:
     return 0
 
 
+def cmd_slim(args) -> int:
+    doc = core.load_any(args.doc)
+    out = slim.slim_document(doc, geometry_mode=args.geometry)
+    slim.write_json(args.out, out, compact=args.compact)
+    raw_bytes = Path(args.doc).stat().st_size
+    out_bytes = Path(args.out).stat().st_size
+    pct = (1.0 - out_bytes / raw_bytes) * 100.0 if raw_bytes else 0.0
+    print(f"OK  {args.out}")
+    print(
+        f"    tier={out['export_tier']} nodes={len(out['nodes'])} "
+        f"definitions={len(out.get('definitions') or [])} "
+        f"bytes={out_bytes} ({pct:.1f}% smaller than input)"
+    )
+    return 0
+
+
 def cmd_enrich(args) -> int:
     doc = core.load_any(args.doc)
     computed = not v5.has_validation(doc)
@@ -166,6 +184,22 @@ def main(argv=None) -> int:
     e.add_argument("out")
     e.add_argument("--excerpt", action="store_true")
     e.set_defaults(func=cmd_enrich)
+
+    sl = sub.add_parser("slim", help="v4/v5 -> LLM handoff (cad2llm/slim/v1)")
+    sl.add_argument("doc")
+    sl.add_argument("out")
+    sl.add_argument(
+        "--geometry",
+        default="drop",
+        choices=["drop", "summary", "keep"],
+        help="geometry block per node (default: drop)",
+    )
+    sl.add_argument(
+        "--compact",
+        action="store_true",
+        help="minified JSON (no pretty-print)",
+    )
+    sl.set_defaults(func=cmd_slim)
 
     args = p.parse_args(argv)
     try:

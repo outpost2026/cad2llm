@@ -2,8 +2,8 @@
   "schema": "ai_state/v1",
   "repo": "cad2llm",
   "branch": "main",
-  "updated_at": "2026-10-23",
-  "status": "Extension 4.3.0 installed into SU 2024 Plugins (loader + main + lib + html); bridge reloaded to 4.3.0. Live geometry export mistnost_2_v1.1: 46 nodes, 45 ok / 1 empty, 301 faces, 0 errors, 0 schema errors. SU restart needed for refreshed menu/Extension Manager; bridge already runs geometry code.",
+  "updated_at": "2026-10-27",
+  "status": "Slim v1 + compact export ready for commit. Fixture examples/mistnost_2_v1.2_cad2llm_v4_geometry.json sanitized (GPS=null, model_path=null, capabilities.gps=false). RBZ 4.3.1 rebuilt (20254 B) and installed into SU2024 Plugins with SHA256 match; backup on Desktop. index_cad2llm.md and context_indexer_v2.py gitignored. Python 115 tests and Ruby 241 checks pass. Enrich bugs A-D remain open.",
   "last_commits": [
     {
       "hash": "8e4b39a",
@@ -80,7 +80,17 @@
     "Release artifact: releases/cad2llm_exporter.rbz 4.3.0, 20272 B, contains loader + main + lib exporter/annotate/bridge + inspector.html",
     "Installed RBZ 4.3.0 into C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins; backup at C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261023_164633",
     "Installed file hashes match src (loader, main, exporter, bridge, annotate, inspector.html); bridge reload OK",
-    "Live geometry export mistnost_2_v1.1: 317623 B, 46 nodes, 45 ok / 1 empty, 301 faces, 673 edges, 42 closed, 37 volumes, 46 unique hashes, 0 schema errors"
+    "Live geometry export mistnost_2_v1.1: 317623 B, 46 nodes, 45 ok / 1 empty, 301 faces, 673 edges, 42 closed, 37 volumes, 46 unique hashes, 0 schema errors",
+    "Slim v1 transform implemented: tools/cad2llm_slim.py (argparse, stdin/stdout, geometry modes, deterministic output)",
+    "Slim wired into tools/cad2llm.py subcommand 'slim' with --geometry and --compact",
+    "Slim tests added: tests/test_cad2llm_slim.py (9 tests; total Python suite 115)",
+    "Ruby compact export: Exporter.export_to_file(..., compact: true), bridge RPC compact param, bridge CLI --compact; exporter suite now 88 checks (total 241)",
+    "New primary fixture examples/mistnost_2_v1.2_cad2llm_v4_geometry.json (49 nodes, geometry profile, 376317 B)",
+    "Slim verified on v1.2 geometry: default 32001 B, summary 38490 B, keep 101273 B; deterministic repeat byte-identical",
+    "Sanitized new v1.2 geometry fixture: global_origin_gps=null, source.model_path=null, capabilities.gps=false",
+    "gitignored index_cad2llm.md and context_indexer_v2.py (generated context snapshot)",
+    "Bumped extension to 4.3.1; rebuilt releases/cad2llm_exporter.rbz (20254 B, sha256 fe3e3eac205ba356)",
+    "Installed RBZ 4.3.1 into SU2024 Plugins; all 6 installed files SHA256-identical to src"
   ],
   "verified_numbers": {
     "gui_v7_nodes": 46,
@@ -255,6 +265,37 @@
       "bytes": 317623,
       "schema_errors": 0,
       "extension_version": "4.3.0"
+    },
+    "slim_2026_10_27": {
+      "fixture": "examples/mistnost_2_v1.2_cad2llm_v4_geometry.json",
+      "input_bytes": 376317,
+      "nodes": 49,
+      "definitions": 30,
+      "geometry_nodes": 49,
+      "slim_default_bytes": 32001,
+      "slim_summary_bytes": 38490,
+      "slim_keep_bytes": 101273,
+      "slim_default_reduction_pct": 91.5,
+      "v5_reference_input_bytes": 132242,
+      "v5_slim_bytes": 34360,
+      "python_tests": 115,
+      "ruby_checks": 241,
+      "ruby_files": {
+        "annotate": 68,
+        "bridge": 85,
+        "exporter": 88
+      },
+      "determinism": "fc /b: no differences"
+    },
+    "release_4_3_1": {
+      "version": "4.3.1",
+      "rbz_bytes": 20254,
+      "rbz_sha256": "fe3e3eac205ba35648e64ab5bda2da972d56484ee44897e8e1bf8392db8f14ee",
+      "installed_path": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins",
+      "installed_files_sha256_match": 6,
+      "backup": "C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261027_111808",
+      "python_tests": 115,
+      "ruby_checks": 241
     }
   },
   "session_semantic_progress": [
@@ -300,8 +341,12 @@
     "M4: FastMCP wrapper (server name cad2llm) around tools/cad2llm_bridge.py",
     "M5: geometry ops (move/scale/create) with 1 mm diff gate",
     "M6: release 5.0.0 - zone vocab unify (tech vs energy)",
-    "Optional: sanitize GPS 50.150888, 14.42336652 in examples before further public pushes (explicit approval needed)",
-    "Optional: clean stray artifacts outside workspace (blocked by deny guardrail)"
+    "Optional: clean stray artifacts outside workspace (blocked by deny guardrail)",
+    "Fix enrich bug A (energy metrics) and bug B (clearance role rules) before energy/fire analysis",
+    "Decide fate of context_indexer_v2.py / index_cad2llm.md (generated index duplicates repo content)",
+    "Add bridge/Python compact-export tests if compact export is promoted to production",
+    "Commit + push slim/compact/RBZ 4.3.1 workstream (push needs explicit approval)",
+    "Restart SketchUp so Extension Manager shows 4.3.1 and bridge can be started"
   ],
   "key_files": {
     "semantics_relations": "tools/cad2llm_v5.py",
@@ -327,16 +372,22 @@
     "exporter": "src/cad2llm_exporter/lib/exporter.rb",
     "exporter_main": "src/cad2llm_exporter/main.rb",
     "extension_installed": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins\\cad2llm_exporter.rb",
-    "geometry_live_export": "C:\\Users\\PC\\AppData\\Local\\Temp\\opencode\\mistnost_2_v1_1_geometry_live.json"
+    "geometry_live_export": "C:\\Users\\PC\\AppData\\Local\\Temp\\opencode\\mistnost_2_v1_1_geometry_live.json",
+    "slim": "tools/cad2llm_slim.py",
+    "slim_tests": "tests/test_cad2llm_slim.py",
+    "slim_doc": "docs/SLIM_v1.md",
+    "slim_handoff": "docs/HANDOFF_slim_2026-10-26.json",
+    "v12_geometry_fixture": "examples/mistnost_2_v1.2_cad2llm_v4_geometry.json",
+    "release_rbz": "releases/cad2llm_exporter.rbz"
   },
   "notes": {
-    "tests_python": 84,
-    "tests_ruby": 197,
+    "tests_python": 115,
+    "tests_ruby": 241,
     "validate_export": "python tools\\cad2llm.py validate <file.json>",
     "diff_export": "python tools\\cad2llm.py diff <a.json> <b.json>",
     "ascii_check": "pwsh ..\\.scripts\\ascii_filenames_check.ps1",
-    "extension_version": "4.2.2",
-    "extension_install_mode": "manual copy to Plugins (RBZ unchanged in releases/)",
+    "extension_version": "4.3.1",
+    "extension_install_mode": "manual copy to Plugins from rebuilt RBZ 4.3.1",
     "skp_source_dir": "C:\\Users\\PC\\Documents\\SU2024",
     "skp_primary_model": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.0.skp",
     "skp_archive_dir": "C:\\Users\\PC\\Documents\\Sketchup2016 (read-only archive: v1-v7, sk24, Door_renovation_v1)",
@@ -412,7 +463,9 @@
     "vocab_2026_10_23": "rules.json vocab: +roof (IfcRoof), +chimney (IfcBuildingElementProxy); aliases zaklady/foundation->floor, ceilling->ceiling, roof/strecha/střecha->roof, chimney/komin/komín->chimney. v5 now resolves tag role via shared vocab first (legacy TAG_ROLE_RULES only fallback) and parent inheritance runs before tag fallback.",
     "vocab_overlay": "cad2llm/vocab_overlay/v1 add-only project overlay: validate/summary --vocab, derive --vocab, cad2llm_stamp.py writes project_id/vocab_version/vocab_base_version/vocab_hash to model cad2llm dict; core vocab immutable; deprecated_roles warn.",
     "geometry_export_2026_10_23": "export_profile spatial|geometry; geometry block is direct-only, world mm, deterministic vertices/edges/faces; volume only when closed+oriented and no holes; legacy v3 export retired, Python read-only v3 remains.",
-    "legacy_v3": "CAD2LLM.export_v3, LEGACY_VERSION and menu item removed. Old v3 JSON is still accepted by tools/cad2llm.py validate for migration only."
+    "legacy_v3": "CAD2LLM.export_v3, LEGACY_VERSION and menu item removed. Old v3 JSON is still accepted by tools/cad2llm.py validate for migration only.",
+    "slim": "tools/cad2llm_slim.py is the current CLI; default drops geometry; standalone supports stdin/stdout, --compact, --dry-run, --print-stats, rotation/domain flags. cad2llm.py slim currently exposes only --geometry and --compact.",
+    "enrich_open_bugs": "A: energy hardcoded null; B: clearance regex broken after stove rename (role-based rules preferred); C: free_space fallback wrong without role=floor; D: space_boundary pollutes relations (11/48 on v1.2)."
   },
   "proposals_M3_annotation": {
     "principle": "annotation must cost less than modeling; annotate component DEFINITIONS (28) not instances (46); infer the rest",

@@ -203,6 +203,11 @@ Dir.mktmpdir do |dir|
   eq("written schema", parsed["schema_version"], "4.0")
   eq("written profile", parsed["export_profile"], "spatial")
   eq("written node count", parsed["nodes"].size, 1)
+  compact_path = File.join(dir, "compact.json")
+  CAD2LLM::Exporter.export_to_file(m, compact_path, compact: true)
+  compact_raw = File.read(compact_path)
+  check("compact export is one line body") { compact_raw.strip !~ /\n\s+"nodes"/ }
+  check("compact export smaller than pretty") { compact_raw.bytesize < File.read(path).bytesize }
   eq("source file recorded", parsed["project_metadata"]["source"]["file"], "mistnost_2_sk24.skp")
   eq("source channel", parsed["project_metadata"]["source"]["channel"], "sketchup")
   eq("gps omitted when zero", parsed["project_metadata"]["global_origin_gps"], nil)

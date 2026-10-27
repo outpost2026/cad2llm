@@ -84,9 +84,11 @@ module CAD2LLM
       }
     end
 
-    def export_to_file(model, path, profile: PROFILE_SPATIAL, entities: nil, now: Time.now.utc)
+    def export_to_file(model, path, profile: PROFILE_SPATIAL, entities: nil, now: Time.now.utc,
+                       compact: false)
       doc = build(model, entities: entities, profile: profile, now: now)
-      File.write(path, JSON.pretty_generate(doc) + "\n")
+      json = compact ? JSON.generate(doc) : JSON.pretty_generate(doc)
+      File.write(path, json + "\n")
       doc
     end
 

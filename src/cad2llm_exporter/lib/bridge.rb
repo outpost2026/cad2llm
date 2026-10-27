@@ -469,7 +469,8 @@ module CAD2LLM
 
       path = params["path"].to_s
       path = default_export_path(model, profile) if path.empty?
-      doc = CAD2LLM::Exporter.export_to_file(model, path, profile: profile)
+      compact = params["compact"] == true
+      doc = CAD2LLM::Exporter.export_to_file(model, path, profile: profile, compact: compact)
       issues = doc["validation"]["issues"]
       {
         "path" => path,

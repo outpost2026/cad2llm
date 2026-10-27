@@ -151,12 +151,20 @@ class BridgeClient:
     def info(self) -> dict:
         return self.call("info")
 
-    def export(self, path: str | None = None, profile: str | None = None) -> dict:
+    def export(
+        self,
+        path: str | None = None,
+        profile: str | None = None,
+        *,
+        compact: bool = False,
+    ) -> dict:
         params: dict = {}
         if path:
             params["path"] = str(Path(path).resolve())
         if profile:
             params["profile"] = profile
+        if compact:
+            params["compact"] = True
         return self.call("export", params)
 
     def export_inline(self, profile: str | None = None) -> dict:
@@ -314,6 +322,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_export = sub.add_parser("export")
     p_export.add_argument("path", nargs="?", default=None)
     p_export.add_argument("--profile", default=None, choices=["spatial", "geometry"])
+    p_export.add_argument(
+        "--compact",
+        action="store_true",
+        help="write minified JSON (Exporter compact: true)",
+    )
 
     p_apply = sub.add_parser("apply")
     p_apply.add_argument("plan")
@@ -382,7 +395,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "purge-tags":
             result = client.purge_unused_tags()
         elif args.command == "export":
-            result = client.export(args.path, args.profile)
+            result = client.export(args.path, args.profile, compact=args.compact)
         else:
             result = getattr(client, args.command)()
     except BridgeError as exc:

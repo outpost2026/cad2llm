@@ -58,7 +58,12 @@ python tools/cad2llm.py validate out.json
 python tools/cad2llm.py summary  out.json
 python tools/cad2llm.py diff old.json new.json
 python tools/cad2llm.py enrich out.json out_v5.json
+python tools/cad2llm.py slim   out_v5.json out_slim.json   # LLM handoff tier
 ```
+
+`slim` produkuje `export_tier: cad2llm/slim/v1` — relations + brief + ořezané uzly
+(bez `z_table`, bez redundantní spatial reprezentace). Detail:
+[`docs/SLIM_v1.md`](docs/SLIM_v1.md).
 
 `enrich` je sémantická vrstva v5: deterministické role/zóny/intent, normalizovaná
 validace, relace (contact / adjacency / opening_in / support / containment / proximity),

@@ -6,3 +6,7 @@ venv/
 .DS_Store
 Thumbs.db
 *.log
+
+# generated context snapshot (context_indexer_v2.py)
+index_cad2llm.md
+context_indexer_v2.py

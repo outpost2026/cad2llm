@@ -95,6 +95,8 @@ Dir.mktmpdir do |dir|
   eq("export default path", File.basename(out["result"]["path"]), "mistnost_2_v1_cad2llm_v4.json")
   check("export file exists") { File.exist?(out["result"]["path"]) }
   eq("export issues", out["result"]["issues"], 0)
+  eq("export tag consistency status", out["result"]["tag_consistency"]["status"], "ok")
+  eq("export tag consistency instances", out["result"]["tag_consistency"]["checked_instances"], 2)
 
   explicit = File.join(dir, "custom.json")
   out2 = call("export", { "path" => explicit }, token: token)
@@ -107,6 +109,14 @@ Dir.mktmpdir do |dir|
   eq("export inline path nil", inline["result"]["path"], nil)
   eq("export inline document nodes", inline["result"]["document"]["nodes"].size, 2)
   eq("export inline schema", inline["result"]["document"]["schema_version"], "4.0")
+  eq("export inline tag consistency",
+     inline["result"]["document"]["validation"]["tag_consistency"]["status"], "ok")
+
+  no_tags = call("export", { "inline" => true, "tag_audit" => false }, token: token)
+  check("export inline tag audit opt-out") do
+    !no_tags["result"]["document"]["validation"].key?("tag_consistency") &&
+      !no_tags["result"].key?("tag_consistency")
+  end
 
   geo = call("export", { "inline" => true, "profile" => "geometry" }, token: token)
   eq("geometry export ok", geo["ok"], true)

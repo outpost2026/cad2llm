@@ -157,6 +157,7 @@ class BridgeClient:
         profile: str | None = None,
         *,
         compact: bool = False,
+        tag_audit: bool = True,
     ) -> dict:
         params: dict = {}
         if path:
@@ -165,6 +166,8 @@ class BridgeClient:
             params["profile"] = profile
         if compact:
             params["compact"] = True
+        if not tag_audit:
+            params["tag_audit"] = False
         return self.call("export", params)
 
     def export_inline(self, profile: str | None = None) -> dict:
@@ -226,6 +229,15 @@ def _print_result(args, result: dict) -> None:
             f"issues={result.get('issues')} errors={result.get('errors')} "
             f"warnings={result.get('warnings')}"
         )
+        consistency = result.get("tag_consistency")
+        if consistency:
+            print(
+                f"    tags={consistency.get('status')} "
+                f"defs_mismatch={consistency.get('mismatch_definitions')}/"
+                f"{consistency.get('checked_definitions')} "
+                f"inst_mismatch={consistency.get('mismatch_instances')}/"
+                f"{consistency.get('checked_instances')}"
+            )
     elif method == "apply":
         s = result.get("summary") or {}
         post = result.get("post_check") or {}
@@ -377,6 +389,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="write minified JSON (Exporter compact: true)",
     )
+    p_export.add_argument(
+        "--no-tag-audit",
+        action="store_true",
+        help="skip validation.tag_consistency (faster on very large models)",
+    )
 
     p_apply = sub.add_parser("apply")
     p_apply.add_argument("plan")
@@ -456,7 +473,12 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "tag-normalize":
             result = client.tag_normalize(dry_run=not args.apply)
         elif args.command == "export":
-            result = client.export(args.path, args.profile, compact=args.compact)
+            result = client.export(
+                args.path,
+                args.profile,
+                compact=args.compact,
+                tag_audit=not args.no_tag_audit,
+            )
         else:
             result = getattr(client, args.command)()
     except BridgeError as exc:

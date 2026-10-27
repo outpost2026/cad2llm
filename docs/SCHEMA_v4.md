@@ -1,6 +1,6 @@
 # Schema v4 — deterministický JSON pro LLM/RAG
 
-**Verze:** 4.2 (aditivní; `schema_version` zůstává `"4.0"`) | **Datum:** 2026-10-23 | **Jednotky:** mm | **Osy:** Z-up (SketchUp)
+**Verze:** 4.3 (aditivní; `schema_version` zůstává `"4.0"`) | **Datum:** 2026-10-27 | **Jednotky:** mm | **Osy:** Z-up (SketchUp)
 
 Schema v4 sjednocuje dva historické kanály (Python/DAE a Ruby/SketchUp) do jednoho
 tvaru a doplňuje data, která metodika vyžaduje, ale starší exporty neměly.
@@ -116,6 +116,43 @@ Pravidla (`tools/cad2llm_rules.json`): `name_pattern`, `ascii_strict`,
 `min_size_mm`, `overlap_min_volume_mm3`, `clearance_rules[]`.
 
 Překryvy se nehlásí mezi předkem a potomkem (kontejner vždy „překrývá“ své děti).
+
+### 4.1 Tag consistency (aditivní, od 4.3.5)
+
+Každý export z extension nese `validation.tag_consistency` — **advisory** souhrn
+tagové disciplíny uvnitř definic. Porovnává tag instance s tagy přímé geometrie
+(`faces`/`edges`) a vnořených instancí v definici. Neshoda znamená, že vnitřní
+geometrie je na jiném tagu než parent instance.
+
+```json
+"tag_consistency": {
+  "status": "mismatch",
+  "checked_definitions": 30,
+  "mismatch_definitions": 1,
+  "checked_instances": 49,
+  "mismatch_instances": 16,
+  "items": [
+    {
+      "definition_name": "lfp_cell_314ah",
+      "instances": 16,
+      "mismatch_instances": 16,
+      "instance_tags": ["battery"],
+      "inner_tags": ["energy_nodes"],
+      "nested_tags": [],
+      "mismatch_tags": ["energy_nodes"]
+    }
+  ]
+}
+```
+
+- `status` = `ok` | `mismatch`; `items` obsahuje jen neshody, řazené podle jména definice.
+- Blok **není** v `validation.issues` — nezhoršuje hard-error gate. Je to signál pro
+  LLM/CI, ne geometrická chyba.
+- Per-instance detail (`persistent_id`, `hierarchy_path`) zůstává v RPC `tag_audit`;
+  export nese jen per-definition souhrn, aby JSON nerostl.
+- API opt-out: `Exporter.build(..., tag_audit: false)` / bridge `export` s
+  `"tag_audit": false` / CLI `export --no-tag-audit`. GUI export kontrolu vždy zapíná.
+- Normalizaci provádí `tag_normalize` (dry-run default, apply jen explicitně).
 
 ## 5. Migrace z v3
 

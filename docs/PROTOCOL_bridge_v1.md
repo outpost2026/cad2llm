@@ -1,8 +1,8 @@
 # CAD2LLM Bridge — protokol v1
 
-**Datum:** 2026-10-23 | **Autor:** outpost2026 | **Účel:** lokální obousměrná smyčka agent ↔ běžící SketchUp 2024
+**Datum:** 2026-10-27 | **Autor:** outpost2026 | **Účel:** lokální obousměrná smyčka agent ↔ běžící SketchUp 2024
 
-Bridge je součástí rozšíření CAD2LLM Exporter 4.3.2 (`src/cad2llm_exporter/lib/bridge.rb`).
+Bridge je součástí rozšíření CAD2LLM Exporter 4.3.5 (`src/cad2llm_exporter/lib/bridge.rb`).
 Umožňuje LLM agentovi číst model, aplikovat deklarativní anotační plán a ověřit výsledek
 **bez copy-paste do Ruby konzole**.
 
@@ -129,6 +129,9 @@ Vrací `instances`, `definitions`, `mismatch_instances`, `mismatches[]`
  "model_root":{"inner_tags":[],"nested_tags":["wall","beam"]}}
 ```
 
+Stejný audit je dostupný v GUI (`Extensions → CAD2LLM → Audit tags (inner vs parent)`)
+a v každém exportu jako souhrn `validation.tag_consistency`.
+
 ### `tag_normalize`
 Dry-run/apply normalizace tagů uvnitř definic na tag parent instance.
 **Default je `dry_run: true`** — nic nemění, jen vrací plán. Mutace vyžaduje
@@ -152,12 +155,18 @@ Souhrn: `definitions_total`, `definitions_plan`, `definitions_ok`,
 
 ### `export`
 Parametry: `path` (volitelné, default vedle `.skp` jako `<basename>_cad2llm_v4.json`),
-`profile` (`"spatial"` | `"geometry"`), `inline` (bool). Profil `geometry` přidá
+`profile` (`"spatial"` | `"geometry"`), `inline` (bool), `compact` (bool),
+`tag_audit` (bool, default `true`). Profil `geometry` přidá
 blok `geometry` a mění default suffix na `_cad2llm_v4_geometry.json`.
+
+`tag_audit: false` vypne advisory blok `validation.tag_consistency` (např. pro
+velmi velké modely). GUI exporty kontrolu vždy zapínají.
 
 ```json
 {"path":"C:/.../mistnost_2_v1.0_cad2llm_v4.json","bytes":79592,"schema":"4.0",
- "profile":"spatial","nodes":46,"issues":2,"errors":0,"warnings":0}
+ "profile":"spatial","nodes":46,"issues":2,"errors":0,"warnings":0,
+ "tag_consistency":{"status":"ok","checked_definitions":30,
+   "mismatch_definitions":0,"checked_instances":49,"mismatch_instances":0,"items":[]}}
 ```
 
 ### `apply`
@@ -251,6 +260,7 @@ python tools\cad2llm_bridge.py tag-normalize            # dry-run (default)
 python tools\cad2llm_bridge.py tag-normalize --apply    # zapíše změny
 python tools\cad2llm_bridge.py export
 python tools\cad2llm_bridge.py export out.json --profile geometry
+python tools\cad2llm_bridge.py export out.json --no-tag-audit
 python tools\cad2llm_bridge.py apply plan.json --dry-run
 python tools\cad2llm_bridge.py apply plan.json --report report.json
 python tools\cad2llm_bridge.py undo
@@ -261,8 +271,8 @@ Exit kódy: `0` ok, `2` bridge nedostupný / chybí token file, `3` bridge vrát
 ## 8. Testy
 
 ```powershell
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 273 checks
-python -m unittest discover -s tests -v           # 106 testů
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 298 checks
+python -m unittest discover -s tests -v           # 117 testů
 ```
 
 `spec/test_bridge.rb` testuje dispatch i reálné TCP linky (ephemeral port,

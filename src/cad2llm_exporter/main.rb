@@ -17,14 +17,19 @@ module CAD2LLM
   module_function
 
   def export(profile: Exporter::PROFILE_SPATIAL, model: Sketchup.active_model, path: nil,
-             interactive: true, compact: false)
+             interactive: true, compact: false, tag_audit: true)
     path ||= default_path(model, profile, compact: compact)
     return nil if path.nil?
 
-    doc = Exporter.export_to_file(model, path, profile: profile, compact: compact)
+    doc = Exporter.export_to_file(model, path, profile: profile, compact: compact,
+                                 tag_audit: tag_audit)
     nodes = doc["nodes"].size
     mode = compact ? " compact" : ""
-    message = "CAD2LLM #{profile}#{mode} export OK (#{nodes} nodes)\n#{path}"
+    message = [
+      "CAD2LLM #{profile}#{mode} export OK (#{nodes} nodes)",
+      tag_consistency_line(doc),
+      path
+    ].compact.join("\n")
     puts message
     UI.messagebox(message) if interactive
     path
@@ -35,19 +40,36 @@ module CAD2LLM
   end
 
   def export_selection(profile: Exporter::PROFILE_SPATIAL, model: Sketchup.active_model, path: nil,
-                       interactive: true, compact: false)
+                       interactive: true, compact: false, tag_audit: true)
     selected = model.selection.to_a
     if selected.empty?
       UI.messagebox("CAD2LLM: nothing selected.") if interactive
       return nil
     end
     path ||= default_path(model, profile, compact: compact).to_s.sub(".json", "_selection.json")
-    doc = Exporter.export_to_file(model, path, profile: profile, entities: selected, compact: compact)
+    doc = Exporter.export_to_file(model, path, profile: profile, entities: selected,
+                                 compact: compact, tag_audit: tag_audit)
     mode = compact ? " compact" : ""
-    message = "CAD2LLM #{profile}#{mode} selection export OK (#{doc['nodes'].size} nodes)\n#{path}"
+    message = [
+      "CAD2LLM #{profile}#{mode} selection export OK (#{doc['nodes'].size} nodes)",
+      tag_consistency_line(doc),
+      path
+    ].compact.join("\n")
     puts message
     UI.messagebox(message) if interactive
     path
+  end
+
+  def tag_consistency_line(doc)
+    data = doc.dig("validation", "tag_consistency")
+    return nil if data.nil?
+
+    if data["status"] == "ok"
+      "tags OK (#{data['checked_definitions']} definitions, #{data['checked_instances']} instances)"
+    else
+      "tags WARN #{data['mismatch_definitions']}/#{data['checked_definitions']} definitions, " \
+        "#{data['mismatch_instances']}/#{data['checked_instances']} instances"
+    end
   end
 
   def default_path(model, profile, compact: false)

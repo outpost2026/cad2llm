@@ -294,63 +294,7 @@ module CAD2LLM
     # A non-empty mismatch list means inner geometry sits on a different tag
     # than the parent instance.
     def tag_audit(model)
-      instances = []
-      collect_instances(model.entities, [], instances)
-
-      definition_cache = {}
-      mismatches = []
-      all_definitions = {}
-      instances.each do |entry|
-        entity = entry[:entity]
-        definition = entity.respond_to?(:definition) ? entity.definition : nil
-        next if definition.nil?
-
-        key = definition_key(definition)
-        audit = (definition_cache[key] ||= audit_entities(definition.entities))
-        tag = layer_name(entity)
-        offending = (audit[:inner_tags] + audit[:nested_tags]).uniq.reject { |t| t == tag }
-
-        summary = (all_definitions[key] ||= {
-          "definition_name" => definition.name.to_s,
-          "instance_tags" => [],
-          "inner_tags" => audit[:inner_tags],
-          "nested_tags" => audit[:nested_tags],
-          "instances" => 0,
-          "mismatch_instances" => 0
-        })
-        summary["instance_tags"] |= [tag]
-        summary["instances"] += 1
-
-        if offending.empty?
-          summary["status"] = "ok"
-          next
-        end
-
-        summary["status"] = "mismatch"
-        summary["mismatch_instances"] += 1
-        mismatches << {
-          "persistent_id" => entity.persistent_id,
-          "path" => entry[:path],
-          "tag" => tag,
-          "definition_name" => definition.name.to_s,
-          "inner_tags" => audit[:inner_tags],
-          "nested_tags" => audit[:nested_tags],
-          "mismatch_tags" => offending
-        }
-      end
-
-      root = audit_entities(model.entities)
-      {
-        "instances" => instances.size,
-        "definitions" => definition_cache.size,
-        "mismatch_instances" => mismatches.size,
-        "mismatches" => mismatches,
-        "definitions_detail" => all_definitions.values.sort_by { |row| row["definition_name"] },
-        "model_root" => {
-          "inner_tags" => root[:inner_tags],
-          "nested_tags" => root[:nested_tags]
-        }
-      }
+      CAD2LLM::Exporter.audit_tags(model.entities)
     end
 
     # Dry-run/apply normalization of inner geometry tags to the parent instance
@@ -483,20 +427,6 @@ module CAD2LLM
         definition = entity.respond_to?(:definition) ? entity.definition : nil
         collect_instances(definition.entities, child_path, out) if definition
       end
-    end
-
-    def audit_entities(entities)
-      inner = []
-      nested = []
-      entities.each do |entity|
-        case entity
-        when Sketchup::Face, Sketchup::Edge
-          inner << layer_name(entity)
-        when Sketchup::Group, Sketchup::ComponentInstance
-          nested << layer_name(entity)
-        end
-      end
-      { inner_tags: inner.compact.uniq.sort, nested_tags: nested.compact.uniq.sort }
     end
 
     def layer_name(entity)
@@ -673,10 +603,12 @@ module CAD2LLM
         raise ArgumentError, "unknown profile #{profile.inspect} (#{CAD2LLM::Exporter::PROFILES.join('|')})"
       end
 
+      tag_audit = params.key?("tag_audit") ? params["tag_audit"] == true : true
+
       if params["inline"] == true
-        doc = CAD2LLM::Exporter.build(model, profile: profile)
+        doc = CAD2LLM::Exporter.build(model, profile: profile, tag_audit: tag_audit)
         issues = doc["validation"]["issues"]
-        return {
+        response = {
           "path" => nil,
           "bytes" => nil,
           "schema" => doc["schema_version"],
@@ -687,14 +619,17 @@ module CAD2LLM
           "warnings" => issues.count { |i| i["severity"] == "warn" },
           "document" => doc
         }
+        response["tag_consistency"] = doc["validation"]["tag_consistency"] if tag_audit
+        return response
       end
 
       path = params["path"].to_s
       path = default_export_path(model, profile) if path.empty?
       compact = params["compact"] == true
-      doc = CAD2LLM::Exporter.export_to_file(model, path, profile: profile, compact: compact)
+      doc = CAD2LLM::Exporter.export_to_file(model, path, profile: profile, compact: compact,
+                                             tag_audit: tag_audit)
       issues = doc["validation"]["issues"]
-      {
+      response = {
         "path" => path,
         "bytes" => File.size(path),
         "schema" => doc["schema_version"],
@@ -704,6 +639,8 @@ module CAD2LLM
         "errors" => issues.count { |i| i["severity"] == "error" },
         "warnings" => issues.count { |i| i["severity"] == "warn" }
       }
+      response["tag_consistency"] = doc["validation"]["tag_consistency"] if tag_audit
+      response
     end
 
     def apply(model, params)

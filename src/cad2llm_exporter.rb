@@ -12,7 +12,7 @@ module CAD2LLM
   unless file_loaded?(__FILE__)
     ex = SketchupExtension.new("CAD2LLM Exporter", "cad2llm_exporter/main")
     ex.description = "Export SketchUp models to deterministic spatial or detailed geometry JSON (schema v4) for LLM/RAG pipelines."
-    ex.version     = "4.3.4"
+    ex.version     = "4.3.5"
     ex.copyright   = "MIT License"
     ex.creator     = "CAD2LLM Community"
     Sketchup.register_extension(ex, true)
@@ -43,6 +43,7 @@ module CAD2LLM
     submenu.add_item("Inspector panel") { CAD2LLM.show_inspector_panel }
     submenu.add_item("Inspector (messagebox)") { CAD2LLM.show_inspector }
     submenu.add_item("Purge unused tags") { CAD2LLM.purge_unused_tags_ui }
+    submenu.add_item("Audit tags (inner vs parent)") { CAD2LLM.audit_tags_ui }
 
     file_loaded(__FILE__)
   end
@@ -122,5 +123,30 @@ module CAD2LLM
                   "Tags: #{result['before']} -> #{result['after']}")
   rescue StandardError => e
     UI.messagebox("Purge failed: #{e.class}: #{e.message}")
+  end
+
+  def self.audit_tags_ui
+    result = CAD2LLM::Exporter.audit_tags(Sketchup.active_model.entities)
+    if result["mismatch_instances"].to_i.zero?
+      UI.messagebox("CAD2LLM tag audit: OK\n" \
+                    "#{result['instances']} instances, #{result['definitions']} definitions, 0 mismatches.")
+      return
+    end
+
+    rows = result["definitions_detail"].select { |row| row["status"] == "mismatch" }
+    rows.sort_by! { |row| [-row["mismatch_instances"].to_i, row["definition_name"].to_s] }
+    shown = rows.first(12).map do |row|
+      parent = Array(row["instance_tags"]).join("|")
+      inner = (Array(row["inner_tags"]) + Array(row["nested_tags"])).uniq.join("|")
+      "#{row['definition_name']}: parent=#{parent} inner=#{inner} " \
+        "affected=#{row['mismatch_instances']}/#{row['instances']}"
+    end
+    text = "CAD2LLM tag audit: #{result['mismatch_instances']}/#{result['instances']} instances, " \
+           "#{rows.size}/#{result['definitions']} definitions\n#{shown.join("\n")}"
+    text += "\n... (#{rows.size - shown.size} more definitions in Ruby Console)" if rows.size > shown.size
+    puts text
+    UI.messagebox(text)
+  rescue StandardError => e
+    UI.messagebox("CAD2LLM tag audit failed: #{e.class}: #{e.message}")
   end
 end

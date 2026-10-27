@@ -3,7 +3,7 @@
   "repo": "cad2llm",
   "branch": "main",
   "updated_at": "2026-10-27",
-  "status": "Bridge tag_normalize implemented (dry-run default, apply only with dry_run:false / CLI --apply). Dry-run on mistnost_2_v1.3: 16 definitions, 356 changes = 109 faces + 247 edges, 0 nested, 0 ambiguous. Model was NOT mutated (tag_audit still 34/49). Extension 4.3.4 rebuilt (21987 B) and installed; Ruby 273 checks, Python 115 tests pass. Open decision: apply the normalization; and whether every JSON export should carry an advisory validation.tag_consistency block. Push not run.",
+  "status": "Tag discipline pipeline complete. tag_normalize was applied to the live mistnost_2_v1.3 model: 356 entities in 16 definitions (109 faces + 247 edges); post-apply tag_audit = 0 mismatches, tag_normalize = 0 changes. The model is still unsaved (author must Ctrl+S). Exporter 4.3.5 embeds advisory validation.tag_consistency in every export (default on, API opt-out), adds GUI menu 'Audit tags (inner vs parent)', and reuses Exporter.audit_tags as the single audit core for the bridge RPC. RBZ 4.3.5 rebuilt (23296 B) and installed; live export 49 nodes, 30 definitions, 0 mismatches. Ruby 298 checks, Python 117 tests pass. Push not run.",
   "last_commits": [
     {
       "hash": "36c9037",
@@ -24,6 +24,18 @@
     {
       "hash": "9ec1c81",
       "summary": "[CAD2LLM] v5 F2.1: auto-validace, tag/parent fallback, fixtures v7"
+    },
+    {
+      "hash": "c1ee592",
+      "summary": "[CAD2LLM] feat: GUI compact export menu (spatial + geometry), extension 4.3.2"
+    },
+    {
+      "hash": "24d3009",
+      "summary": "[CAD2LLM] feat: tag_audit bridge RPC + CLI, extension 4.3.3"
+    },
+    {
+      "hash": "cfe22ec",
+      "summary": "[CAD2LLM] feat: tag_normalize dry-run, extension 4.3.4"
     }
   ],
   "completed": [
@@ -104,7 +116,11 @@
     "RBZ 4.3.3 rebuilt (21136 B) and installed into SU2024 Plugins; 6/6 SHA256 match; bridge hot-reloaded",
     "Bridge RPC tag_normalize: per-definition dry-run plan (faces/edges/nested), ambiguous detection, optional apply with undo-safe operation; CLI tag-normalize [--apply]",
     "Dry-run v1.3: 16 definitions / 356 changes (109 faces, 247 edges, 0 nested, 0 ambiguous)",
-    "RBZ 4.3.4 rebuilt (21987 B) and installed; 6/6 SHA256 match; bridge hot-reloaded"
+    "RBZ 4.3.4 rebuilt (21987 B) and installed; 6/6 SHA256 match; bridge hot-reloaded",
+    "Applied tag normalization to live mistnost_2_v1.3: 356 entities in 16 definitions (109 faces + 247 edges); post-apply tag_audit 0 mismatches, tag_normalize 0 changes. Model remains unsaved (author must Ctrl+S).",
+    "Exporter 4.3.5: Exporter.audit_tags is the single audit core; validation.tag_consistency is embedded in every export by default (checked_definitions, mismatch_definitions, checked_instances, mismatch_instances, items[]); opt-out tag_audit:false.",
+    "GUI: menu item 'Audit tags (inner vs parent)' (12 items total) + tag status line in export messagebox; bridge export returns tag_consistency and CLI prints it; CLI opt-out --no-tag-audit.",
+    "RBZ 4.3.5 rebuilt (23296 B) and installed; 6/6 SHA256 match; bridge hot-reloaded; live export 49 nodes / 30 definitions / 49 instances / 0 mismatches."
   ],
   "verified_numbers": {
     "gui_v7_nodes": 46,
@@ -381,6 +397,44 @@
       "nested": 0,
       "changes_total": 356,
       "applied": false
+    },
+    "release_4_3_5": {
+      "version": "4.3.5",
+      "rbz_bytes": 23296,
+      "rbz_sha256": "bd8d7c159557e3ce2763b9c2d5f170014a8f6170a987670f38914d29bd9b5799",
+      "backup": "C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261027_123654",
+      "installed_files_sha256_match": 6,
+      "menu_items": 12,
+      "python_tests": 117,
+      "ruby_checks": 298,
+      "ruby_files": {
+        "annotate": 68,
+        "bridge": 111,
+        "exporter": 119
+      }
+    },
+    "tag_consistency_live_v1_3": {
+      "model": "mistnost_2_v1.3.skp",
+      "nodes": 49,
+      "checked_definitions": 30,
+      "mismatch_definitions": 0,
+      "checked_instances": 49,
+      "mismatch_instances": 0,
+      "status": "ok",
+      "export_bytes": 110424,
+      "issues": 0,
+      "opt_out_verified": true,
+      "model_saved": false
+    },
+    "tag_normalize_applied_v1_3": {
+      "definitions_changed": 16,
+      "faces": 109,
+      "edges": 247,
+      "nested": 0,
+      "changes_total": 356,
+      "post_audit_mismatch_instances": 0,
+      "post_normalize_changes": 0,
+      "undoable_operation": "CAD2LLM normalize inner tags"
     }
   },
   "session_semantic_progress": [
@@ -421,7 +475,6 @@
     ]
   },
   "pending": [
-    "Author: restart SketchUp to refresh CAD2LLM menu and Extension Manager version (bridge already runs 4.3.0)",
     "Author: verify geometry export on house_test02 after Ctrl+S",
     "M4: FastMCP wrapper (server name cad2llm) around tools/cad2llm_bridge.py",
     "M5: geometry ops (move/scale/create) with 1 mm diff gate",
@@ -430,8 +483,10 @@
     "Fix enrich bug A (energy metrics) and bug B (clearance role rules) before energy/fire analysis",
     "Decide fate of context_indexer_v2.py / index_cad2llm.md (generated index duplicates repo content)",
     "Add bridge/Python compact-export tests if compact export is promoted to production",
-    "Restart SketchUp so Extension Manager shows 4.3.1 and bridge can be started",
-    "Push commit 36c9037 (and context commit) when explicitly approved"
+    "Author: restart SketchUp to register menu item 'Audit tags (inner vs parent)' and Extension Manager 4.3.5 (bridge already hot-reloaded)",
+    "Author: Ctrl+S mistnost_2_v1.3.skp - tag normalization is in memory only",
+    "Push 6 commits when explicitly approved",
+    "Decide fate of untracked geo.json (contains GPS + absolute model_path)"
   ],
   "key_files": {
     "semantics_relations": "tools/cad2llm_v5.py",
@@ -466,15 +521,15 @@
     "release_rbz": "releases/cad2llm_exporter.rbz"
   },
   "notes": {
-    "tests_python": 115,
-    "tests_ruby": 241,
+    "tests_python": 117,
+    "tests_ruby": 298,
     "validate_export": "python tools\\cad2llm.py validate <file.json>",
     "diff_export": "python tools\\cad2llm.py diff <a.json> <b.json>",
     "ascii_check": "pwsh ..\\.scripts\\ascii_filenames_check.ps1",
-    "extension_version": "4.3.4",
-    "extension_install_mode": "manual copy to Plugins from rebuilt RBZ 4.3.1",
+    "extension_version": "4.3.5",
+    "extension_install_mode": "manual copy to Plugins from rebuilt RBZ 4.3.5",
     "skp_source_dir": "C:\\Users\\PC\\Documents\\SU2024",
-    "skp_primary_model": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.0.skp",
+    "skp_primary_model": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.3.skp",
     "skp_archive_dir": "C:\\Users\\PC\\Documents\\Sketchup2016 (read-only archive: v1-v7, sk24, Door_renovation_v1)",
     "sketchup_plugins_path": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins",
     "sketchup_installed": [
@@ -505,8 +560,8 @@
     "vocab_shared": "tools/cad2llm_rules.json -> vocab {version, zones, roles:{system,zone,ifc,label_cs}, tag_roles}; tools/cad2llm_vocab.py check_node -> UNKNOWN_ROLE/UNKNOWN_ZONE/IFC_ROLE_MISMATCH/TAG_ROLE_MISMATCH; cad2llm_core.validate pridava vocab issue pro kazdy uzel (i bez bboxu); v5.classify je metadata-first (CLASS_A, confidence 0.95, evidence R_METADATA_ROLE/R_METADATA_ZONE).",
     "tests_ruby_breakdown": {
       "annotate": 68,
-      "bridge": 79,
-      "exporter": 50
+      "bridge": 111,
+      "exporter": 119
     },
     "house_test02": {
       "export_before": "C:/Users/PC/Documents/SU2024/house_test02_cad2llm_v4.json (13809 B, 8 nodes)",
@@ -552,9 +607,10 @@
     "slim": "tools/cad2llm_slim.py is the current CLI; default drops geometry; standalone supports stdin/stdout, --compact, --dry-run, --print-stats, rotation/domain flags. cad2llm.py slim currently exposes only --geometry and --compact.",
     "enrich_open_bugs": "A: energy hardcoded null; B: clearance regex broken after stove rename (role-based rules preferred); C: free_space fallback wrong without role=floor; D: space_boundary pollutes relations (11/48 on v1.2).",
     "gui_compact": "GUI compact is a serialization mode only (JSON.generate vs pretty); content identical to pretty export. Compact suffix _compact.json. Slim remains the Python-side transform for further reduction.",
-    "tag_audit": "tag_audit is read-only. inner_tags = layers of Face/Edge directly in the definition; nested_tags = layers of nested Group/ComponentInstance. Model root is reported separately. A definition is shared, so a fix must consider all instance tags (v1.3 has exactly one instance tag per definition).",
-    "tag_normalize": "Dry-run is the default. Apply requires explicit params dry_run:false / CLI --apply. Per definition the target tag is the single instance tag; multiple instance tags => status ambiguous and no plan. Apply is one undoable operation.",
-    "export_tag_check_proposal": "Recommended, not implemented: add advisory validation.tag_consistency (checked_definitions, mismatch_definitions, mismatch_instances, per-definition items) to v4 export. Additive key; keep validation.issues for hard errors. Detailed per-instance drill-down stays in the tag_audit RPC."
+    "tag_audit": "Read-only audit. Exporter.audit_tags is the single core used by bridge tag_audit, GUI menu and export validation.tag_consistency. inner_tags = Face/Edge directly in the definition; nested_tags = nested Group/ComponentInstance; model root is separate.",
+    "tag_normalize": "Dry-run default; apply requires dry_run:false / CLI --apply. Target is the single instance tag; multiple instance tags => ambiguous. Applied on v1.3: 356 entities, 0 nested, 0 ambiguous, one undoable operation.",
+    "skp_primary_model_state": "Tag normalization applied in memory (356 entities); model is modified but NOT saved. Author must Ctrl+S before relying on the file.",
+    "export_tag_check": "Implemented in 4.3.5. validation.tag_consistency is advisory, additive, and not part of validation.issues. Detailed per-instance drill-down stays in tag_audit RPC. GUI always on; API opt-out tag_audit:false / CLI --no-tag-audit."
   },
   "proposals_M3_annotation": {
     "principle": "annotation must cost less than modeling; annotate component DEFINITIONS (28) not instances (46); infer the rest",

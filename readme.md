@@ -5,7 +5,8 @@
 Schema **v4** (2026-10) sjednocuje dva exportní kanály a doplňuje data, která
 předchozí verze neměly: `bbox_mm` min/max, `parent_uid`, rotace, tagy,
 attribute dictionaries. Volitelný **geometry profil** přidává world-space
-vertices/edges/faces pro přesné objemy, řezy a collision analýzu.
+vertices/edges/faces pro přesné objemy, řezy a collision analýzu. Každý export
+nese advisory `validation.tag_consistency` (vnitřní geometrie vs. parent tag).
 Detail: [`docs/SCHEMA_v4.md`](docs/SCHEMA_v4.md), [`docs/GEOMETRY_v1.md`](docs/GEOMETRY_v1.md).
 
 Nad v4 staví **v5 (F1 + F2)** (aditivní): deterministická sémantika,
@@ -81,6 +82,7 @@ Schémata a návrh: [`docs/DESIGN_v5.md`](docs/DESIGN_v5.md), [`docs/schema/`](d
    - **Export spatial / geometry compact (v4)** — minifikovaný one-line JSON (stejný obsah, `_compact.json`)
    - **Export selection** — jen vybrané entity (spatial i geometry)
    - **Bridge: start/stop, Inspector panel** — živé RPC nad otevřeným modelem
+   - **Audit tags (inner vs parent)** — kontrola, zda vnitřní geometrie definice sedí na tagu instance; stejný souhrn nese každý export jako `validation.tag_consistency`
 
 ## Bridge + anotace (M1–M3)
 
@@ -90,6 +92,7 @@ Veškeré úpravy jsou **jen metadata** (atributy, tagy, jména, popisy definic)
 ```powershell
 python tools\cad2llm_bridge.py ping                      # stav + verze SU
 python tools\cad2llm_bridge.py export out.json           # v4 spatial export živého modelu
+python tools\cad2llm_bridge.py export out.json --no-tag-audit  # bez validation.tag_consistency
 python tools\cad2llm_bridge.py export geo.json --profile geometry
 python tools\cad2llm_bridge.py apply plan.json           # plán + drift guard (snapshot, rollback)
 python tools\cad2llm_bridge.py tag-audit                 # audyt tagů uvnitř definic (inner vs parent)
@@ -121,8 +124,8 @@ invariant (name, tag, role, zóna, IFC) — vhodné pro CI i pro kontrolu po ru�
 ## Testy
 
 ```powershell
-python -m unittest discover -s tests -v    # 106 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge)
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 239 checků (exporter, anotace, bridge)
+python -m unittest discover -s tests -v    # 117 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge)
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 298 checků (exporter, anotace, bridge)
 ```
 
 Ruby testy běží proti `spec/sketchup_stub.rb` (world-space `Group#bounds`,
@@ -229,6 +232,10 @@ cad2llm/
   tag + parent-role fallback (`Unnamed` → battery/energy), 46/46 rolí i bez jmen, 42/42 testů.
 - **2026-10-23** — **vocab overlay + model stamp**; **geometry profil** v4
   (`vertices`/`edges`/`faces`, normály, objem, hash), legacy v3 export odstraněn.
+- **2026-10-27** — **tag disciplína**: `tag_audit` (inner vs parent), `tag_normalize`
+  (dry-run default, apply s undo), `validation.tag_consistency` v každém exportu,
+  GUI audit v menu. Na `mistnost_2_v1.3` opraveno 356 entit v 16 definicích;
+  následný audit 0 neshod.
 
 > Historické konzolové skripty v `src/_archive/console/` obsahují známou korupci
 > matic — nepoužívat.

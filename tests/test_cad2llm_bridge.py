@@ -218,6 +218,11 @@ class BridgeClientTests(unittest.TestCase):
             server.received[0]["params"], {"inline": True, "profile": "geometry"}
         )
 
+    def test_export_tag_audit_opt_out(self):
+        server = self.server()
+        bridge.BridgeClient(port=server.port, token="t").export(tag_audit=False)
+        self.assertEqual(server.received[0]["params"], {"tag_audit": False})
+
 
 class CliTests(unittest.TestCase):
     def setUp(self):
@@ -240,6 +245,13 @@ class CliTests(unittest.TestCase):
             code = bridge.main(self.base + ["export", "--profile", "geometry"])
         self.assertEqual(code, 0)
         self.assertEqual(self.server.received[0]["params"]["profile"], "geometry")
+
+    def test_export_no_tag_audit_flag(self):
+        out = io.StringIO()
+        with redirect_stdout(out):
+            code = bridge.main(self.base + ["export", "--no-tag-audit"])
+        self.assertEqual(code, 0)
+        self.assertIs(self.server.received[0]["params"]["tag_audit"], False)
 
     def test_json_flag(self):
         out = io.StringIO()

@@ -29,15 +29,16 @@ module CAD2LLM
 
     module_function
 
-    def build(model, entities: nil, profile: PROFILE_SPATIAL, now: Time.now.utc)
+    def build(model, entities: nil, profile: PROFILE_SPATIAL, now: Time.now.utc, tag_audit: true)
       unless PROFILES.include?(profile)
         raise ArgumentError, "unknown export profile #{profile.inspect} (#{PROFILES.join('|')})"
       end
 
       @issues = []
       @pids = []
+      roots = entities || model.entities
       nodes = []
-      traverse(entities || model.entities, [], nil, Geom::Transformation.new, nodes, profile)
+      traverse(roots, [], nil, Geom::Transformation.new, nodes, profile)
       gps = begin
         [model.shadow_info["Latitude"].to_f, model.shadow_info["Longitude"].to_f]
       rescue StandardError
@@ -48,6 +49,8 @@ module CAD2LLM
       title = model.title.to_s.strip
       title = "SketchUp_Model" if title.empty?
       geometry = profile == PROFILE_GEOMETRY
+      validation = { "issues" => @issues }
+      validation["tag_consistency"] = tag_consistency(roots) if tag_audit
 
       {
         "schema_version" => SCHEMA_VERSION,
@@ -80,13 +83,13 @@ module CAD2LLM
           }
         },
         "nodes" => nodes,
-        "validation" => { "issues" => @issues }
+        "validation" => validation
       }
     end
 
     def export_to_file(model, path, profile: PROFILE_SPATIAL, entities: nil, now: Time.now.utc,
-                       compact: false)
-      doc = build(model, entities: entities, profile: profile, now: now)
+                       compact: false, tag_audit: true)
+      doc = build(model, entities: entities, profile: profile, now: now, tag_audit: tag_audit)
       json = compact ? JSON.generate(doc) : JSON.pretty_generate(doc)
       File.write(path, json + "\n")
       doc
@@ -492,6 +495,143 @@ module CAD2LLM
       layer ? layer.name.to_s : nil
     rescue StandardError
       nil
+    end
+
+    # Read-only audit of tag discipline. Walks every group/component instance
+    # (without building export nodes) and compares the instance tag with the
+    # tags of the geometry inside its definition.
+    def audit_tags(entities)
+      instances = []
+      collect_instances(entities, [], instances)
+
+      definition_cache = {}
+      mismatches = []
+      definitions = {}
+      instances.each do |entry|
+        entity = entry[:entity]
+        definition = instance_definition(entity)
+        next if definition.nil?
+
+        key = definition_key(definition)
+        audit = (definition_cache[key] ||= audit_entities(definition.entities))
+        tag = tag_of(entity)
+        offending = (audit[:inner_tags] + audit[:nested_tags]).uniq.reject { |name| name == tag }
+
+        summary = (definitions[key] ||= {
+          "definition_name" => definition.name.to_s,
+          "instance_tags" => [],
+          "inner_tags" => audit[:inner_tags],
+          "nested_tags" => audit[:nested_tags],
+          "instances" => 0,
+          "mismatch_instances" => 0,
+          "mismatch_tags" => []
+        })
+        summary["instance_tags"] |= [tag]
+        summary["instances"] += 1
+
+        if offending.empty?
+          summary["status"] ||= "ok"
+          next
+        end
+
+        summary["status"] = "mismatch"
+        summary["mismatch_instances"] += 1
+        summary["mismatch_tags"] |= offending
+        mismatches << {
+          "persistent_id" => entity.persistent_id,
+          "path" => entry[:path],
+          "tag" => tag,
+          "definition_name" => definition.name.to_s,
+          "inner_tags" => audit[:inner_tags],
+          "nested_tags" => audit[:nested_tags],
+          "mismatch_tags" => offending
+        }
+      end
+
+      root = audit_entities(entities)
+      {
+        "instances" => instances.size,
+        "definitions" => definition_cache.size,
+        "mismatch_instances" => mismatches.size,
+        "mismatches" => mismatches,
+        "definitions_detail" => definitions.values.sort_by { |row| row["definition_name"] },
+        "model_root" => {
+          "inner_tags" => root[:inner_tags],
+          "nested_tags" => root[:nested_tags]
+        }
+      }
+    end
+
+    # Advisory summary embedded in every v4 export. Detailed per-instance
+    # mismatches stay in the tag_audit RPC; this block only reports definitions.
+    def tag_consistency(entities)
+      audit = audit_tags(entities)
+      items = audit["definitions_detail"].select { |row| row["status"] == "mismatch" }.map do |row|
+        {
+          "definition_name" => row["definition_name"],
+          "instances" => row["instances"],
+          "mismatch_instances" => row["mismatch_instances"],
+          "instance_tags" => row["instance_tags"],
+          "inner_tags" => row["inner_tags"],
+          "nested_tags" => row["nested_tags"],
+          "mismatch_tags" => row["mismatch_tags"]
+        }
+      end
+      items.sort_by! { |row| row["definition_name"].to_s }
+      {
+        "status" => items.empty? ? "ok" : "mismatch",
+        "checked_definitions" => audit["definitions"],
+        "mismatch_definitions" => items.size,
+        "checked_instances" => audit["instances"],
+        "mismatch_instances" => audit["mismatch_instances"],
+        "items" => items
+      }
+    end
+
+    def collect_instances(entities, path, out)
+      return if entities.nil?
+
+      entities.each do |entity|
+        next unless entity.is_a?(Sketchup::Group) || entity.is_a?(Sketchup::ComponentInstance)
+
+        name = entity.name.to_s
+        name = "Unnamed" if name.empty?
+        child_path = path + [name]
+        out << { entity: entity, path: child_path }
+        definition = instance_definition(entity)
+        collect_instances(definition.entities, child_path, out) if definition
+      end
+    end
+
+    def instance_definition(entity)
+      entity.respond_to?(:definition) ? entity.definition : nil
+    rescue StandardError
+      nil
+    end
+
+    def audit_entities(entities)
+      inner = []
+      nested = []
+      (entities || []).each do |entity|
+        case entity
+        when Sketchup::Face, Sketchup::Edge
+          inner << layer_name(entity)
+        when Sketchup::Group, Sketchup::ComponentInstance
+          nested << layer_name(entity)
+        end
+      end
+      { inner_tags: inner.compact.uniq.sort, nested_tags: nested.compact.uniq.sort }
+    end
+
+    def layer_name(entity)
+      layer = entity.respond_to?(:layer) ? entity.layer : nil
+      layer ? layer.name.to_s : nil
+    rescue StandardError
+      nil
+    end
+
+    def definition_key(definition)
+      definition.respond_to?(:guid) ? definition.guid.to_s : definition.name.to_s
     end
 
     def round3(value)

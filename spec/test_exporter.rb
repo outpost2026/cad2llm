@@ -192,7 +192,52 @@ node = CAD2LLM::Exporter.build(Sketchup.active_model)["nodes"].first
 check("empty group has no bbox") { !node["spatial"].key?("bbox_mm") }
 check("empty group keeps origin") { node["spatial"]["origin_mm"]["x"] == 0.0 }
 
-# ------------------------------------------------------ 8. main.rb / file I/O
+# ------------------------------------------------------ 8. tag consistency
+tag_outer = Sketchup::Layer.new("outer_tag")
+tag_inner = Sketchup::Layer.new("inner_tag")
+
+tag_bad_def = Sketchup::ComponentDefinition.new("tag_bad_def", Sketchup::BoundingBox.sized(10, 10, 10))
+mk_box_geometry(tag_bad_def, size_in: [10, 10, 10])
+tag_bad_def.entities.each do |entity|
+  entity.layer = tag_inner if entity.is_a?(Sketchup::Face) || entity.is_a?(Sketchup::Edge)
+end
+tag_bad = Sketchup::ComponentInstance.new(name: "tag_bad", pid: 801, definition: tag_bad_def)
+tag_bad.layer = tag_outer
+model_with([tag_bad])
+tag_doc = CAD2LLM::Exporter.build(Sketchup.active_model)
+tag_block = tag_doc["validation"]["tag_consistency"]
+eq("tag consistency present", tag_block["status"], "mismatch")
+eq("tag consistency checked definitions", tag_block["checked_definitions"], 1)
+eq("tag consistency mismatch definitions", tag_block["mismatch_definitions"], 1)
+eq("tag consistency checked instances", tag_block["checked_instances"], 1)
+eq("tag consistency mismatch instances", tag_block["mismatch_instances"], 1)
+eq("tag consistency item name", tag_block["items"].first["definition_name"], "tag_bad_def")
+eq("tag consistency item parent", tag_block["items"].first["instance_tags"], ["outer_tag"])
+eq("tag consistency item inner", tag_block["items"].first["inner_tags"], ["inner_tag"])
+eq("tag consistency item mismatch tags", tag_block["items"].first["mismatch_tags"], ["inner_tag"])
+eq("tag consistency leaves issues empty", tag_doc["validation"]["issues"], [])
+
+tag_clean_def = Sketchup::ComponentDefinition.new("tag_clean_def", Sketchup::BoundingBox.sized(10, 10, 10))
+mk_box_geometry(tag_clean_def, size_in: [10, 10, 10])
+tag_clean_def.entities.each do |entity|
+  entity.layer = tag_outer if entity.is_a?(Sketchup::Face) || entity.is_a?(Sketchup::Edge)
+end
+tag_clean = Sketchup::ComponentInstance.new(name: "tag_clean", pid: 804, definition: tag_clean_def)
+tag_clean.layer = tag_outer
+tag_clean_model = model_with([tag_clean])
+clean_block = CAD2LLM::Exporter.build(tag_clean_model)["validation"]["tag_consistency"]
+eq("tag consistency clean status", clean_block["status"], "ok")
+eq("tag consistency clean items", clean_block["items"], [])
+eq("tag consistency clean definitions", clean_block["checked_definitions"], 1)
+
+tag_off = CAD2LLM::Exporter.build(tag_clean_model, tag_audit: false)["validation"]
+check("tag consistency opt-out") { !tag_off.key?("tag_consistency") }
+
+tag_sel = CAD2LLM::Exporter.build(tag_clean_model, entities: [tag_clean])["validation"]["tag_consistency"]
+eq("tag consistency selection status", tag_sel["status"], "ok")
+eq("tag consistency selection instances", tag_sel["checked_instances"], 1)
+
+# ------------------------------------------------------ 9. main.rb / file I/O
 Dir.mktmpdir do |dir|
   m = model_with([mk_group(name: "bed_v1", pid: 701, pos: [100, 0, 0], size_in: [10, 10, 10])],
                  title: "mistnost_2_sk24", path: File.join(dir, "mistnost_2_sk24.skp"))
@@ -211,6 +256,12 @@ Dir.mktmpdir do |dir|
   eq("source file recorded", parsed["project_metadata"]["source"]["file"], "mistnost_2_sk24.skp")
   eq("source channel", parsed["project_metadata"]["source"]["channel"], "sketchup")
   eq("gps omitted when zero", parsed["project_metadata"]["global_origin_gps"], nil)
+  eq("written tag consistency", parsed["validation"]["tag_consistency"]["status"], "ok")
+  eq("written tag consistency instances", parsed["validation"]["tag_consistency"]["checked_instances"], 1)
+
+  no_audit_path = File.join(dir, "no_audit.json")
+  no_audit_doc = CAD2LLM::Exporter.export_to_file(m, no_audit_path, tag_audit: false)
+  check("export_to_file tag audit opt-out") { !no_audit_doc["validation"].key?("tag_consistency") }
 
   geo_path = CAD2LLM.export(model: m, profile: "geometry", interactive: false)
   eq("main.geometry path", File.basename(geo_path), "mistnost_2_sk24_cad2llm_v4_geometry.json")
@@ -243,9 +294,10 @@ items = UI.menu("Extensions").items
 sub = items.find { |name, _| name == "CAD2LLM" }
 check("loader registered CAD2LLM submenu") { !sub.nil? }
 items = sub ? sub[1].items.reject { |i| i[0] == :separator } : []
-check("loader has export + bridge items") { items.size == 11 }
+check("loader has export + bridge items") { items.size == 12 }
 check("loader exposes bridge start/stop") { items.count { |i| i[0].to_s.include?("bridge") } == 2 }
 check("loader exposes inspector + purge") { items.count { |i| i[0].to_s =~ /Inspector|Purge/ } == 3 }
+check("loader exposes tag audit") { items.count { |i| i[0].to_s.downcase.include?("audit") } == 1 }
 check("loader exposes geometry export") { items.count { |i| i[0].to_s.include?("geometry") } == 3 }
 check("loader exposes compact export") { items.count { |i| i[0].to_s.include?("compact") } == 2 }
 check("loader compact covers spatial + geometry") do
@@ -253,6 +305,13 @@ check("loader compact covers spatial + geometry") do
     items.count { |i| i[0].to_s.include?("compact") && i[0].to_s.include?("geometry") } == 1
 end
 check("loader removed legacy export") { items.none? { |i| i[0].to_s =~ /legacy/i } }
+Sketchup.model = model_with([tag_bad])
+$ui_messages.clear
+CAD2LLM.audit_tags_ui
+check("loader tag audit UI reports mismatch") do
+  message = $ui_messages.last.to_s
+  message.include?("tag audit") && message.include?("1/1") && message.include?("tag_bad_def")
+end
 panel_model = model_with([mk_component(name: "comp_panel", pid: 990, def_name: "panel_def", size_in: [1, 1, 1])])
 Sketchup.model = panel_model
 panel_model.selection = Sketchup::Selection.new(panel_model.entities.to_a)

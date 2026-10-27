@@ -3,8 +3,12 @@
   "repo": "cad2llm",
   "branch": "main",
   "updated_at": "2026-10-27",
-  "status": "Slim v1 + compact export ready for commit. Fixture examples/mistnost_2_v1.2_cad2llm_v4_geometry.json sanitized (GPS=null, model_path=null, capabilities.gps=false). RBZ 4.3.1 rebuilt (20254 B) and installed into SU2024 Plugins with SHA256 match; backup on Desktop. index_cad2llm.md and context_indexer_v2.py gitignored. Python 115 tests and Ruby 241 checks pass. Enrich bugs A-D remain open.",
+  "status": "Committed 36c9037: slim handoff tier + compact export + RBZ 4.3.1. Fixture sanitized; index_cad2llm.md and context_indexer_v2.py gitignored. RBZ 4.3.1 rebuilt (20254 B) and installed into SU2024 Plugins with SHA256 match; backup on Desktop. Python 115 tests and Ruby 241 checks pass. Push not run. Restart SketchUp to load 4.3.1 menu/bridge.",
   "last_commits": [
+    {
+      "hash": "36c9037",
+      "summary": "[CAD2LLM] feat: slim handoff tier + compact export + RBZ 4.3.1"
+    },
     {
       "hash": "8e4b39a",
       "summary": "[CAD2LLM] feat: geometry export profile + retire legacy v3"
@@ -345,8 +349,8 @@
     "Fix enrich bug A (energy metrics) and bug B (clearance role rules) before energy/fire analysis",
     "Decide fate of context_indexer_v2.py / index_cad2llm.md (generated index duplicates repo content)",
     "Add bridge/Python compact-export tests if compact export is promoted to production",
-    "Commit + push slim/compact/RBZ 4.3.1 workstream (push needs explicit approval)",
-    "Restart SketchUp so Extension Manager shows 4.3.1 and bridge can be started"
+    "Restart SketchUp so Extension Manager shows 4.3.1 and bridge can be started",
+    "Push commit 36c9037 (and context commit) when explicitly approved"
   ],
   "key_files": {
     "semantics_relations": "tools/cad2llm_v5.py",

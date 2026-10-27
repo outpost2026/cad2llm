@@ -160,10 +160,12 @@ module Sketchup
 
   class Edge
     attr_reader :start, :end
+    attr_accessor :layer
 
     def initialize(start_vertex, end_vertex)
       @start = start_vertex
       @end = end_vertex
+      @layer = nil
     end
   end
 
@@ -181,11 +183,13 @@ module Sketchup
 
   class Face
     attr_reader :outer_loop, :loops, :material
+    attr_accessor :layer
 
     def initialize(vertices, holes: [], material: nil)
       @outer_loop = Loop.new(vertices)
       @loops = [@outer_loop] + holes.map { |hole| Loop.new(hole) }
       @material = material
+      @layer = nil
     end
   end
 

@@ -191,6 +191,9 @@ class BridgeClient:
     def purge_unused_tags(self) -> dict:
         return self.call("purge_unused_tags")
 
+    def tag_audit(self) -> dict:
+        return self.call("tag_audit")
+
     def undo(self) -> dict:
         return self.call("undo")
 
@@ -299,6 +302,28 @@ def _print_result(args, result: dict) -> None:
         print(
             f"OK  purged={result.get('purged')}  tags {result.get('before')} -> {result.get('after')}"
         )
+    elif method == "tag-audit":
+        failed = [
+            r
+            for r in result.get("definitions_detail") or []
+            if r.get("status") == "mismatch"
+        ]
+        print(
+            f"OK  instances={result.get('instances')} definitions={result.get('definitions')} "
+            f"mismatch_instances={result.get('mismatch_instances')} "
+            f"mismatch_definitions={len(failed)}"
+        )
+        for row in sorted(
+            failed,
+            key=lambda r: (
+                -r.get("mismatch_instances", 0),
+                r.get("definition_name") or "",
+            ),
+        ):
+            print(
+                f"    {row.get('definition_name')}: parent={row.get('instance_tags')} "
+                f"inner={row.get('inner_tags')} affected={row.get('mismatch_instances')}/{row.get('instances')}"
+            )
     elif method == "undo":
         print(f"OK  undo via {result.get('via')}")
 
@@ -347,6 +372,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_desc.add_argument("--definition", action="append", default=None)
 
     sub.add_parser("purge-tags")
+    sub.add_parser("tag-audit")
     sub.add_parser("undo")
     return parser
 
@@ -394,6 +420,8 @@ def main(argv: list[str] | None = None) -> int:
             result = client.describe(pids=args.pid, definitions=args.definition)
         elif args.command == "purge-tags":
             result = client.purge_unused_tags()
+        elif args.command == "tag-audit":
+            result = client.tag_audit()
         elif args.command == "export":
             result = client.export(args.path, args.profile, compact=args.compact)
         else:

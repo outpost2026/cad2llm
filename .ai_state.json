@@ -3,7 +3,7 @@
   "repo": "cad2llm",
   "branch": "main",
   "updated_at": "2026-10-27",
-  "status": "GUI compact export added: CAD2LLM.export/export_selection now accept compact: (default false), default_path appends _compact, and the Extensions>CAD2LLM menu exposes 2 compact items (spatial + geometry). Extension bumped to 4.3.2, RBZ rebuilt (20357 B) and installed into SU2024 Plugins with SHA256 match; backup on Desktop. Ruby 251 checks (68+85+98) and Python 115 tests pass. Push of 2 earlier commits + this one not run. Restart SketchUp to load 4.3.2 menu. geo.json (v1.3 compact geometry export) still untracked and contains GPS + absolute model_path; sanitize before commit.",
+  "status": "Tag audit of mistnost_2_v1.3 via new bridge RPC tag_audit: 49 instances, 30 definitions, 16 definitions / 34 instances have inner geometry on a different tag than the parent instance. Worst: lfp_cell_314ah 16/16 (battery -> energy_nodes), beam_east_wall_120x50 3/3 and beam_truss_5m 2/2 (beam -> construction_wood). JSON compact export cannot see this because it only stores the instance tag; the check requires live model inspection. Extension 4.3.3 (tag_audit + CLI tag-audit) rebuilt (21136 B) and installed; Ruby 258 checks, Python 115 tests pass. Push not run.",
   "last_commits": [
     {
       "hash": "36c9037",
@@ -97,7 +97,11 @@
     "Installed RBZ 4.3.1 into SU2024 Plugins; all 6 installed files SHA256-identical to src",
     "GUI compact export: main.rb export/export_selection accept compact:, default_path suffix _compact.json, menu gained spatial + geometry compact items (4.3.2)",
     "Exporter tests extended for compact GUI paths + 11 menu items; exporter suite 88 -> 98 checks (total Ruby 251)",
-    "RBZ 4.3.2 rebuilt (20357 B, sha256 23fbd0b9103a8de5) and installed into SU2024 Plugins; all 6 files SHA256-identical to src"
+    "RBZ 4.3.2 rebuilt (20357 B, sha256 23fbd0b9103a8de5) and installed into SU2024 Plugins; all 6 files SHA256-identical to src",
+    "Bridge RPC tag_audit: per-instance comparison of instance tag vs inner Face/Edge + nested tags, plus definitions_detail (ok|mismatch)",
+    "CLI: python tools/cad2llm_bridge.py tag-audit (human summary; --json for raw)",
+    "Tag audit v1.3: 34/49 instances and 16/30 definitions have inner geometry on a different tag; wall_inner_west_sleep also has legacy Layer0",
+    "RBZ 4.3.3 rebuilt (21136 B) and installed into SU2024 Plugins; 6/6 SHA256 match; bridge hot-reloaded"
   ],
   "verified_numbers": {
     "gui_v7_nodes": 46,
@@ -320,6 +324,36 @@
         "bridge": 85,
         "exporter": 98
       }
+    },
+    "release_4_3_3": {
+      "version": "4.3.3",
+      "rbz_bytes": 21136,
+      "rbz_sha256": "0ffd374aa9aa56aca5b707a0cde6baafb9e4d356f43d09c8653ab8260261e478",
+      "backup": "C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261027_121104",
+      "python_tests": 115,
+      "ruby_checks": 258,
+      "ruby_files": {
+        "annotate": 68,
+        "bridge": 92,
+        "exporter": 98
+      }
+    },
+    "tag_audit_v1_3": {
+      "file": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.3_cad2llm_v4_compact.json",
+      "model": "mistnost_2_v1.3.skp",
+      "instances": 49,
+      "definitions": 30,
+      "mismatch_instances": 34,
+      "mismatch_definitions": 16,
+      "ok_definitions": 14,
+      "top_pairs": {
+        "battery->energy_nodes": 17,
+        "beam->construction_wood": 5,
+        "wall->walls": 4
+      },
+      "legacy_layer0": [
+        "wall_inner_west_sleep"
+      ]
     }
   },
   "session_semantic_progress": [
@@ -410,7 +444,7 @@
     "validate_export": "python tools\\cad2llm.py validate <file.json>",
     "diff_export": "python tools\\cad2llm.py diff <a.json> <b.json>",
     "ascii_check": "pwsh ..\\.scripts\\ascii_filenames_check.ps1",
-    "extension_version": "4.3.2",
+    "extension_version": "4.3.3",
     "extension_install_mode": "manual copy to Plugins from rebuilt RBZ 4.3.1",
     "skp_source_dir": "C:\\Users\\PC\\Documents\\SU2024",
     "skp_primary_model": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.0.skp",
@@ -490,7 +524,8 @@
     "legacy_v3": "CAD2LLM.export_v3, LEGACY_VERSION and menu item removed. Old v3 JSON is still accepted by tools/cad2llm.py validate for migration only.",
     "slim": "tools/cad2llm_slim.py is the current CLI; default drops geometry; standalone supports stdin/stdout, --compact, --dry-run, --print-stats, rotation/domain flags. cad2llm.py slim currently exposes only --geometry and --compact.",
     "enrich_open_bugs": "A: energy hardcoded null; B: clearance regex broken after stove rename (role-based rules preferred); C: free_space fallback wrong without role=floor; D: space_boundary pollutes relations (11/48 on v1.2).",
-    "gui_compact": "GUI compact is a serialization mode only (JSON.generate vs pretty); content identical to pretty export. Compact suffix _compact.json. Slim remains the Python-side transform for further reduction."
+    "gui_compact": "GUI compact is a serialization mode only (JSON.generate vs pretty); content identical to pretty export. Compact suffix _compact.json. Slim remains the Python-side transform for further reduction.",
+    "tag_audit": "tag_audit is read-only. inner_tags = layers of Face/Edge directly in the definition; nested_tags = layers of nested Group/ComponentInstance. Model root is reported separately. A definition is shared, so a fix must consider all instance tags (v1.3 has exactly one instance tag per definition)."
   },
   "proposals_M3_annotation": {
     "principle": "annotation must cost less than modeling; annotate component DEFINITIONS (28) not instances (46); infer the rest",

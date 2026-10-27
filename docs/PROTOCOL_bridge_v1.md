@@ -107,6 +107,28 @@ Smaže tagy bez entit (vratné přes Undo). Vrací `purged`, `before`, `after`, 
 {"purged":["walls","energy_nodes"],"before":26,"after":15,"tags":["wall","battery"]}
 ```
 
+### `tag_audit`
+Read-only audit tagové disciplíny uvnitř definic. Pro každou instanci
+komponenty/skupiny porovná tag instance s vrstvami geometrie uvnitř definice
+(`Face`/`Edge` = `inner_tags`, vnořené skupiny/komponenty = `nested_tags`).
+Neshoda znamená, že vnitřní geometrie je na jiném tagu než parent instance.
+
+Vrací `instances`, `definitions`, `mismatch_instances`, `mismatches[]`
+(`persistent_id`, `path`, `tag`, `definition_name`, `inner_tags`, `nested_tags`,
+`mismatch_tags`) a `definitions_detail[]` se `status` = `ok` | `mismatch`.
+
+```json
+{"instances":49,"definitions":30,"mismatch_instances":34,
+ "mismatches":[{"persistent_id":3356,"path":["wall_inner_west_sleep"],
+   "tag":"wall","definition_name":"wall_inner_west_sleep",
+   "inner_tags":["Layer0","walls"],"nested_tags":[],
+   "mismatch_tags":["Layer0","walls"]}],
+ "definitions_detail":[{"definition_name":"wall_inner_west_sleep",
+   "instance_tags":["wall"],"inner_tags":["Layer0","walls"],
+   "nested_tags":[],"instances":1,"mismatch_instances":1,"status":"mismatch"}],
+ "model_root":{"inner_tags":[],"nested_tags":["wall","beam"]}}
+```
+
 ### `export`
 Parametry: `path` (volitelné, default vedle `.skp` jako `<basename>_cad2llm_v4.json`),
 `profile` (`"spatial"` | `"geometry"`), `inline` (bool). Profil `geometry` přidá
@@ -203,6 +225,7 @@ python tools\cad2llm_bridge.py attributes
 python tools\cad2llm_bridge.py describe --pid 3348
 python tools\cad2llm_bridge.py describe --definition bed_01
 python tools\cad2llm_bridge.py purge-tags
+python tools\cad2llm_bridge.py tag-audit
 python tools\cad2llm_bridge.py export
 python tools\cad2llm_bridge.py export out.json --profile geometry
 python tools\cad2llm_bridge.py apply plan.json --dry-run
@@ -215,7 +238,7 @@ Exit kódy: `0` ok, `2` bridge nedostupný / chybí token file, `3` bridge vrát
 ## 8. Testy
 
 ```powershell
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 239 checks
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 258 checks
 python -m unittest discover -s tests -v           # 106 testů
 ```
 

@@ -217,6 +217,7 @@ module CAD2LLM
         when "info" then info(model)
         when "attributes" then attributes(model, params)
         when "describe" then describe(model, params)
+        when "tag_audit" then tag_audit(model)
         when "purge_unused_tags" then purge_unused_tags(model)
         when "reload" then reload
         when "export" then export(model, params)
@@ -284,6 +285,107 @@ module CAD2LLM
         "read_only" => model.respond_to?(:read_only?) ? model.read_only? : false,
         "modified" => model.respond_to?(:modified?) ? model.modified? : nil
       }
+    end
+
+    # Read-only audit of tag discipline. For every component/group instance,
+    # compare the instance tag with the layers of the geometry inside its
+    # definition (direct faces/edges and nested groups/components).
+    # A non-empty mismatch list means inner geometry sits on a different tag
+    # than the parent instance.
+    def tag_audit(model)
+      instances = []
+      collect_instances(model.entities, [], instances)
+
+      definition_cache = {}
+      mismatches = []
+      all_definitions = {}
+      instances.each do |entry|
+        entity = entry[:entity]
+        definition = entity.respond_to?(:definition) ? entity.definition : nil
+        next if definition.nil?
+
+        key = definition_key(definition)
+        audit = (definition_cache[key] ||= audit_entities(definition.entities))
+        tag = layer_name(entity)
+        offending = (audit[:inner_tags] + audit[:nested_tags]).uniq.reject { |t| t == tag }
+
+        summary = (all_definitions[key] ||= {
+          "definition_name" => definition.name.to_s,
+          "instance_tags" => [],
+          "inner_tags" => audit[:inner_tags],
+          "nested_tags" => audit[:nested_tags],
+          "instances" => 0,
+          "mismatch_instances" => 0
+        })
+        summary["instance_tags"] |= [tag]
+        summary["instances"] += 1
+
+        if offending.empty?
+          summary["status"] = "ok"
+          next
+        end
+
+        summary["status"] = "mismatch"
+        summary["mismatch_instances"] += 1
+        mismatches << {
+          "persistent_id" => entity.persistent_id,
+          "path" => entry[:path],
+          "tag" => tag,
+          "definition_name" => definition.name.to_s,
+          "inner_tags" => audit[:inner_tags],
+          "nested_tags" => audit[:nested_tags],
+          "mismatch_tags" => offending
+        }
+      end
+
+      root = audit_entities(model.entities)
+      {
+        "instances" => instances.size,
+        "definitions" => definition_cache.size,
+        "mismatch_instances" => mismatches.size,
+        "mismatches" => mismatches,
+        "definitions_detail" => all_definitions.values.sort_by { |row| row["definition_name"] },
+        "model_root" => {
+          "inner_tags" => root[:inner_tags],
+          "nested_tags" => root[:nested_tags]
+        }
+      }
+    end
+
+    def collect_instances(entities, path, out)
+      entities.each do |entity|
+        next unless entity.is_a?(Sketchup::Group) || entity.is_a?(Sketchup::ComponentInstance)
+
+        name = entity.name.to_s
+        name = "Unnamed" if name.empty?
+        child_path = path + [name]
+        out << { entity: entity, path: child_path }
+        definition = entity.respond_to?(:definition) ? entity.definition : nil
+        collect_instances(definition.entities, child_path, out) if definition
+      end
+    end
+
+    def audit_entities(entities)
+      inner = []
+      nested = []
+      entities.each do |entity|
+        case entity
+        when Sketchup::Face, Sketchup::Edge
+          inner << layer_name(entity)
+        when Sketchup::Group, Sketchup::ComponentInstance
+          nested << layer_name(entity)
+        end
+      end
+      { inner_tags: inner.compact.uniq.sort, nested_tags: nested.compact.uniq.sort }
+    end
+
+    def layer_name(entity)
+      layer = entity.respond_to?(:layer) ? entity.layer : nil
+      layer ? layer.name.to_s : nil
+    end
+
+    def definition_key(definition)
+      definition.respond_to?(:guid) ? definition.guid.to_s : definition.name.to_s
     end
 
     # Raw inventory of every attribute dictionary, including the ones the

@@ -211,6 +211,35 @@ Dir.mktmpdir do |dir|
   eq("purge counts", [purged["result"]["before"], purged["result"]["after"]], [2, 1])
   eq("purge is undoable", purge_model.operation_log.last["state"], "committed")
 
+  # ------------------------------------------------------- 7d. tag audit
+  audit_model = Sketchup::Model.new
+  outer_layer = audit_model.layers.add("outer_tag")
+  inner_layer = audit_model.layers.add("inner_tag")
+
+  bad_def = Sketchup::ComponentDefinition.new("bad_def")
+  bad_inner = mk_group(name: "inner_bad", pid: 961)
+  bad_inner.layer = inner_layer
+  bad_def.entities = [bad_inner]
+  bad_instance = Sketchup::ComponentInstance.new(name: "bad", pid: 960, definition: bad_def)
+  bad_instance.layer = outer_layer
+
+  clean_def = Sketchup::ComponentDefinition.new("clean_def")
+  clean_inner = mk_group(name: "inner_clean", pid: 963)
+  clean_inner.layer = outer_layer
+  clean_def.entities = [clean_inner]
+  clean_instance = Sketchup::ComponentInstance.new(name: "clean", pid: 962, definition: clean_def)
+  clean_instance.layer = outer_layer
+
+  audit_model.entities = [bad_instance, clean_instance]
+  audit = call("tag_audit", {}, token: token, model: audit_model)["result"]
+  eq("tag audit instances", audit["instances"], 4)
+  eq("tag audit mismatch count", audit["mismatch_instances"], 1)
+  eq("tag audit mismatch tag", audit["mismatches"][0]["tag"], "outer_tag")
+  eq("tag audit mismatch nested", audit["mismatches"][0]["nested_tags"], ["inner_tag"])
+  eq("tag audit mismatch tags", audit["mismatches"][0]["mismatch_tags"], ["inner_tag"])
+  eq("tag audit mismatch definition", audit["mismatches"][0]["definition_name"], "bad_def")
+  eq("tag audit clean definition", audit["definitions_detail"].find { |r| r["definition_name"] == "clean_def" }["status"], "ok")
+
   # ------------------------------------------------- 8. wire framing (TCP)
   client = TCPSocket.new(CAD2LLM::Bridge::HOST, CAD2LLM::Bridge.port)
   line1 = JSON.generate({ "id" => 11, "method" => "ping", "params" => {} })

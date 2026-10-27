@@ -78,6 +78,7 @@ Schémata a návrh: [`docs/DESIGN_v5.md`](docs/DESIGN_v5.md), [`docs/schema/`](d
 2. *Extensions → CAD2LLM*
    - **Export (v4)** — aktuální schema, tagy + metadata
    - **Export detailed geometry (v4+geometry)** — navíc vertices/edges/faces, normály, objem, hash
+   - **Export spatial / geometry compact (v4)** — minifikovaný one-line JSON (stejný obsah, `_compact.json`)
    - **Export selection** — jen vybrané entity (spatial i geometry)
    - **Bridge: start/stop, Inspector panel** — živé RPC nad otevřeným modelem
 

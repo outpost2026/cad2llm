@@ -12,7 +12,7 @@ module CAD2LLM
   unless file_loaded?(__FILE__)
     ex = SketchupExtension.new("CAD2LLM Exporter", "cad2llm_exporter/main")
     ex.description = "Export SketchUp models to deterministic spatial or detailed geometry JSON (schema v4) for LLM/RAG pipelines."
-    ex.version     = "4.3.1"
+    ex.version     = "4.3.2"
     ex.copyright   = "MIT License"
     ex.creator     = "CAD2LLM Community"
     Sketchup.register_extension(ex, true)
@@ -21,6 +21,8 @@ module CAD2LLM
     submenu = menu.add_submenu("CAD2LLM")
     submenu.add_item("Export spatial JSON (v4)") { CAD2LLM.export }
     submenu.add_item("Export detailed geometry JSON (v4+geometry)") { CAD2LLM.export(profile: CAD2LLM::Exporter::PROFILE_GEOMETRY) }
+    submenu.add_item("Export spatial JSON compact (v4)") { CAD2LLM.export(compact: true) }
+    submenu.add_item("Export detailed geometry JSON compact (v4+geometry)") { CAD2LLM.export(profile: CAD2LLM::Exporter::PROFILE_GEOMETRY, compact: true) }
     submenu.add_separator
     submenu.add_item("Export selected spatial (v4)") { CAD2LLM.export_selection }
     submenu.add_item("Export selected geometry (v4+geometry)") { CAD2LLM.export_selection(profile: CAD2LLM::Exporter::PROFILE_GEOMETRY) }

@@ -3,7 +3,7 @@
   "repo": "cad2llm",
   "branch": "main",
   "updated_at": "2026-10-27",
-  "status": "Committed 36c9037: slim handoff tier + compact export + RBZ 4.3.1. Fixture sanitized; index_cad2llm.md and context_indexer_v2.py gitignored. RBZ 4.3.1 rebuilt (20254 B) and installed into SU2024 Plugins with SHA256 match; backup on Desktop. Python 115 tests and Ruby 241 checks pass. Push not run. Restart SketchUp to load 4.3.1 menu/bridge.",
+  "status": "GUI compact export added: CAD2LLM.export/export_selection now accept compact: (default false), default_path appends _compact, and the Extensions>CAD2LLM menu exposes 2 compact items (spatial + geometry). Extension bumped to 4.3.2, RBZ rebuilt (20357 B) and installed into SU2024 Plugins with SHA256 match; backup on Desktop. Ruby 251 checks (68+85+98) and Python 115 tests pass. Push of 2 earlier commits + this one not run. Restart SketchUp to load 4.3.2 menu. geo.json (v1.3 compact geometry export) still untracked and contains GPS + absolute model_path; sanitize before commit.",
   "last_commits": [
     {
       "hash": "36c9037",
@@ -94,7 +94,10 @@
     "Sanitized new v1.2 geometry fixture: global_origin_gps=null, source.model_path=null, capabilities.gps=false",
     "gitignored index_cad2llm.md and context_indexer_v2.py (generated context snapshot)",
     "Bumped extension to 4.3.1; rebuilt releases/cad2llm_exporter.rbz (20254 B, sha256 fe3e3eac205ba356)",
-    "Installed RBZ 4.3.1 into SU2024 Plugins; all 6 installed files SHA256-identical to src"
+    "Installed RBZ 4.3.1 into SU2024 Plugins; all 6 installed files SHA256-identical to src",
+    "GUI compact export: main.rb export/export_selection accept compact:, default_path suffix _compact.json, menu gained spatial + geometry compact items (4.3.2)",
+    "Exporter tests extended for compact GUI paths + 11 menu items; exporter suite 88 -> 98 checks (total Ruby 251)",
+    "RBZ 4.3.2 rebuilt (20357 B, sha256 23fbd0b9103a8de5) and installed into SU2024 Plugins; all 6 files SHA256-identical to src"
   ],
   "verified_numbers": {
     "gui_v7_nodes": 46,
@@ -300,6 +303,23 @@
       "backup": "C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261027_111808",
       "python_tests": 115,
       "ruby_checks": 241
+    },
+    "release_4_3_2": {
+      "version": "4.3.2",
+      "rbz_bytes": 20357,
+      "rbz_sha256": "23fbd0b9103a8de526ac0d3b67edadd0178da2e95a974aa5516b1c860cdcbc16",
+      "installed_path": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins",
+      "installed_files_sha256_match": 6,
+      "backup": "C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261027_114334",
+      "menu_items": 11,
+      "compact_menu_items": 2,
+      "python_tests": 115,
+      "ruby_checks": 251,
+      "ruby_files": {
+        "annotate": 68,
+        "bridge": 85,
+        "exporter": 98
+      }
     }
   },
   "session_semantic_progress": [
@@ -390,7 +410,7 @@
     "validate_export": "python tools\\cad2llm.py validate <file.json>",
     "diff_export": "python tools\\cad2llm.py diff <a.json> <b.json>",
     "ascii_check": "pwsh ..\\.scripts\\ascii_filenames_check.ps1",
-    "extension_version": "4.3.1",
+    "extension_version": "4.3.2",
     "extension_install_mode": "manual copy to Plugins from rebuilt RBZ 4.3.1",
     "skp_source_dir": "C:\\Users\\PC\\Documents\\SU2024",
     "skp_primary_model": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.0.skp",
@@ -469,7 +489,8 @@
     "geometry_export_2026_10_23": "export_profile spatial|geometry; geometry block is direct-only, world mm, deterministic vertices/edges/faces; volume only when closed+oriented and no holes; legacy v3 export retired, Python read-only v3 remains.",
     "legacy_v3": "CAD2LLM.export_v3, LEGACY_VERSION and menu item removed. Old v3 JSON is still accepted by tools/cad2llm.py validate for migration only.",
     "slim": "tools/cad2llm_slim.py is the current CLI; default drops geometry; standalone supports stdin/stdout, --compact, --dry-run, --print-stats, rotation/domain flags. cad2llm.py slim currently exposes only --geometry and --compact.",
-    "enrich_open_bugs": "A: energy hardcoded null; B: clearance regex broken after stove rename (role-based rules preferred); C: free_space fallback wrong without role=floor; D: space_boundary pollutes relations (11/48 on v1.2)."
+    "enrich_open_bugs": "A: energy hardcoded null; B: clearance regex broken after stove rename (role-based rules preferred); C: free_space fallback wrong without role=floor; D: space_boundary pollutes relations (11/48 on v1.2).",
+    "gui_compact": "GUI compact is a serialization mode only (JSON.generate vs pretty); content identical to pretty export. Compact suffix _compact.json. Slim remains the Python-side transform for further reduction."
   },
   "proposals_M3_annotation": {
     "principle": "annotation must cost less than modeling; annotate component DEFINITIONS (28) not instances (46); infer the rest",

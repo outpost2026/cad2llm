@@ -9,13 +9,13 @@
     "purpose": "Deterministic CAD (SketchUp) -> LLM handoff pipeline. Eliminates spatial hallucination by sending precomputed bbox, semantics, relations, and metrics instead of raw geometry."
   },
   "current_state": {
-    "extension_version": "4.3.1",
+    "extension_version": "4.3.2",
     "schema_version": "4.0",
     "slim_version": "cad2llm/slim/v1",
     "slim_file": "tools/cad2llm_slim.py",
     "slim_status": "IMPLEMENTED_AND_TESTED for design-chat handoff; enrich bugs A+B still block energy/fire analysis",
     "tests_python": 115,
-    "tests_ruby": 241,
+    "tests_ruby": 251,
     "working_pipeline": [
       "SketchUp GUI -> extension 4.3.1 -> v4 geometry export (376317 B fixture, sanitized)",
       "v4 geometry -> cad2llm.py enrich -> v5 (buggy energy/clearance still present)",
@@ -404,6 +404,13 @@
       "sha256": "fe3e3eac205ba35648e64ab5bda2da972d56484ee44897e8e1bf8392db8f14ee",
       "installed_path": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins",
       "backup": "C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261027_111808"
+    },
+    "release_4_3_2": {
+      "rbz": "releases/cad2llm_exporter.rbz",
+      "bytes": 20357,
+      "sha256": "23fbd0b9103a8de526ac0d3b67edadd0178da2e95a974aa5516b1c860cdcbc16",
+      "installed_path": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins",
+      "backup": "C:\\Users\\PC\\Desktop\\cad2llm_plugins_backup_20261027_114334"
     }
   }
 }

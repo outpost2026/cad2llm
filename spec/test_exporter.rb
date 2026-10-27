@@ -218,6 +218,23 @@ Dir.mktmpdir do |dir|
   eq("written geometry profile", geo_parsed["export_profile"], "geometry")
   check("written geometry block") { geo_parsed["nodes"].first.key?("geometry") }
   check("spatial export has no geometry") { !parsed["nodes"].first.key?("geometry") }
+
+  compact_gui = CAD2LLM.export(model: m, compact: true, interactive: false)
+  eq("main.compact path", File.basename(compact_gui), "mistnost_2_sk24_cad2llm_v4_compact.json")
+  compact_gui_raw = File.read(compact_gui)
+  check("main.compact one line body") { compact_gui_raw.strip !~ /\n\s+"nodes"/ }
+  check("main.compact smaller than pretty") { compact_gui_raw.bytesize < File.read(path).bytesize }
+
+  compact_geo = CAD2LLM.export(model: m, profile: "geometry", compact: true, interactive: false)
+  eq("main.compact geometry path", File.basename(compact_geo), "mistnost_2_sk24_cad2llm_v4_geometry_compact.json")
+  compact_geo_doc = JSON.parse(File.read(compact_geo))
+  eq("main.compact geometry profile", compact_geo_doc["export_profile"], "geometry")
+  check("main.compact geometry block kept") { compact_geo_doc["nodes"].first.key?("geometry") }
+
+  m.selection = Sketchup::Selection.new(m.entities.to_a)
+  compact_sel = CAD2LLM.export_selection(model: m, compact: true, interactive: false)
+  eq("main.compact selection path", File.basename(compact_sel), "mistnost_2_sk24_cad2llm_v4_compact_selection.json")
+  check("main.compact selection one line body") { File.read(compact_sel).strip !~ /\n\s+"nodes"/ }
 end
 
 # --------------------------------------------------------------- 9. loader
@@ -226,10 +243,15 @@ items = UI.menu("Extensions").items
 sub = items.find { |name, _| name == "CAD2LLM" }
 check("loader registered CAD2LLM submenu") { !sub.nil? }
 items = sub ? sub[1].items.reject { |i| i[0] == :separator } : []
-check("loader has export + bridge items") { items.size == 9 }
+check("loader has export + bridge items") { items.size == 11 }
 check("loader exposes bridge start/stop") { items.count { |i| i[0].to_s.include?("bridge") } == 2 }
 check("loader exposes inspector + purge") { items.count { |i| i[0].to_s =~ /Inspector|Purge/ } == 3 }
-check("loader exposes geometry export") { items.count { |i| i[0].to_s.include?("geometry") } == 2 }
+check("loader exposes geometry export") { items.count { |i| i[0].to_s.include?("geometry") } == 3 }
+check("loader exposes compact export") { items.count { |i| i[0].to_s.include?("compact") } == 2 }
+check("loader compact covers spatial + geometry") do
+  items.count { |i| i[0].to_s.include?("compact") && i[0].to_s.include?("spatial") } == 1 &&
+    items.count { |i| i[0].to_s.include?("compact") && i[0].to_s.include?("geometry") } == 1
+end
 check("loader removed legacy export") { items.none? { |i| i[0].to_s =~ /legacy/i } }
 panel_model = model_with([mk_component(name: "comp_panel", pid: 990, def_name: "panel_def", size_in: [1, 1, 1])])
 Sketchup.model = panel_model

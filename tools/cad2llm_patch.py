@@ -35,11 +35,18 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from functools import lru_cache
 from pathlib import Path
 
 PLAN_SCHEMA = "cad2llm/annotate_plan/v1"
 PATCH_CONTRACT = "cad2llm/semantic-patch/v1"
 MAX_OPS = 2000
+SCHEMA_PATH = (
+    Path(__file__).resolve().parents[1]
+    / "docs"
+    / "schema"
+    / "annotate_plan.schema.json"
+)
 
 # field -> (attribute dictionary, key)
 FIELD_MAP = {
@@ -192,8 +199,46 @@ def _plan_note(patch: dict) -> str:
     )
 
 
+@lru_cache(maxsize=1)
+def plan_schema() -> dict:
+    """The annotate plan schema is the contract; this module only mirrors it."""
+    return json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+
+
+@lru_cache(maxsize=1)
+def ops() -> tuple[str, ...]:
+    """Operation names are read from the schema, never duplicated by hand."""
+    return tuple(plan_schema()["$defs"]["operation"]["properties"]["op"]["enum"])
+
+
+def _schema_problems(plan: dict) -> list[str]:
+    """Validate against docs/schema/annotate_plan.schema.json when available."""
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError:  # pragma: no cover - optional dependency
+        return []
+    problems = []
+    for error in Draft202012Validator(plan_schema()).iter_errors(plan):
+        path = list(error.path)
+        if len(path) >= 2 and path[0] == "operations":
+            where = f"operation {path[1]}"
+            rest = path[2:]
+            if rest:
+                where += "." + ".".join(str(p) for p in rest)
+        else:
+            where = "plan"
+        problems.append(f"{where}: {error.message}")
+    return problems
+
+
 def validate_plan(plan: dict) -> list[str]:
-    """Structural lint mirroring the Ruby side. Returns a list of problems."""
+    """Structural lint mirroring the Ruby side. Returns a list of problems.
+
+    The lint gives readable messages and works without optional packages. When
+    it is clean and jsonschema is installed, the plan is additionally checked
+    against docs/schema/annotate_plan.schema.json so the schema cannot drift
+    away from what the bridge really accepts.
+    """
     problems: list[str] = []
     if not isinstance(plan, dict):
         return ["plan must be an object"]
@@ -206,20 +251,21 @@ def validate_plan(plan: dict) -> list[str]:
     if plan.get("transaction") not in ("per_op", "single"):
         problems.append("transaction must be per_op or single")
 
-    ops = plan.get("operations")
-    if not isinstance(ops, list) or not ops:
+    plan_ops = plan.get("operations")
+    if not isinstance(plan_ops, list) or not plan_ops:
         problems.append("operations must be a non-empty array")
         return problems
-    if len(ops) > MAX_OPS:
+    if len(plan_ops) > MAX_OPS:
         problems.append(f"operations exceeds {MAX_OPS}")
 
-    for index, op in enumerate(ops):
+    known_ops = ops()
+    for index, op in enumerate(plan_ops):
         where = f"operation {index}"
         if not isinstance(op, dict):
             problems.append(f"{where}: must be an object")
             continue
         kind = op.get("op")
-        if kind not in ("set_attribute", "set_tag", "rename", "set_description"):
+        if kind not in known_ops:
             problems.append(f"{where}: unknown op {kind!r}")
             continue
         extra = set(op) - {
@@ -252,7 +298,9 @@ def validate_plan(plan: dict) -> list[str]:
                 )
         elif kind == "rename" and not op.get("name"):
             problems.append(f"{where}: rename needs name")
-    return problems
+    if problems:
+        return problems
+    return _schema_problems(plan)
 
 
 def load_patch(path: str | Path) -> dict:

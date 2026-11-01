@@ -24,7 +24,43 @@ SCHEMA_VERSION = "5.0"
 BRIEF_MAX_CHARS = 4000
 TOP_FINDINGS_MAX = 5
 
-STRUCTURAL = {"wall", "insulation", "floor", "ceiling", "roof", "beam", "truss"}
+STRUCTURAL = {
+    "wall",
+    "insulation",
+    "floor",
+    "ceiling",
+    "roof",
+    "beam",
+    "column",
+    "purlin",
+    "rafter",
+    "truss",
+    "foundation",
+    "brace",
+    "battens",
+}
+CONNECTORS = {"fastener"}
+OPENING_ROLES = {"window", "door", "opening"}
+ARTIFACT_ROLES = {
+    "void",
+    "boundary",
+    "marker",
+    "junk_component",
+    "reference",
+    "plan_reference",
+}
+EXCLUDE_OCCUPANCY = {
+    "floor",
+    "ceiling",
+    "roof",
+    "insulation",
+    "boundary",
+    "void",
+    "marker",
+    "junk_component",
+    "reference",
+    "plan_reference",
+}
 
 # Order matters: first match wins. Structural tokens come before openings,
 # because wall names may contain "okna" (openings for windows).
@@ -35,7 +71,13 @@ ROLE_RULES = [
     ("ceiling", r"\b(strop|stropy|ceiling)\b", "CLASS_B", 0.9),
     ("roof", r"\b(strecha|střecha|roof|krov)\b", "CLASS_B", 0.9),
     ("chimney", r"\b(chimney|komin|komín|flue)\b", "CLASS_C", 0.8),
-    ("beam", r"\b(nosnik|nosniky|beam|truss|sloup)\b", "CLASS_B", 0.85),
+    ("column", r"\b(sloup|sloupy|column|pilir|post)\b", "CLASS_B", 0.9),
+    ("beam", r"\b(nosnik|nosniky|beam|truss)\b", "CLASS_B", 0.85),
+    ("purlin", r"\b(vaznice|purlin)\b", "CLASS_B", 0.9),
+    ("rafter", r"\b(krokev|krokve|rafter)\b", "CLASS_B", 0.9),
+    ("brace", r"\b(vzpera|vzpery|brace)\b", "CLASS_B", 0.85),
+    ("foundation", r"\b(zaklad|zaklady|foundation)\b", "CLASS_B", 0.9),
+    ("fastener", r"\b(vrut|vruty|sroub|fastener)\b", "CLASS_C", 0.85),
     ("window", r"\b(okno|okna|oken|windows?|window)\b", "CLASS_B", 0.9),
     ("door", r"\b(dvere|dveri|door|doors)\b", "CLASS_B", 0.9),
     ("stove", r"\b(kamna|stove|pec)\b", "CLASS_B", 0.9),
@@ -66,8 +108,8 @@ ROLE_ZONE_FALLBACK = {
     "worktop": "work",
     "table": "dining",
     "battery": "energy",
-    "inverter": "tech",
-    "appliance": "tech",
+    "inverter": "energy",
+    "appliance": "energy",
     "storage": "storage",
     "void": "entry",
     "opening": "entry",
@@ -75,6 +117,10 @@ ROLE_ZONE_FALLBACK = {
     "roof": "envelope",
     "chimney": "envelope",
     "marker": "unknown",
+    "bed_frame": "sleep",
+    "bed_worktop": "work",
+    "seat_plank": "work",
+    "seat_area": "work",
 }
 
 # Secondary evidence: SketchUp tags (GUI channel) when the name carries no role.
@@ -142,11 +188,12 @@ def _match(rule_re: str, name: str) -> str | None:
 
 
 def _intent_for(role: str) -> str:
+    """One place that maps a role to intent; classify() uses it too."""
     if role == "unknown":
         return "UNKNOWN"
-    if role in {"void", "marker", "boundary"}:
+    if role in ARTIFACT_ROLES:
         return "ARTIFACT"
-    if role in STRUCTURAL or role in {"window", "door", "opening"}:
+    if role in STRUCTURAL or role in CONNECTORS or role in OPENING_ROLES:
         return "CONSTRUCTION"
     return "DESIGN_DECISION"
 
@@ -322,14 +369,7 @@ def classify(
     size = (spatial or {}).get("size_mm") or {}
     degenerate = bool(size) and any(float(size.get(ax, 0)) < 1.0 for ax in "xyz")
 
-    if role == "unknown":
-        intent = "UNKNOWN"
-    elif role in {"void", "marker", "boundary"}:
-        intent = "ARTIFACT"
-    elif role in STRUCTURAL or role in {"window", "door", "opening"}:
-        intent = "CONSTRUCTION"
-    else:
-        intent = "DESIGN_DECISION"
+    intent = _intent_for(role)
 
     if degenerate:
         intent = "ARTIFACT"
@@ -375,17 +415,6 @@ def _lookup_uid(nodes: list, name: str) -> str | None:
 # --------------------------------------------------------------------------
 # F2: relations
 # --------------------------------------------------------------------------
-OPENING_ROLES = {"window", "door", "opening"}
-ARTIFACT_ROLES = {"void", "boundary", "marker"}
-EXCLUDE_OCCUPANCY = {
-    "floor",
-    "ceiling",
-    "roof",
-    "insulation",
-    "boundary",
-    "void",
-    "marker",
-}
 
 
 def _gap(box_a: dict, box_b: dict) -> float:

@@ -24,6 +24,15 @@ module CAD2LLM
     OPS = %w[set_attribute set_tag rename set_description].freeze
     TRANSACTIONS = %w[per_op single].freeze
     RESERVED_DICT_PREFIX = "SU_"
+    MAX_OPS = 2000
+    # Mirrors docs/schema/annotate_plan.schema.json (additionalProperties: false).
+    PLAN_KEYS = %w[schema schema_version name note transaction operations].freeze
+    OP_KEYS = {
+      "set_attribute" => %w[op target dict key value],
+      "set_tag" => %w[op target tag],
+      "rename" => %w[op target name],
+      "set_description" => %w[op target description preserve_original]
+    }.freeze
 
     module_function
 
@@ -79,17 +88,30 @@ module CAD2LLM
     def normalize_plan(plan)
       raise ArgumentError, "plan must be a Hash" unless plan.is_a?(Hash)
 
+      unknown_plan = plan.keys.map(&:to_s) - PLAN_KEYS
+      unless unknown_plan.empty?
+        raise ArgumentError, "unknown plan keys #{unknown_plan.sort.inspect} (allowed: #{PLAN_KEYS.join(', ')})"
+      end
+
       schema = plan["schema"] || plan["schema_version"] || PLAN_SCHEMA
       raise ArgumentError, "unsupported plan schema #{schema.inspect}" unless schema == PLAN_SCHEMA
 
       ops = plan["operations"]
       raise ArgumentError, "plan.operations must be a non-empty Array" unless ops.is_a?(Array) && !ops.empty?
+      raise ArgumentError, "plan.operations must have at most #{MAX_OPS} entries (got #{ops.size})" if ops.size > MAX_OPS
 
       ops.each_with_index do |op, i|
         raise ArgumentError, "operation #{i} must be a Hash" unless op.is_a?(Hash)
 
         kind = op["op"]
         raise ArgumentError, "operation #{i}: unknown op #{kind.inspect} (allowed: #{OPS.join(', ')})" unless OPS.include?(kind)
+
+        allowed = OP_KEYS[kind]
+        extra = op.keys.map(&:to_s) - allowed
+        unless extra.empty?
+          raise ArgumentError, "operation #{i}: unknown keys #{extra.sort.inspect} for #{kind}"
+        end
+
         raise ArgumentError, "operation #{i}: missing target" unless op["target"].is_a?(Hash)
         kind = op["target"]["kind"]
         unless kind.nil? || %w[entity definition model].include?(kind)
@@ -161,11 +183,32 @@ module CAD2LLM
       end
 
       strategies = []
-      strategies << :persistent_id if target.key?("persistent_id")
       strategies << :path if target.key?("hierarchy_path")
       strategies << :name if target.key?("name")
 
-      if strategies.empty?
+      # persistent_id is unique per entity, so a unique hit is final. A pid can
+      # still repeat when instances share a definition (same child pid in every
+      # instance); then path/name narrow it. hierarchy_path in a plan is a
+      # snapshot of the export, so filtering a unique pid hit by it used to kill
+      # valid operations (NO_MATCH_AFTER_FILTER) as soon as an earlier operation
+      # renamed an ancestor.
+      if target.key?("persistent_id")
+        exact = entries.select { |e| e["persistent_id"] == target["persistent_id"] }
+        return [exact.first, nil] if exact.size == 1
+
+        if exact.size > 1
+          filtered = filter_candidates(exact, target, :persistent_id)
+          return [filtered.first, nil] if filtered.size == 1
+          if filtered.size > 1
+            return [nil, ["AMBIGUOUS_TARGET",
+                          "persistent_id #{target['persistent_id']} matched #{filtered.size} entities (#{describe(filtered)})"]]
+          end
+          return [nil, ["NO_MATCH_AFTER_FILTER",
+                        "persistent_id matched #{exact.size} entities, path/tag/definition filter removed all"]]
+        end
+      end
+
+      if strategies.empty? && !target.key?("persistent_id")
         return [nil, ["INVALID_TARGET", "target needs persistent_id, hierarchy_path or name"]]
       end
 

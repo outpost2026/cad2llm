@@ -13,7 +13,7 @@
   ],
   "required_metadata": {},
   "vocab": {
-    "version": "1.0",
+    "version": "1.1",
     "zones": [
       "work",
       "sleep",
@@ -24,6 +24,17 @@
       "storage",
       "space",
       "unknown"
+    ],
+    "systems": [
+      "envelope",
+      "structure",
+      "connector",
+      "furniture",
+      "energy",
+      "equipment",
+      "space",
+      "reference",
+      "non_construction"
     ],
     "roles": {
       "wall": {
@@ -163,6 +174,108 @@
         "zone": "envelope",
         "ifc": "IfcBuildingElementProxy",
         "label_cs": "komín"
+      },
+      "column": {
+        "system": "structure",
+        "zone": "envelope",
+        "ifc": "IfcColumn",
+        "label_cs": "sloup"
+      },
+      "purlin": {
+        "system": "structure",
+        "zone": "envelope",
+        "ifc": "IfcBeam",
+        "label_cs": "vaznice"
+      },
+      "rafter": {
+        "system": "structure",
+        "zone": "envelope",
+        "ifc": "IfcBeam",
+        "label_cs": "krokev"
+      },
+      "truss": {
+        "system": "structure",
+        "zone": "envelope",
+        "ifc": "IfcBeam",
+        "label_cs": "vazník"
+      },
+      "foundation": {
+        "system": "structure",
+        "zone": "envelope",
+        "ifc": "IfcFooting",
+        "label_cs": "základ"
+      },
+      "brace": {
+        "system": "structure",
+        "zone": "envelope",
+        "ifc": "IfcMember",
+        "label_cs": "vzpěra"
+      },
+      "fastener": {
+        "system": "connector",
+        "zone": "envelope",
+        "ifc": "IfcFastener",
+        "label_cs": "spojovací materiál"
+      },
+      "battens": {
+        "system": "structure",
+        "zone": "envelope",
+        "ifc": "IfcMember",
+        "label_cs": "laťování"
+      },
+      "junk_component": {
+        "system": "non_construction",
+        "zone": "unknown",
+        "ifc": "IfcAnnotation",
+        "label_cs": "knihovní smetí"
+      },
+      "reference": {
+        "system": "reference",
+        "zone": "unknown",
+        "ifc": "IfcAnnotation",
+        "label_cs": "referenční prvek"
+      },
+      "plan_reference": {
+        "system": "reference",
+        "zone": "unknown",
+        "ifc": "IfcAnnotation",
+        "label_cs": "půdorysná reference"
+      },
+      "bed_frame": {
+        "system": "furniture",
+        "zone": "sleep",
+        "ifc": "IfcFurniture",
+        "label_cs": "rám postele"
+      },
+      "bed_worktop": {
+        "system": "furniture",
+        "zone": "work",
+        "ifc": "IfcFurniture",
+        "label_cs": "pracovní plocha u postele"
+      },
+      "seat_plank": {
+        "system": "furniture",
+        "zone": "work",
+        "ifc": "IfcFurniture",
+        "label_cs": "prkno sedačky"
+      },
+      "seat_area": {
+        "system": "furniture",
+        "zone": "work",
+        "ifc": "IfcFurniture",
+        "label_cs": "plocha sedačky"
+      },
+      "legs": {
+        "system": "furniture",
+        "zone": "unknown",
+        "ifc": "IfcFurniture",
+        "label_cs": "nohy"
+      },
+      "leg_gap": {
+        "system": "furniture",
+        "zone": "unknown",
+        "ifc": "IfcFurniture",
+        "label_cs": "mezera mezi nohami"
       }
     },
     "tag_roles": {
@@ -185,9 +298,22 @@
       "energy_nodes": "battery",
       "inverter": "inverter",
       "space_boundary": "space_boundary",
-      "zaklady": "floor",
-      "foundation": "floor",
-      "foundations": "floor",
+      "zaklady": "foundation",
+      "foundation": "foundation",
+      "foundations": "foundation",
+      "sloupy": "column",
+      "column": "column",
+      "vaznice": "purlin",
+      "purlin": "purlin",
+      "krokve": "rafter",
+      "krokev": "rafter",
+      "rafter": "rafter",
+      "vzpery": "brace",
+      "brace": "brace",
+      "spojovaci_material": "fastener",
+      "spojovací_materiál": "fastener",
+      "fastener": "fastener",
+      "stit_domu": "wall",
       "ceilling": "ceiling",
       "strop": "ceiling",
       "roof": "roof",

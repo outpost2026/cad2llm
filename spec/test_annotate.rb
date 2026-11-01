@@ -43,6 +43,10 @@ def op(kind, target, extra = {})
   { "op" => kind, "target" => target }.merge(extra)
 end
 
+def report_ok(report, index)
+  report["operations"][index]["status"]
+end
+
 # ------------------------------------------------- 1. happy path, 3 op types
 bed = mk_group(name: "bed_v1", pid: 101, pos: [100, 0, 0], size_in: [10, 10, 10])
 zone = mk_group(name: "zone_bed", pid: 102, pos: [0, 0, 0], size_in: [100, 100, 10])
@@ -175,6 +179,43 @@ begin
 rescue ArgumentError => e
   check("bad schema raises (#{e.message[0, 40]})") { e.message.include?("schema") }
 end
+
+begin
+  CAD2LLM::Annotate.run({ "schema" => "cad2llm/annotate_plan/v1", "extra" => 1,
+                          "operations" => [{ "op" => "rename", "target" => { "persistent_id" => 1 }, "name" => "x" }] })
+  check("unknown plan key raises") { false }
+rescue ArgumentError => e
+  check("unknown plan key raises (#{e.message[0, 40]})") { e.message.include?("unknown plan keys") }
+end
+
+begin
+  CAD2LLM::Annotate.run(plan(op("rename", { "persistent_id" => 1 }, "name" => "x", "confidence" => 0.9)))
+  check("unknown op key raises") { false }
+rescue ArgumentError => e
+  check("unknown op key raises (#{e.message[0, 40]})") { e.message.include?("unknown keys") }
+end
+
+schema_path = File.join(ROOT, "docs", "schema", "annotate_plan.schema.json")
+if File.exist?(schema_path)
+  schema = JSON.parse(File.read(schema_path))
+  schema_ops = schema.dig("$defs", "operation", "properties", "op", "enum")
+  eq("ruby OPS match schema", CAD2LLM::Annotate::OPS.sort, schema_ops.sort)
+end
+
+# ------------------- 7d. stale path next to a unique pid must not veto the op
+stale_parent = mk_group(name: "parent_old", pid: 801, pos: [0, 0, 0], size_in: [10, 10, 10])
+stale_child = mk_group(name: "child", pid: 802, pos: [0, 0, 0], size_in: [1, 1, 1])
+stale_parent.entities << stale_child
+stale_model = model_with([stale_parent])
+stale = CAD2LLM::Annotate.run(plan(
+  op("rename", { "persistent_id" => 801 }, "name" => "parent_new"),
+  op("set_attribute", { "persistent_id" => 802, "hierarchy_path" => ["parent_old", "child"] },
+     "dict" => "cad2llm", "key" => "role", "value" => "column")
+), model: stale_model)
+eq("stale path: parent renamed", report_ok(stale, 0), "applied")
+eq("stale path: child still resolves by pid", report_ok(stale, 1), "applied")
+eq("stale path: child attribute written", stale_child.get_attribute("cad2llm", "role"), "column")
+
 
 Dir.mktmpdir do |dir|
   path = File.join(dir, "report.json")

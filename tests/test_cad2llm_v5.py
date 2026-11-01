@@ -350,5 +350,45 @@ class TestV5Schema(unittest.TestCase):
         self.assertEqual([f"{list(e.path)}: {e.message}" for e in errors], [])
 
 
+class TestVocabularyAlignment(unittest.TestCase):
+    """The write path (gate registry) and the read path must share one vocabulary."""
+
+    def test_metadata_structural_role_is_construction(self):
+        for role in ("column", "purlin", "rafter", "truss", "foundation", "brace"):
+            with self.subTest(role=role):
+                sem = v5.classify("Unnamed", metadata={"cad2llm": {"role": role}})
+                self.assertEqual(sem["intent"], "CONSTRUCTION")
+
+    def test_metadata_fastener_is_construction(self):
+        sem = v5.classify("vrut", metadata={"cad2llm": {"role": "fastener"}})
+        self.assertEqual(sem["intent"], "CONSTRUCTION")
+
+    def test_junk_component_is_artifact(self):
+        sem = v5.classify(
+            "junk_teddy", metadata={"cad2llm": {"role": "junk_component"}}
+        )
+        self.assertEqual(sem["intent"], "ARTIFACT")
+
+    def test_reference_roles_are_artifact(self):
+        for role in ("reference", "plan_reference"):
+            with self.subTest(role=role):
+                sem = v5.classify("plan", metadata={"cad2llm": {"role": role}})
+                self.assertEqual(sem["intent"], "ARTIFACT")
+
+    def test_name_derived_column_and_rafter(self):
+        self.assertEqual(v5.classify("sloup_stit_02")["role"], "column")
+        self.assertEqual(v5.classify("krokev_vazna_01")["role"], "rafter")
+        self.assertEqual(v5.classify("vaznice_01")["role"], "purlin")
+        self.assertEqual(v5.classify("vzpera_02")["role"], "brace")
+
+    def test_inverter_zone_is_in_vocabulary(self):
+        import cad2llm_vocab as vocab
+
+        known = set(vocab.zones(vocab.load_vocab()))
+        for name in ("inverter", "menic_01", "lednice"):
+            with self.subTest(name=name):
+                self.assertIn(v5.classify(name)["zone"], known)
+
+
 if __name__ == "__main__":
     unittest.main()

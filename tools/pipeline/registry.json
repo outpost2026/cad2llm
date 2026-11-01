@@ -1,0 +1,117 @@
+{
+  "registry_version": "1.1.0",
+  "updated": "2026-10-27",
+  "notes": "Deterministicky slovnik pro CAD2LLM gate. Nove terminy se pridavaji sem, ne do kodu.",
+
+  "severity_overrides": {
+    "FRAME_UNDECLARED_SCALE": "warning"
+  },
+
+  "gps_template_default": [40.018309, -105.242139],
+  "gps_template_tolerance": 0.01,
+
+  "junk_definitions": [
+    {
+      "definition_name": "teddy",
+      "persistent_ids": [36073],
+      "role": "junk_component",
+      "system": "non_construction",
+      "reason": "knihovni komponenta SketchUpu (figurka), neni stavebni prvek",
+      "action": "exclude_from_bom"
+    }
+  ],
+
+  "definitions": {
+    "zed": {"role": "wall", "system": "structure", "ifc": "IfcWall", "kind": "element"},
+    "sloup_stit": {"role": "column", "system": "structure", "ifc": "IfcColumn", "kind": "element"},
+    "sloup_predni": {"role": "column", "system": "structure", "ifc": "IfcColumn", "kind": "element"},
+    "vaznice": {"role": "purlin", "system": "structure", "ifc": "IfcBeam", "kind": "element"},
+    "krokev_vazna": {"role": "rafter", "system": "structure", "ifc": "IfcBeam", "kind": "element"},
+    "zaklady": {"role": "foundation", "system": "structure", "ifc": "IfcFooting", "kind": "element"},
+    "tesarsky_vrut": {"role": "fastener", "system": "connector", "ifc": "IfcFastener", "kind": "element"},
+
+    "prkno_lavicka": {"role": "seat_plank", "system": "furniture", "ifc": "IfcFurniture", "kind": "element"},
+    "spoje": {"role": "battens", "system": "furniture", "ifc": "IfcFurniture", "kind": "element"},
+    "plocha_lavicka_nova": {"role": "seat_area", "system": "reference", "ifc": null, "kind": "reference"},
+    "nohy_mezera": {"role": "leg_gap", "system": "reference", "ifc": null, "kind": "reference"},
+
+    "bed_frame": {"role": "bed_frame", "system": "furniture", "ifc": "IfcFurniture", "kind": "element"},
+    "worktop_bed": {"role": "bed_worktop", "system": "furniture", "ifc": "IfcFurniture", "kind": "element"},
+    "battery_base_shelf": {"role": "storage", "system": "furniture", "ifc": "IfcFurniture", "kind": "element"},
+    "battery_main": {"role": "battery", "system": "energy", "ifc": "IfcElectricFlowStorageDevice", "kind": "element"},
+    "battery_secondary": {"role": "battery", "system": "energy", "ifc": "IfcElectricFlowStorageDevice", "kind": "element"},
+
+    "worktop": {"role": "worktop", "system": "furniture", "ifc": "IfcSystemFurnitureElement", "kind": "element"},
+    "stove": {"role": "stove", "system": "equipment", "ifc": "IfcElectricAppliance", "kind": "element"},
+    "table": {"role": "table", "system": "furniture", "ifc": "IfcFurniture", "kind": "element"},
+    "bed": {"role": "bed", "system": "furniture", "ifc": "IfcFurniture", "kind": "element"},
+    "battery": {"role": "battery", "system": "energy", "ifc": "IfcElectricFlowStorageDevice", "kind": "element"},
+    "inverter": {"role": "inverter", "system": "energy", "ifc": "IfcTransformer", "kind": "element"},
+    "wall": {"role": "wall", "system": "envelope", "ifc": "IfcWall", "kind": "element"},
+    "ceiling": {"role": "ceiling", "system": "envelope", "ifc": "IfcCovering", "kind": "element"},
+    "window": {"role": "window", "system": "envelope", "ifc": "IfcWindow", "kind": "element"},
+    "beam": {"role": "beam", "system": "structure", "ifc": "IfcBeam", "kind": "element"},
+    "insulation": {"role": "insulation", "system": "envelope", "ifc": "IfcCovering", "kind": "element"},
+    "storage": {"role": "storage", "system": "furniture", "ifc": "IfcFurniture", "kind": "element"},
+    "space_boundary": {"role": "space_boundary", "system": "reference", "ifc": null, "kind": "reference"}
+  },
+
+  "tag_map": {
+    "sloupy": {"role": "column", "system": "structure", "ifc": "IfcColumn"},
+    "vaznice": {"role": "purlin", "system": "structure", "ifc": "IfcBeam"},
+    "krokve": {"role": "rafter", "system": "structure", "ifc": "IfcBeam"},
+    "vzpery": {"role": "brace", "system": "structure", "ifc": "IfcMember"},
+    "spojovaci_material": {"role": "fastener", "system": "connector", "ifc": "IfcFastener"},
+    "stit_domu": {"role": "wall", "system": "structure", "ifc": "IfcWall"},
+    "pudorys": {"role": "plan_reference", "system": "reference", "ifc": null},
+    "nohy": {"role": "legs", "system": "furniture", "ifc": "IfcFurniture"},
+    "sedaci_plocha": {"role": "seat_area", "system": "reference", "ifc": null},
+    "worktop": {"role": "worktop", "system": "furniture", "ifc": "IfcSystemFurnitureElement"},
+    "stove": {"role": "stove", "system": "equipment", "ifc": "IfcElectricAppliance"},
+    "table": {"role": "table", "system": "furniture", "ifc": "IfcFurniture"},
+    "battery": {"role": "battery", "system": "energy", "ifc": "IfcElectricFlowStorageDevice"},
+    "inverter": {"role": "inverter", "system": "energy", "ifc": "IfcTransformer"},
+    "wall": {"role": "wall", "system": "envelope", "ifc": "IfcWall"},
+    "ceiling": {"role": "ceiling", "system": "envelope", "ifc": "IfcCovering"},
+    "window": {"role": "window", "system": "envelope", "ifc": "IfcWindow"},
+    "beam": {"role": "beam", "system": "structure", "ifc": "IfcBeam"},
+    "insulation": {"role": "insulation", "system": "envelope", "ifc": "IfcCovering"},
+    "storage": {"role": "storage", "system": "furniture", "ifc": "IfcFurniture"},
+    "bed": {"role": "bed", "system": "furniture", "ifc": "IfcFurniture"},
+    "bed_frame": {"role": "bed_frame", "system": "furniture", "ifc": "IfcFurniture"},
+    "worktop_bed": {"role": "bed_worktop", "system": "furniture", "ifc": "IfcFurniture"},
+    "space_boundary": {"role": "space_boundary", "system": "reference", "ifc": null}
+  },
+
+  "variant_tokens": ["old", "new", "nova", "novy", "nove", "puvodni", "stary", "stara", "stavajici"],
+  "variant_prefixes": ["lavicka", "mistnost", "pergola"],
+  "reference_tokens": ["mezera", "plocha", "space", "boundary", "pudorys", "plan", "reference", "area", "sablona", "template"],
+  "reference_roles": ["space_boundary", "plan_reference", "seat_area", "leg_gap", "reference", "junk_component"],
+
+  "metadata_type_map": {
+    "nosna_zed": {"role": "wall", "system": "structure", "ifc": "IfcWall"},
+    "nosne_sloupky": {"role": "column", "system": "structure", "ifc": "IfcColumn"},
+    "nosne_preklady": {"role": "beam", "system": "structure", "ifc": "IfcBeam"},
+    "krokve": {"role": "rafter", "system": "structure", "ifc": "IfcBeam"},
+    "zaklady_povrch": {"role": "foundation", "system": "structure", "ifc": "IfcFooting"},
+    "vrut": {"role": "fastener", "system": "connector", "ifc": "IfcFastener"},
+    "box_nohy": {"role": "legs", "system": "furniture", "ifc": "IfcFurniture"}
+  },
+
+
+  "attribute_aliases": {
+    "konstukcni_prvek": "konstrukcni_prvek",
+    "konstukcni": "konstrukcni",
+    "material": "material",
+    "konstrukcni_material": "material",
+    "vrut_delka_cm": "delka_cm"
+  },
+
+  "attribute_namespaces": {
+    "pergola": ["konstrukcni_prvek", "material", "delka_cm"],
+    "lavicka": ["konstrukce", "material", "type", "plocha_m"],
+    "mistnost": ["cad2llm", "ifc", "construction", "furniture"]
+  },
+
+  "ambiguous_names": ["unnamed", "component", "difference", "group", "solid", ""]
+}

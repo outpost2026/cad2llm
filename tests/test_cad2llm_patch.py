@@ -171,5 +171,59 @@ class FileTests(unittest.TestCase):
             self.assertEqual(patch_mod.validate_plan(plan), [])
 
 
+class SchemaTests(unittest.TestCase):
+    def setUp(self):
+        try:
+            from jsonschema import Draft202012Validator  # noqa: F401
+        except ImportError:
+            self.skipTest("jsonschema not installed")
+        from jsonschema import Draft202012Validator
+
+        self.validator = Draft202012Validator(patch_mod.plan_schema())
+
+    def assert_valid(self, plan):
+        errors = [
+            f"{list(e.path)}: {e.message}" for e in self.validator.iter_errors(plan)
+        ]
+        self.assertEqual(errors, [])
+
+    def test_emitted_plan_matches_schema(self):
+        plan = patch_mod.patch_to_plan(
+            patch(
+                command("cad2llm.role", "wall"),
+                command("cad2llm.zone", "sleep"),
+                command("ifc.type", "IfcWall"),
+                command("name", "wall_01"),
+            )
+        )
+        self.assert_valid(plan)
+
+    def test_docs_plans_match_schema(self):
+        plans = patch_mod.SCHEMA_PATH.parents[2] / "docs" / "plans"
+        checked = 0
+        for path in sorted(plans.glob("*.json")):
+            doc = json.loads(path.read_text(encoding="utf-8"))
+            if doc.get("schema") != patch_mod.PLAN_SCHEMA:
+                continue  # vocabulary overlay example, not a plan
+            with self.subTest(plan=path.name):
+                self.assert_valid(doc)
+            checked += 1
+        self.assertGreater(checked, 0)
+
+    def test_ops_come_from_schema(self):
+        enum = patch_mod.plan_schema()["$defs"]["operation"]["properties"]["op"]["enum"]
+        self.assertEqual(list(patch_mod.ops()), enum)
+
+    def test_unknown_op_key_is_rejected_by_lint(self):
+        plan = patch_mod.patch_to_plan(patch(command("cad2llm.role", "wall")))
+        plan["operations"][0]["confidence"] = 0.9
+        self.assertTrue(any("unknown keys" in p for p in patch_mod.validate_plan(plan)))
+
+    def test_wrong_value_type_is_caught_by_schema(self):
+        plan = patch_mod.patch_to_plan(patch(command("cad2llm.role", "wall")))
+        plan["operations"][0]["value"] = {"nested": "object"}
+        self.assertNotEqual(patch_mod.validate_plan(plan), [])
+
+
 if __name__ == "__main__":
     unittest.main()

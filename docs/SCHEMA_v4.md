@@ -93,6 +93,28 @@ parita s `definition.bounds` ve SketchUpu.
 `ifc/type` drží synchronně na instanci i na definici (viz
 `docs/plans/ifc2x3_fix_v2_mistnost_2_v1_1.json`).
 
+### 3.1 Slovník `ifc`
+
+`metadata.ifc` je jediné místo, kde se drží IFC identita entity. Klíče čte
+`tools/cad2llm_derive.py` (plán) a `tools/cad2llm_v5.py` (semantika); zapisuje je
+bridge přes `set_attribute` s `dict = "ifc"`.
+
+| Klíč | Význam | Zapisuje | Čte |
+|---|---|---|---|
+| `ifc.type` | IFC třída (`IfcWall`, `IfcColumn`, `IfcBeam`, …) | gate, derive, člověk | derive, v5, IFC export (plánováno) |
+| `ifc.schema` | schéma, ve kterém je třída platná (`IFC 2x3`) | derive (default `IFC 2x3`) | derive (round-trip), IFC export (plánováno) |
+| `ifc.source` | odkud se třída vzala (`definition`, `metadata`, `manual`) | derive (`definition`) | derive (round-trip) |
+
+`ifc.schema` a `ifc.source` jsou **příprava na IFC export**, ne mrtvá pole:
+- `schema` rozhoduje, zda `ifc.type` vůbec v daném schématu existuje
+  (`IfcBuildingElementProxy` je 2x3 i 4, `IfcFooting` je 2x3 i 4, ale novější
+  třídy v 2x3 nejsou). Bez něj by exportér musel hádat.
+- `source` je provenance pro kontrolu, že se třída nezměnila omylem — ruční
+  hodnota (`manual`) se nemá přepsat odvozením z definice.
+
+Oba klíče se zapisují jen když chybí, takže jsou idempotentní. Gate je
+nezapisuje (nezapisuje nic, co nečte), derive je doplní při prvním průchodu.
+
 ## 4. Validační blok
 
 ```json

@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    # Windows matches the only environment the exporter runs in (SketchUp 2024
+    # on win32) and the cp1250 console the tools are written against.
+    runs-on: windows-latest
+    env:
+      PYTHONUTF8: "1"
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+
+      - name: Install optional validators
+        run: python -m pip install --disable-pip-version-check jsonschema
+
+      - name: Vocabulary drift (gate registry vs rules.json)
+        run: python -X utf8 tools/pipeline/gate.py --selftest
+
+      - name: Python tests
+        run: python -X utf8 -m unittest discover -s tests -v
+
+      - name: Ruby specs
+        run: ruby spec/run_all.rb
+
+      - name: Release artifact matches src
+        run: python -X utf8 tools/build_rbz.py --check
+
+      - name: Annotate plan schema vs bridge
+        run: python -X utf8 tools/cad2llm_patch.py --selftest

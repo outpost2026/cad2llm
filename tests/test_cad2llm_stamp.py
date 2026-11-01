@@ -20,7 +20,7 @@ def loft_overlay():
         "schema": vocab.OVERLAY_SCHEMA,
         "project_id": "loft_demo",
         "version": "1.0+loft",
-        "extends_version": "1.0",
+        "extends_version": vocab.load_vocab()["version"],
         "roles": {
             "loft_ladder": {
                 "system": "furniture",
@@ -64,7 +64,7 @@ class StampTests(unittest.TestCase):
         values = {op["key"]: op["value"] for op in ops}
         self.assertEqual(values["project_id"], "loft_demo")
         self.assertEqual(values["vocab_version"], "1.0+loft")
-        self.assertEqual(values["vocab_base_version"], "1.0")
+        self.assertEqual(values["vocab_base_version"], vocab.load_vocab()["version"])
         self.assertEqual(values["vocab_hash"], vocab.vocab_hash(v))
 
     def test_plan_is_idempotent(self):

@@ -4,6 +4,25 @@ Core slovník (`tools/cad2llm_rules.json` → `vocab`) zůstává společný pro
 projekty. Projektové termíny se přidávají **add-only overlay** souborem; core se
 nikdy needituje kvůli jednomu projektu.
 
+Dělení je věcné, ne projektové: **doménová** role, kterou umí pojmenovat IFC nebo
+kterou používá víc staveb (`column`, `purlin`, `rafter`, `foundation`, `brace`,
+`fastener`), patří do core. Overlay je pro **klientské** termíny jednoho projektu
+(`loft_ladder`, `guardrail`, názvy firemních sestav).
+
+## Verze 1.1 (2026-11-01)
+
+Core byl rozšířen z 23 na 39 rolí. Důvod: zapisovací cesta (gate registry)
+generovala role, které čtecí cesta (v5) neznala — 60 z 624 příkazů na korpusu
+skončilo mimo slovník. Doplněny byly `column`, `purlin`, `rafter`, `truss`,
+`foundation`, `brace`, `fastener`, `battens`, `junk_component`, `reference`,
+`plan_reference`, `bed_frame`, `bed_worktop`, `seat_plank`, `seat_area`, `legs`,
+`leg_gap`; dále vznikl deklarativní seznam `systems` a `tag_roles` pro česky
+pojmenované tagy (`sloupy` → `column`, `zaklady` → `foundation`, …).
+
+Overlay, který má v `extends_version` uvedeno `1.0`, po tomto bumpu **odmítne
+merge** — je to záměr, ne regrese. Overlay se musí vědomě přenést na `1.1`
+a zkontrolovat, zda jeho role nekolidují s novými core rolemi.
+
 ## Schéma `cad2llm/vocab_overlay/v1`
 
 ```json
@@ -12,7 +31,7 @@ nikdy needituje kvůli jednomu projektu.
   "project_id": "loft_demo",
   "name": "Loft demo",
   "version": "1.0+loft",
-  "extends_version": "1.0",
+  "extends_version": "1.1",
   "roles": {
     "loft_ladder": {
       "system": "furniture",

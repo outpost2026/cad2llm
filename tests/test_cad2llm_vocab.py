@@ -22,7 +22,7 @@ def overlay(**overrides):
         "project_id": "loft_demo",
         "name": "Loft demo",
         "version": "1.0+loft",
-        "extends_version": "1.0",
+        "extends_version": vocab.load_vocab()["version"],
         "roles": {
             "loft_ladder": {
                 "system": "furniture",
@@ -70,10 +70,33 @@ class VocabTests(unittest.TestCase):
         self.assertEqual(vocab.tag_role("energy_nodes", self.v), "battery")
 
     def test_legacy_tag_aliases(self):
-        self.assertEqual(vocab.tag_role("zaklady", self.v), "floor")
-        self.assertEqual(vocab.tag_role("foundation", self.v), "floor")
+        self.assertEqual(vocab.tag_role("zaklady", self.v), "foundation")
+        self.assertEqual(vocab.tag_role("foundation", self.v), "foundation")
         self.assertEqual(vocab.tag_role("ceilling", self.v), "ceiling")
         self.assertEqual(vocab.tag_role("Walls", self.v), "wall")
+
+    def test_structural_roles_are_known(self):
+        # Roles the write path (gate registry) emits must exist on the read side.
+        for role in (
+            "column",
+            "purlin",
+            "rafter",
+            "truss",
+            "foundation",
+            "brace",
+            "fastener",
+            "battens",
+            "junk_component",
+            "reference",
+            "plan_reference",
+        ):
+            with self.subTest(role=role):
+                self.assertIn(role, vocab.roles(self.v))
+
+    def test_systems_are_declared(self):
+        for system in ("structure", "connector", "non_construction", "reference"):
+            with self.subTest(system=system):
+                self.assertIn(system, vocab.systems(self.v))
 
     def test_roof_and_chimney_roles(self):
         for role in ("roof", "chimney"):
@@ -127,7 +150,7 @@ class OverlayTests(unittest.TestCase):
         merged = vocab.load_vocab(overlay=overlay())
         self.assertEqual(merged["project_id"], "loft_demo")
         self.assertEqual(merged["version"], "1.0+loft")
-        self.assertEqual(merged["base_version"], "1.0")
+        self.assertEqual(merged["base_version"], vocab.load_vocab()["version"])
         self.assertEqual(vocab.role_info("loft_ladder", merged)["ifc"], "IfcStair")
         self.assertEqual(vocab.tag_role("ZEBRIK", merged), "loft_ladder")
         self.assertEqual(vocab.tag_role("Madlo", merged), "guardrail")

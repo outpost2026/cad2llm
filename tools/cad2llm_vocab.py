@@ -191,6 +191,10 @@ def zones(vocab: dict) -> list:
     return list(vocab.get("zones") or [])
 
 
+def systems(vocab: dict) -> list:
+    return list(vocab.get("systems") or [])
+
+
 def role_info(role: str, vocab: dict) -> dict | None:
     return roles(vocab).get(role)
 
@@ -223,6 +227,8 @@ def check_node(node: dict, vocab: dict) -> list:
 
     issues = []
     role, zone, ifc_type = metadata_of(node)
+    known_systems = set(systems(vocab))
+    system = (((node.get("metadata") or {}).get("cad2llm")) or {}).get("system")
     name = node.get("name")
 
     if role and role not in known_roles:
@@ -231,6 +237,14 @@ def check_node(node: dict, vocab: dict) -> list:
                 "code": "UNKNOWN_ROLE",
                 "severity": "warn",
                 "message": f"{name}: role '{role}' not in vocab",
+            }
+        )
+    if system and known_systems and system not in known_systems:
+        issues.append(
+            {
+                "code": "UNKNOWN_SYSTEM",
+                "severity": "warn",
+                "message": f"{name}: system '{system}' not in vocab",
             }
         )
     if role and role in set(vocab.get("deprecated_roles") or []):

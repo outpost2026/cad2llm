@@ -52,8 +52,8 @@ Overeno: vsech 6 souboru v RBZ ma shodny SHA-256 se `src/`. Repo 2.7 MB, 37 comm
 | `cad2llm/geometry/v1` | 1.0 | `exporter.rb` | nikdo v repu | zadne |
 | `cad2llm/semantic-patch/v1` | 1.0 | `gate.py` | `cad2llm_patch.py` | `patch_to_plan` (striktni) |
 | `cad2llm/annotate_plan/v1` | 1.0 | `derive.py`, `stamp.py`, `patch.py`, `docs/plans/*.json` | `annotate.rb` | **Ruby `normalize_plan` + Python `validate_plan`** |
-| `cad2llm/annotate_plan/v1` schema | draft 2020-12 | `docs/schema/` | nikdo | **nevynuceno** |
-| `cad2llm/vocab/v1` (rules.json) | 1.0 | rucne | v5, derive, vocab | `vocab.load_vocab` + `merge_vocab` |
+| `cad2llm/annotate_plan/v1` schema | draft 2020-12 | `docs/schema/` | `patch.py` (jsonschema), CI | **vynuceno v Pythonu + CI** (D5) |
+| `cad2llm/vocab/v1` (rules.json) | 1.1 (bylo 1.0) | rucne | v5, derive, vocab, gate | `vocab.load_vocab` + `merge_vocab` + gate conformance |
 | `cad2llm/bridge/v1` | 1.0 | `bridge.rb` | `cad2llm_bridge.py` | protokol + token |
 | `cad2llm/gate-index/v1` | 1.0 | `gate.py` | clovek | zadne |
 | `cad2llm/slim/v1` | 1.0 | `cad2llm_slim.py` | LLM | `slim_document` |
@@ -73,6 +73,7 @@ SketchUp --export--> v4 JSON --v5--> semantika + brief
 ```
 
 Smycka je uzavrena mechanicky. Neni uzavrena semanticky - viz D1.
+(D1 je opraveno, stav viz §10.)
 
 ---
 
@@ -360,7 +361,38 @@ slovniku a vynuceni kontraktu**.
 
 ---
 
-## 10. Jedna veta na zaver
+## 10. Stav oprav (2026-11-01, po review)
+
+Vsech 11 defektu je opraveno nebo uzavreno; poradi zustava stejne jako v sekci 4.
+
+| # | Stav | Co se zmenilo | Kde |
+|---|---|---|---|
+| D1 | opraveno | slovnik 1.0 -> 1.1: 39 roli, `systems`, `tag_roles`; 16 chybelych roli doplneno do core (overlay zustava pro klientske slovniky) | `tools/cad2llm_rules.json` |
+| D2 | opraveno | gate zapisuje i `cad2llm.zone` (odvozenou z `vocab.role_info`) a slovnik deklaruje `systems`, takze `cad2llm.system` ma ctenare | `tools/pipeline/gate.py`, `tools/cad2llm_rules.json` |
+| D3 | opraveno | unikatni `persistent_id` je finalni; path/tag/definition filtr se aplikuje jen pri multi-pid (sdilena definice) | `src/cad2llm_exporter/lib/annotate.rb` |
+| D4 | opraveno | `junk_component`, `reference`, `plan_reference` v `ARTIFACT_ROLES`; `_intent_for` je jedine misto mapovani | `tools/cad2llm_v5.py` |
+| D5 | opraveno | Ruby `normalize_plan` odmita nezname plan/op klice a >2000 ops; Python lint bere op enum ze schematu a pousti `jsonschema` jako druhou vrstvu | `annotate.rb`, `tools/cad2llm_patch.py` |
+| D6 | opraveno | `tech` -> `energy` v `ROLE_ZONE_FALLBACK`; zona se overuje proti slovniku (`SEM_VOCAB_ZONE_DRIFT`) | `tools/cad2llm_v5.py`, `gate.py` |
+| D7 | opraveno | `truss` ma vlastni vzor i slovnikove heslo; `STRUCTURAL` rozsiren | `tools/cad2llm_v5.py`, `cad2llm_rules.json` |
+| D8 | zdokumentovano | `ifc.schema` a `ifc.source` popsany jako priprava IFC exportu | `docs/SCHEMA_v4.md` §3.1 |
+| D9 | opraveno | CI: vocab drift, Python testy, Ruby specy, patch selftest | `.github/workflows/ci.yml` |
+| D10 | opraveno v repu | `gate.py` + `registry.json` jsou v `tools/pipeline/`, gate importuje slovnik z `tools/`; kopie v `Documents/SU2024` je od ted jen vstup, ne zdroj | `tools/pipeline/` |
+| D11 | ponechano | sum v repu je dokumentacni dluh, ne funkcni chyba | - |
+
+Nove testy: Python 159 (bylo 133; pribyl `tests/test_gate.py` se 13 testy),
+Ruby 304 checku (bylo 298). Nove kontroly:
+`SEM_VOCAB_ROLE_DRIFT`, `SEM_VOCAB_SYSTEM_DRIFT`, `SEM_VOCAB_ZONE_DRIFT`,
+`SEM_IFC_MALFORMED` (blokujici), `SEM_IFC_UNDECLARED` (info), `UNKNOWN_SYSTEM`
+ve `vocab.check_node`, `TestVocabularyAlignment` (zapisovaci a cteci strana
+musi znat stejne role).
+
+Zbyva pro autora (mimo povolene cesty): `C:\Users\PC\Documents\SU2024\cad2llm_pipeline\`
+prevest na forwarder na repo verzi nebo oznacit jako archiv; `_stale_20261027\`
+smazat rucne.
+
+---
+
+## 11. Jedna veta na zaver
 
 Repozitar ma spravnou architekturu a fungujici smycku, ale dve poloviny pipeline
 mluvi odlisnymi jazyky o tom, co je "sloup" - dokud se ten slovnik nesjednoti,

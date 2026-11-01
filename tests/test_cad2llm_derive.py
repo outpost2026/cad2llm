@@ -21,7 +21,7 @@ def loft_overlay():
         "schema": vocab.OVERLAY_SCHEMA,
         "project_id": "loft_demo",
         "version": "1.0+loft",
-        "extends_version": "1.0",
+        "extends_version": vocab.load_vocab()["version"],
         "roles": {
             "loft_ladder": {
                 "system": "furniture",

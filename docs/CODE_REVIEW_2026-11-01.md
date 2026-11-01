@@ -390,6 +390,15 @@ Zbyva pro autora (mimo povolene cesty): `C:\Users\PC\Documents\SU2024\cad2llm_pi
 prevest na forwarder na repo verzi nebo oznacit jako archiv; `_stale_20261027\`
 smazat rucne.
 
+**Overeni na korpusu (19 exportu, `Documents/SU2024/*.json`):** gate z repo verze
+prosel vsechny exporty, `SEM_VOCAB_ROLE_DRIFT` / `SEM_VOCAB_SYSTEM_DRIFT` /
+`SEM_VOCAB_ZONE_DRIFT` / `SEM_IFC_MALFORMED` = **0 vyskytu**. Verdikt se u zadneho
+modelu nezmenil, pokryti roli nikde nekleslo (u `mistnost_2_v1.4_cad2llm_v4_compact`
+stouplo 49 -> 52 z 53) a nova zona je vyplnena u 45/46, resp. 48/49 entit.
+Zbyvajici blokujici nalezy jsou geometrie (`FRAME_ROTATION_VS_GEOMETRY`,
+`FRAME_BBOX_NOT_AABB`, `DATA_NO_PROFILE`), ne slovnik - ty patri do samostatneho
+rozhodnuti o geometrickem profilu.
+
 ---
 
 ## 11. Jedna veta na zaver

@@ -227,8 +227,37 @@
       "sem_resolved": "SEM_NAME_UNNAMED 9 -> 0; SEM_ROLE_MISSING / SEM_ZONE_MISSING / SEM_IFC_MISSING (5227) -> 0",
       "remaining": "FRAME_UNDECLARED_SCALE x2 (stove_01_wood, table_main_01 - undeclared author scale), FRAME_UNDECIDABLE 3635 (container bbox = union of children), GEOM_ZERO_THICKNESS + SEM_REFERENCE_PLANE 3377 (reference plane, expected)"
     },
-    "known_inconsistency": "vocab.tag_roles (cad2llm_rules.json) lacks bed_frame and worktop_bed, so derive.py resolves only 2 of 9; registry.tag_map has both and gate derives the role. Adding them to vocab.tag_roles is a repo change that needs author consent.",
+    "known_inconsistency": "vocab.tag_roles (cad2llm_rules.json) lacked bed_frame and worktop_bed; derive.py resolved only 2 of 9. Fixed automatically on 2026-11-03 by tools/cad2llm_vocab_learn.py (both tags learned from model evidence, 0 unresolved afterwards).",
     "model_modified": true
+  },
+  "metadata_tooling_2026_11_03": {
+    "why": "Metadata completion used to take many manual steps: hand-built plan, vocab gaps (7/9 unresolved), gate patch was a full snapshot (211 commands on an already annotated model), 4 exports per check, ad-hoc scripts.",
+    "bottlenecks_fixed": [
+      "gate.build_patch emitted every field for every node (211 commands even when the model was already done) -> now a diff; clean model = 0 commands",
+      "gate.propose_names overwrote existing meaningful names (grouped by definition/role only) -> keeps non-generic names, generic/unnamed ones still get a deterministic role_NN name, collision-safe",
+      "vocab.tag_roles missing bed_frame/worktop_bed -> tools/cad2llm_vocab_learn.py learns tag->role aliases from model evidence (metadata > definition > tag_map > parent); conflicts are reported, never guessed",
+      "derive.py could not resolve 7 of 9 -> 0 unresolved after learning",
+      "5 manual steps (export, gate, plan, apply, verify) -> one command"
+    ],
+    "new_tools": {
+      "tools/cad2llm_metadata.py": "run (export -> gate -> diff plan -> apply -> tag_audit -> re-export -> gate) and plan (offline); dry-run default; exit 0/1/2/3",
+      "tools/cad2llm_vocab_learn.py": "tag->role learning into vocab.tag_roles + vocab.learned provenance; default dry-run, --apply writes",
+      "tests/test_cad2llm_vocab_learn.py": "5 tests (learn, known tag untouched, conflict, apply, no-op apply)",
+      "tests/test_gate.py": "+3 tests (pure diff, existing name kept, unnamed still named)"
+    },
+    "measured": {
+      "patch_commands_before_on_clean_model": 211,
+      "patch_commands_after_on_clean_model": 0,
+      "exports_per_run": "1 before apply + 1 after apply (was 4-5)",
+      "derive_unresolved_before": 7,
+      "derive_unresolved_after": 0,
+      "python_tests": 172,
+      "gate_selftest": 0,
+      "patch_selftest": 0
+    },
+    "vocab_learned": {"bed_frame": "bed_frame", "worktop_bed": "bed_worktop"},
+    "v14_final": "gate geometry compact WARN 0 blocking, 4 warnings (2x FRAME_UNDECLARED_SCALE, FRAME_UNDECIDABLE 3635 container, GEOM_ZERO_THICKNESS 3377 reference plane), 28 info; all 4 fresh patches = 0 commands",
+    "policy": "learning writes aliases for roles that already exist in core; new roles/IFC stay a human or overlay decision (docs/VOCAB_OVERLAY.md)"
   },
   "verified_numbers": {
     "gui_v7_nodes": 46,

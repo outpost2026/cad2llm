@@ -44,6 +44,7 @@ if TOOLS_DIR not in sys.path:
 import cad2llm_vocab as vocab  # noqa: E402
 
 PATCH_CONTRACT = "cad2llm/semantic-patch/v1"
+GENERIC_NAMES = {"", "unnamed", "component", "difference", "group", "solid"}
 IFC_PATTERN = re.compile(r"^Ifc[A-Z][A-Za-z0-9]*$")
 
 SEV_BLOCK = "blocking"
@@ -700,10 +701,25 @@ def check_duplicates(nodes, issues):
 
 
 def propose_names(proposals, nodes):
-    """Deterministicka jmena: zaklad z definice/role + poradove cislo podle polohy."""
+    """Deterministicka jmena: zaklad z definice/role + poradove cislo podle polohy.
+
+    Existujici smysluplne jmeno se nikdy neprepisuje - navrh dostane jen
+    entita s generickym nebo chybejicim jmenem (stejne pravidlo jako
+    tools/cad2llm_derive.py).
+    """
     by_uid = {n.get("uid"): n for n in nodes}
+    used = {
+        norm(n.get("name"))
+        for n in nodes
+        if norm(n.get("name")) and norm(n.get("name")) not in GENERIC_NAMES
+    }
     groups = defaultdict(list)
     for p in proposals:
+        node = by_uid.get(p["uid"]) or {}
+        current = norm(node.get("name"))
+        if current not in GENERIC_NAMES and not current.startswith("component#"):
+            p["proposed_name"] = None
+            continue
         if p["kind"] == "junk":
             p["proposed_name"] = "junk_%s" % norm(p["definition_name"] or "component")
             continue
@@ -714,9 +730,20 @@ def propose_names(proposals, nodes):
             base = norm(p["role"]) or "element"
         groups[base].append(p)
 
+    def unique(name):
+        if name not in used:
+            used.add(name)
+            return name
+        i = 2
+        while "%s_%02d" % (name, i) in used:
+            i += 1
+        out = "%s_%02d" % (name, i)
+        used.add(out)
+        return out
+
     for base, items in groups.items():
         if len(items) == 1:
-            items[0]["proposed_name"] = base
+            items[0]["proposed_name"] = unique(base)
             continue
 
         def key(p):
@@ -725,11 +752,21 @@ def propose_names(proposals, nodes):
             return (round(c[0], 1), round(c[1], 1), round(c[2], 1), p["persistent_id"])
 
         for i, p in enumerate(sorted(items, key=key), start=1):
-            p["proposed_name"] = "%s_%02d" % (base, i)
+            p["proposed_name"] = unique("%s_%02d" % (base, i))
     return proposals
 
 
 # ---------------------------------------------------------------- patch
+
+
+def _current_field(node, field):
+    """Hodnota, kterou uz model ma (None kdyz chybi)."""
+    if field == "name":
+        return node.get("name")
+    meta = node.get("metadata") if isinstance(node.get("metadata"), dict) else {}
+    dictionary, _, key = str(field).partition(".")
+    block = meta.get(dictionary) if isinstance(meta.get(dictionary), dict) else {}
+    return block.get(key)
 
 
 def build_patch(res, review=None):
@@ -779,6 +816,9 @@ def build_patch(res, review=None):
         if decided and decided.get("decision") == "value" and decided.get("field"):
             wanted = [(f, v) for f, v in wanted if f != decided["field"]]
             wanted.append((decided["field"], decided["value"]))
+
+        # Diff, ne snapshot: co uz model ma, se znovu neposila.
+        wanted = [(f, v) for f, v in wanted if _current_field(node, f) != v]
 
         if decided:
             status = "approved"

@@ -119,12 +119,31 @@ Kontrakt: [`docs/GEOMETRY_v1.md`](docs/GEOMETRY_v1.md).
 provede undo dávky a report označí `rolled_back`. `verify` vrací exit 3 při rozdílu
 invariant (name, tag, role, zóna, IFC) — vhodné pro CI i pro kontrolu po ručním zásahu.
 
+### Jeden příkaz místo pěti
+
+```powershell
+python tools\cad2llm_metadata.py run                  # export -> gate -> diff plán (dry-run)
+python tools\cad2llm_metadata.py run --apply          # zápis + tag audit + re-export + gate
+python tools\cad2llm_metadata.py run --learn --apply  # + automatické doplnění slovníku z modelu
+python tools\cad2llm_metadata.py plan export.json     # offline plán z existujícího exportu
+```
+
+`run` exportuje jen jednou (geometry compact) a gate vrací **jen rozdíly** — hotový model
+má 0 operací, takže apply je idempotentní a nedotýká se toho, co už v modelu je.
+`--learn` doplní `vocab.tag_roles` o tagy, které model používá a slovník nezná; učí se
+jen aliasy pro role, které už v core existují (nové role/IFC zůstávají na overlaye
+`docs/VOCAB_OVERLAY.md`). Konfliktní důkazy se nikdy nehádají — skončí v reportu.
+
+```powershell
+python tools\cad2llm_vocab_learn.py export.json --apply   # samostatné učení slovníku
+```
+
 * * *
 
 ## Testy
 
 ```powershell
-python -m unittest discover -s tests -v    # 164 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge, gate, patch)
+python -m unittest discover -s tests -v    # 172 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge, gate, patch, vocab_learn)
 C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 313 checků (exporter, anotace, bridge)
 ```
 

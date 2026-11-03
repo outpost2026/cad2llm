@@ -140,6 +140,36 @@ class GatePatchTests(unittest.TestCase):
         fields = {c["field"] for c in patch["commands"]}
         self.assertNotIn("cad2llm.zone", fields)
 
+    def test_patch_is_a_diff_not_a_snapshot(self):
+        data = node(tag="wall")
+        proposal, _ = gate.classify_semantics(self.reg, data)
+        # pretend the model already carries exactly what the gate proposes
+        data["metadata"] = {
+            "cad2llm": {
+                "role": proposal["role"],
+                "system": proposal["system"],
+                "zone": proposal["zone"],
+            },
+            "ifc": {"type": proposal["ifc"]},
+        }
+        proposal = gate.propose_names([proposal], [data])[0]
+        patch, pending = gate.build_patch(self.result(data, proposal))
+        self.assertEqual(patch["commands"], [])
+        self.assertEqual(pending, [])
+
+    def test_existing_name_is_never_renamed(self):
+        data = with_role("column")
+        proposal, _ = gate.classify_semantics(self.reg, data)
+        proposal = gate.propose_names([proposal], [data])[0]
+        self.assertIsNone(proposal["proposed_name"])
+
+    def test_unnamed_entity_still_gets_a_name(self):
+        data = with_role("column", name="Unnamed")
+        proposal, _ = gate.classify_semantics(self.reg, data)
+        proposal = gate.propose_names([proposal], [data])[0]
+        # the base comes from definition_name (wall_inner) before the role
+        self.assertEqual(proposal["proposed_name"], "wall_inner")
+
     def test_missing_persistent_id_is_not_a_duplicate(self):
         issues = []
         gate.check_duplicates(

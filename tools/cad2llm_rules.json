@@ -323,7 +323,29 @@
       "chimney": "chimney",
       "komin": "chimney",
       "komín": "chimney",
-      "flue": "chimney"
+      "flue": "chimney",
+      "bed_frame": "bed_frame",
+      "worktop_bed": "bed_worktop"
+    },
+    "learned": {
+      "bed_frame": {
+        "role": "bed_frame",
+        "instances": 6,
+        "evidence": {
+          "metadata": 6
+        },
+        "learned_at": "2026-11-03",
+        "source": "cad2llm_vocab_learn"
+      },
+      "worktop_bed": {
+        "role": "bed_worktop",
+        "instances": 1,
+        "evidence": {
+          "metadata": 1
+        },
+        "learned_at": "2026-11-03",
+        "source": "cad2llm_vocab_learn"
+      }
     }
   }
 }

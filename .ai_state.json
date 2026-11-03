@@ -2,7 +2,7 @@
   "schema": "ai_state/v1",
   "repo": "cad2llm",
   "branch": "main",
-  "updated_at": "2026-10-27",
+  "updated_at": "2026-11-03",
   "status": "Release 4.3.6 done. B2 frame fix shipped: (a) FRAME_ROTATION_VS_GEOMETRY is now INFO (contract: matrix_4x4 = local->world, bbox_mm/geometry = world_mm, never apply the matrix to world data), (b) Group#bounds is parent-space in SketchUp, so exporter world_bounds now carries it through parent_world - nested rotated groups get a true world AABB (spec fixture: nested_rot under a 90 deg parent), (c) gate skips mesh-vs-bbox verdicts for containers (bbox = union of children, geometry = direct only) and reports FRAME_UNDECIDABLE instead. RBZ 4.3.6 rebuilt (23959 B, sha256 813430a2...) and installed 6/6 SHA256 into SU2024 Plugins; bridge hot-reloaded (exporter.rb/annotate.rb/bridge.rb), no SketchUp restart needed. Re-exported mistnost_2_v1.4 (full spatial 116978 B, full geometry 401865 B, compact 55770 B, geometry compact 129849 B): 53 nodes, validation issues 0, tag_audit 0/32 defs and 0/53 instances. Repo gate on the new exports: 0 BLOCK (was 28), verdict WARN. Ruby 313 checks, Python 164 tests, gate selftest 0. SU2024 cleanup done: stale gate.py (39049 B) + 59 reports from 2026-10-27 moved to cad2llm_pipeline/_ARCHIVE_2026-11-03, fresh reports regenerated from the repo gate (21 exports, 6 models). Push run for the checkpoint commit 7d14412.",
   "last_commits": [
     {
@@ -125,6 +125,111 @@
     "RBZ 4.3.6 rebuilt (23959 B, sha256 813430a2a1396207) and installed; 6/6 SHA256 match; bridge hot-reloaded (no SketchUp restart); re-exported mistnost_2_v1.4 (spatial 116978 B, geometry 401865 B, compact 55770 B, geometry compact 129849 B), 53 nodes, 0 validation issues, tag_audit 0/32 and 0/53.",
     "Repo gate on the re-exported v1.4: 0 BLOCK (baseline was 28 = 24x FRAME_ROTATION_VS_GEOMETRY + 3x FRAME_BBOX_NOT_AABB + 1x FRAME_MESH_VS_BBOX), verdict WARN; fresh reports in SU2024/cad2llm_pipeline/reports generated from the repo gate only."
   ],
+  "agent_goal_analysis_2026_11_03": {
+    "goal": "GOAL: co dnes umi dobre integrovany LLM agent (stav po B2 fix a releasu 4.3.6)",
+    "architecture": "model (.skp) -> export JSON v4 (jazyk, kteremu LLM rozumi) -> agent rozhoduje nad cisly -> annotate_plan/v1 (JSON, dry-run) -> bridge whitelist -> zpet do modelu -> verify diffem s toleranci 1 mm. LLM nikdy neklika a nema volnou ruku.",
+    "read_layer": {
+      "exporter": "2 profily (spatial / geometry) x full+compact+selection; spatial nese bbox_mm, size_mm, center_mm, origin_mm, rotation_deg, quaternion, matrix_4x4, tag, persistent_id, hierarchy_path, parent_uid, definition_name, definition_description, metadata",
+      "geometry_schema": "cad2llm/geometry/v1 - vertices/edges/faces, normaly, area_mm2, volume_mm3, hash (change detection), scope=direct, coordinate_space=world_mm",
+      "rpc_methods": 11,
+      "rpc_list": ["ping", "info", "attributes", "describe", "tag_audit", "tag_normalize", "purge_unused_tags", "reload", "export", "apply", "undo"],
+      "bridge_cli_commands": 11,
+      "cad2llm_py_commands": ["convert", "validate", "summary", "diff", "enrich", "slim"],
+      "helper_scripts": ["cad2llm_derive.py", "cad2llm_stamp.py", "cad2llm_patch.py"],
+      "gui_menu_items": 12
+    },
+    "write_layer": {
+      "ops": 4,
+      "ops_list": ["set_attribute", "set_tag", "rename", "set_description"],
+      "geometry_touched": false,
+      "max_ops": 2000,
+      "dry_run_default": true,
+      "one_op_one_undo_step": true,
+      "snapshot_before_write": true,
+      "drift_guard_mm": 0.001,
+      "rollback_on_drift": true,
+      "verify_cli_exit_codes": {"0": "clean", "3": "drift", "2": "usage"}
+    },
+    "agent_loop": [
+      "1 read: cad2llm_bridge.py export x.json --profile geometry (validation.issues + tag_consistency)",
+      "2 diagnose: tools/pipeline/gate.py --dir <dir> --out reports -> 33 codes, verdict, input_sha256",
+      "3 propose: gate emits <model>.patch.json (cad2llm/semantic-patch/v1, one command per field with evidence+confidence)",
+      "4 translate: tools/cad2llm_patch.py -> cad2llm/annotate_plan/v1 (only translation point; unknown field = error)",
+      "5 write: cad2llm_bridge.py apply plan.json (dry-run first, then --apply; snapshot + drift guard)",
+      "6 verify: cad2llm_bridge.py verify --baseline/--live + re-export + diff",
+      "7 revert: cad2llm_bridge.py undo (one step back)"
+    ],
+    "metadata_check_pipeline": {
+      "exists": true,
+      "layers": [
+        {"layer": "A_export_time", "where": "src/cad2llm_exporter (Ruby), every export", "what": "validation.issues + validation.tag_consistency (advisory; GUI always on, API tag_audit:false, CLI --no-tag-audit)", "evidence_v1_4": "issues=0, checked_definitions=32/mismatch=0, checked_instances=53/mismatch=0"},
+        {"layer": "B_bridge", "where": "RPC tag_audit + GUI menu 'Audit tags (inner vs parent)'", "what": "per-instance/per-definition inner Face/Edge tag vs parent tag"},
+        {"layer": "C_repo_gate", "where": "tools/pipeline/gate.py", "what": "33 codes: SEM 16, DATA 6, FRAME 10, GEOM 1; severity from registry.json; emits reporty + patch + review.json", "v1_4_new_exports": "0 BLOCK, verdict WARN"},
+        {"layer": "D_validate_enrich", "where": "tools/cad2llm.py validate|enrich + cad2llm_vocab", "what": "structure (MISSING_BBOX, ZERO_SIZE, DUPLICATE_POSITION, NAME_PATTERN, NAME_ASCII, CLEARANCE_VIOLATION) + vocab conformance (UNKNOWN_ROLE/ZONE/SYSTEM, DEPRECATED_ROLE, IFC_ROLE_MISMATCH, TAG_ROLE_MISMATCH) -> v5 brief/relations/metrics"}
+      ],
+      "ci": "ci.yml: gate --selftest, python tests, ruby specs, build_rbz --check, cad2llm_patch --selftest"
+    },
+    "what_llm_agent_can_do_today": [
+      "Precist cely SketchUp model bez GUI: 53 entit s bboxem, rotaci, matici, tagy, IFC a domenovymi slovnicky",
+      "Spustit automatickou diagnostiku a dostat verdikt + presne kody + hash vstupu misto cteni JSON",
+      "Navrhnout chybejici metadata (role/zone/ifc/popis/jmeno) deterministicky pres derive.py, nezbytek predat LLM",
+      "Zapsat metadata pres bridge (whitelist 4 op, dry-run, snapshot, drift guard 1 um, undo)",
+      "Ovetrit zapis diffem a vratit ho jednim undo krokem",
+      "Auditovat tagy a konzistency bez otevreni panelu",
+      "Hot-reload extension (3 soubory) bez restartu SketchUpu",
+      "Merit zmenu: stejny model -> stejny export -> stejny hash"
+    ],
+    "gaps": [
+      {"id": "geometry_from_NL", "status": "NOT_AVAILABLE", "detail": "whitelist ma jen 4 metadata op, 'Geometry is never touched'; M5 (move/scale/create) je v pending", "impact": "agent umi popsat a oznacit model, ne postavit stenu"},
+      {"id": "M4_mcp_server", "status": "MISSING", "detail": "v repu zadny FastMCP kod", "impact": "integrace jde pres CLI/Python modul, ne pres standardni MCP tool discovery"},
+      {"id": "enrich_A", "status": "OPEN", "detail": "metrics.energy hardcoded null", "impact": "blokuje energy analyzu"},
+      {"id": "enrich_B", "status": "OPEN", "detail": "clearance regex '^kamna' po rename neodpovida", "impact": "blokuje fire/analyzu pruchodnosti"},
+      {"id": "enrich_C_D", "status": "OPEN", "detail": "free_space fallback bez role=floor; space_boundary v relacich", "impact": "kvalita metrik, ne blocker"},
+      {"id": "geometry_selection_export", "status": "STALE", "detail": "9uzlovy vyber je pre-B2, gateuje BLOCK 3", "impact": "nutny re-export z GUI"},
+      {"id": "gh_auth", "status": "INVALID_401", "detail": "CI po pushi nelze lokalne overit", "impact": "spustit gh auth login"},
+      {"id": "security", "status": "NOTE", "detail": "eval_ruby = libovolny kod bez sandboxu, chrani jen token na localhostu", "impact": "spoustej jen na duveryhodnem stroji"}
+    ],
+    "next_steps_priority": [
+      "1) M4 FastMCP obalka nad cad2llm_bridge.py (11 RPC -> MCP toolu) - jedina chybejici spojnice k agentnimu tool listu",
+      "2) enrich A + B (30 + 15 min) - odklene energy/fire",
+      "3) M5 geometry op (move/scale/create) s 1mm diff branou - az tam vznika 'postav to jazykem'",
+      "4) re-export geometry_selection z GUI + gh auth login"
+    ],
+    "verdict": "Read/publish/audit smycka je hotova a testovana (313 Ruby + 164 Python, gate selftest 0, v1.4 = 0 BLOCK). Chybi dve veci: standardni protokol pro agenta (MCP) a povoleni sahat na geometrii. Do te doby je pipeline silna v 'rozumet a oznacit modelu', ne v 'menit tvar'."
+  },
+  "metadata_write_2026_11_03": {
+    "model": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.4.skp",
+    "plan": "C:\\Users\\PC\\AppData\\Local\\Temp\\opencode\\annotate_plan_v14.json (cad2llm/annotate_plan/v1)",
+    "report": "C:\\Users\\PC\\AppData\\Local\\Temp\\opencode\\apply_report.json",
+    "snapshot": "C:\\Users\\PC\\AppData\\Local\\cad2llm\\snapshots\\20261103T115952Z_mistnost_2_v1.4_metadata_for_9_unnamed_e.json",
+    "ops_total": 63,
+    "renames": 9,
+    "set_attributes": 54,
+    "applied": 63,
+    "errors": 0,
+    "transaction": "single (one undo step)",
+    "entities": [
+      {"pid": 5227, "name": "wooden_floor", "role": "floor", "zone": "envelope", "system": "envelope", "ifc": "IfcSlab"},
+      {"pid": 4880, "name": "stove_pipe", "role": "stove", "zone": "sleep", "system": "energy", "ifc": "IfcEnergyConversionDevice"},
+      {"pid": 3635, "name": "bed_frame", "role": "bed_frame", "zone": "sleep", "system": "furniture", "ifc": "IfcFurniture"},
+      {"pid": 5694, "name": "bed_rail_01", "role": "bed_frame", "zone": "sleep", "system": "furniture", "ifc": "IfcFurniture"},
+      {"pid": 5696, "name": "bed_rail_02", "role": "bed_frame", "zone": "sleep", "system": "furniture", "ifc": "IfcFurniture"},
+      {"pid": 5690, "name": "bed_rail_03", "role": "bed_frame", "zone": "sleep", "system": "furniture", "ifc": "IfcFurniture"},
+      {"pid": 5011, "name": "bed_leg_01", "role": "bed_frame", "zone": "sleep", "system": "furniture", "ifc": "IfcFurniture"},
+      {"pid": 5008, "name": "bed_leg_02", "role": "bed_frame", "zone": "sleep", "system": "furniture", "ifc": "IfcFurniture"},
+      {"pid": 5066, "name": "worktop_bed", "role": "bed_worktop", "zone": "work", "system": "furniture", "ifc": "IfcFurniture"}
+    ],
+    "value_sources": "role/zone/system/ifc from tools/cad2llm_rules.json vocab.roles; tag names resolved via tools/pipeline/registry.json tag_map (bed_frame and worktop_bed are missing from vocab.tag_roles); names from definition_name and bbox position",
+    "verify": {
+      "tag_audit": "instances=53, definitions=34, mismatch 0/53 and 0/34",
+      "export": "4 files re-exported (spatial full 119405 B, spatial compact 57117 B, geometry full 401377 B, geometry compact 130581 B), 53 nodes, validation issues=0",
+      "gate_geometry_compact": "WARN, {'warning': 4, 'info': 28}, 0 blocking (before: warning 14 / info 30, 12 SEM issues fixed)",
+      "sem_resolved": "SEM_NAME_UNNAMED 9 -> 0; SEM_ROLE_MISSING / SEM_ZONE_MISSING / SEM_IFC_MISSING (5227) -> 0",
+      "remaining": "FRAME_UNDECLARED_SCALE x2 (stove_01_wood, table_main_01 - undeclared author scale), FRAME_UNDECIDABLE 3635 (container bbox = union of children), GEOM_ZERO_THICKNESS + SEM_REFERENCE_PLANE 3377 (reference plane, expected)"
+    },
+    "known_inconsistency": "vocab.tag_roles (cad2llm_rules.json) lacks bed_frame and worktop_bed, so derive.py resolves only 2 of 9; registry.tag_map has both and gate derives the role. Adding them to vocab.tag_roles is a repo change that needs author consent.",
+    "model_modified": true
+  },
   "verified_numbers": {
     "gui_v7_nodes": 46,
     "gui_v7_known_roles": 46,
@@ -512,7 +617,7 @@
     "Decide fate of context_indexer_v2.py / index_cad2llm.md (generated index duplicates repo content)",
     "Add bridge/Python compact-export tests if compact export is promoted to production",
     "Author: restart SketchUp when convenient so Extension Manager shows 4.3.6 (bridge hot-reloaded, exporter/annotate/bridge already carry the B2 fix)",
-    "Author: Ctrl+S mistnost_2_v1.4.skp if SketchUp reports the model modified (no model edits were made in this session - tag_audit is read-only)",
+    "Author: Ctrl+S mistnost_2_v1.4.skp - the metadata write 2026-11-03 changed the model (63 ops, modified=true); the bridge has no save RPC",
     "Re-export mistnost_2_v1.4_cad2llm_v4_geometry_selection.json from the GUI (9-node selection export is still pre-B2 and gates BLOCK 3)",
     "Decide fate of untracked geo.json (contains GPS + absolute model_path)"
   ],

@@ -271,8 +271,8 @@ Exit kódy: `0` ok, `2` bridge nedostupný / chybí token file, `3` bridge vrát
 ## 8. Testy
 
 ```powershell
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 298 checks
-python -m unittest discover -s tests -v           # 117 testů
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 304 checks
+python -m unittest discover -s tests -v           # 159 testů
 ```
 
 `spec/test_bridge.rb` testuje dispatch i reálné TCP linky (ephemeral port,

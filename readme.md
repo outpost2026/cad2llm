@@ -52,7 +52,7 @@ pozná, co v datech chybí, a nesmí to domýšlet.
 ## Quickstart — DAE (bez GUI)
 
 ```powershell
-pip install lxml numpy
+pip install -r requirements.txt
 
 python tools/cad2llm.py convert examples/mistnost_2_sk24.dae out.json
 python tools/cad2llm.py validate out.json
@@ -124,8 +124,8 @@ invariant (name, tag, role, zóna, IFC) — vhodné pro CI i pro kontrolu po ru�
 ## Testy
 
 ```powershell
-python -m unittest discover -s tests -v    # 117 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge)
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 298 checků (exporter, anotace, bridge)
+python -m unittest discover -s tests -v    # 159 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge, gate, patch)
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 304 checků (exporter, anotace, bridge)
 ```
 
 Ruby testy běží proti `spec/sketchup_stub.rb` (world-space `Group#bounds`,

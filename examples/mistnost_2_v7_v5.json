@@ -9,7 +9,7 @@
     "source": {
       "channel": "dae",
       "file": "mistnost_2_v7.dae",
-      "path": "examples\\Sketchup2024_export\\mistnost_2_v7.dae",
+      "path": null,
       "size_bytes": 166765,
       "mtime_utc": "2026-10-22T20:51:35Z",
       "model_hash": "sha256:66b455d4013c1e921bdf98c1561c0f8afca216427e405fa01eba9a11aacb5a98"

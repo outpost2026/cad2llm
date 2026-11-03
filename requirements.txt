@@ -1,0 +1,4 @@
+# Python dependencies for tools/ and tests/.
+# Install: python -m pip install -r requirements.txt
+lxml>=5.0        # tools/cad2llm_core.py (COLLADA parser)
+jsonschema>=4.18 # tools/cad2llm_patch.py (annotate plan schema)

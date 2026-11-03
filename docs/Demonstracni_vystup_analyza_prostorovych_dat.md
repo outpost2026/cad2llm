@@ -4,10 +4,10 @@
 
 # 📊 Demonstrační výstup: Analýza prostorových dat z JSON
 
-Tento report demonstruje možnosti využití dat vygenerovaných naším konverzním skriptem `dae2json`. Ze surového 3D modelu (`mistnost_2_v7.dae`) byl vygenerován strukturovaný JSON soubor, který nám umožňuje provádět datovou analytiku prostoru bez nutnosti spouštět 3D software.
+Tento report demonstruje možnosti využití dat vygenerovaných naším konverzním skriptem `dae2json`. Ze surového 3D modelu (`mistnost_2_v7.dae`, který už není v repu) byl vygenerován strukturovaný JSON soubor, který nám umožňuje provádět datovou analytiku prostoru bez nutnosti spouštět 3D software.
 
 ## 1. Souhrnné informace o scéně
-*   **Zdrojový soubor:** `mistnost_2_v7.dae`
+*   **Zdrojový soubor:** `mistnost_2_v7.dae` (DAE odstraněn z repu 2026-11-03; zůstává jen odvozený JSON v `examples/`)
 *   **Počet extrahovaných uzlů (nodes):** 53
 *   **Souřadnicový systém:** Milimetry (mm), pravotočivý
 *   **Základní transformace:** Skript úspěšně parsuje `world_position_mm`, `world_rotation_deg`, `world_scale` a globální `bounding_box_mm`.

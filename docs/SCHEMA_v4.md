@@ -88,6 +88,33 @@ slovníky se vynechávají stejně jako u uzlů.
 `bbox_mm` u kontejnerů (komponenta se dětmi, skupina) = sjednocení potomků —
 parita s `definition.bounds` ve SketchUpu.
 
+#### Kontrakt rámce (frame contract)
+
+Tři veličiny mají jiný rámec a nesmějí se zaměňovat:
+
+| Veličina | Rámec | Kdo transformuje |
+|---|---|---|
+| `spatial.matrix_4x4`, `rotation_deg`, `quaternion` | **local → world** | exportér (jednou) |
+| `spatial.bbox_mm`, `size_mm`, `center_mm`, `origin_mm` | **world mm** | už hotovo |
+| `geometry.vertices` (+ normály, `area_mm2`) | **world mm** | už hotovo |
+
+Důsledky pro spotřebitele:
+
+- `matrix_4x4` se na `bbox_mm` ani `geometry` **neaplikuje** — data už jsou ve
+  světě, druhá aplikace = dvojitá transformace. Matici použij jen pro přepočet
+  vlastních lokálních souřadnic do world.
+- `Group#bounds` je ve SketchUpu v **rodičovském** souřadnicovém systému, ne
+  ve světě; exportér ho proto nese maticí `parent_world`. Proto je `bbox_mm`
+  vnořené rotované skupiny world AABB (rohy transformované maticí rodiče),
+  zatímco dříve vycházel bbox v rámci rodiče a gate hlásil
+  `FRAME_BBOX_NOT_AABB`.
+- `FRAME_ROTATION_VS_GEOMETRY` je **INFO**, ne blok: říká „matice je
+  local→world, geometrie už je world“, tj. kontrakt, ne defekt.
+- `geometry.scope` je vždy `direct`, zatímco bbox kontejneru je sjednocením
+  dětí. Gate proto u uzlů s dětmi `FRAME_MESH_VS_BBOX` a
+  `FRAME_BBOX_NOT_AABB` vůbec neposuzuje a místo toho hlásí varování
+  `FRAME_UNDECIDABLE`.
+
 `metadata` čte slovníky **instance**. Definiční slovníky (`AppliedSchemaTypes`,
 `IFC 2x3`) jsou data IFC Managera a exportér je neslévá — u komponent se proto
 `ifc/type` drží synchronně na instanci i na definici (viz

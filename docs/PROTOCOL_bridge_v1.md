@@ -2,7 +2,7 @@
 
 **Datum:** 2026-10-27 | **Autor:** outpost2026 | **Účel:** lokální obousměrná smyčka agent ↔ běžící SketchUp 2024
 
-Bridge je součástí rozšíření CAD2LLM Exporter 4.3.5 (`src/cad2llm_exporter/lib/bridge.rb`).
+Bridge je součástí rozšíření CAD2LLM Exporter 4.3.6 (`src/cad2llm_exporter/lib/bridge.rb`).
 Umožňuje LLM agentovi číst model, aplikovat deklarativní anotační plán a ověřit výsledek
 **bez copy-paste do Ruby konzole**.
 
@@ -271,8 +271,8 @@ Exit kódy: `0` ok, `2` bridge nedostupný / chybí token file, `3` bridge vrát
 ## 8. Testy
 
 ```powershell
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 304 checks
-python -m unittest discover -s tests -v           # 159 testů
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb        # 3 soubory, 313 checks
+python -m unittest discover -s tests -v           # 164 testů
 ```
 
 `spec/test_bridge.rb` testuje dispatch i reálné TCP linky (ephemeral port,

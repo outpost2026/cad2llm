@@ -9,19 +9,19 @@
     "purpose": "Deterministic CAD (SketchUp) -> LLM handoff pipeline. Eliminates spatial hallucination by sending precomputed bbox, semantics, relations, and metrics instead of raw geometry."
   },
   "current_state": {
-    "extension_version": "4.3.5",
+    "extension_version": "4.3.6",
     "schema_version": "4.0",
     "slim_version": "cad2llm/slim/v1",
     "slim_file": "tools/cad2llm_slim.py",
     "slim_status": "IMPLEMENTED_AND_TESTED for design-chat handoff; enrich bugs A+B still block energy/fire analysis",
-    "tests_python": 117,
-    "tests_ruby": 298,
+    "tests_python": 164,
+    "tests_ruby": 313,
     "working_pipeline": [
-      "SketchUp GUI -> extension 4.3.5 -> v4 geometry export (376317 B fixture, sanitized)",
+      "SketchUp GUI -> extension 4.3.6 -> v4 geometry export (376317 B fixture, sanitized)",
       "v4 geometry -> cad2llm.py enrich -> v5 (buggy energy/clearance still present)",
       "v4/v5 -> cad2llm_slim.py -> slim (32001 B default compact on v1.2 fixture; 34360 B on v7 v5)"
     ],
-    "tag_discipline": "tag_audit + tag_normalize + validation.tag_consistency (4.3.5). Applied on mistnost_2_v1.3: 356 entities, post-audit 0 mismatches; model unsaved."
+    "tag_discipline": "tag_audit + tag_normalize + validation.tag_consistency (4.3.6). Applied on mistnost_2_v1.4: 356 entities normalized, post-audit 0/32 definitions and 0/53 instances mismatched; model saved (mistnost_2_v1.4.skp)."
   },
   "conversation_semantics": {
     "opening_question": "Analýza trim JSON outputu v CAD2LLM repu — kde vzniká bloat a jak ho eliminovat.",
@@ -469,6 +469,32 @@
       "nested": 0,
       "ambiguous": 0,
       "post_audit_mismatch_instances": 0
+    },
+    "release_4_3_6": {
+      "rbz": "releases/cad2llm_exporter.rbz",
+      "bytes": 23959,
+      "sha256": "813430a2a13962072f560ab39170ddd57288eefa19152f9e975b9ed153cf3021",
+      "installed_files_sha256_match": 6,
+      "bridge_hot_reloaded": true,
+      "menu_items": 12
+    },
+    "b2_frame_fix_2026_11_03": {
+      "cause_a": "FRAME_ROTATION_VS_GEOMETRY was a contract statement, not a defect -> SEV_INFO (matrix_4x4 = local->world, bbox_mm/geometry = world_mm)",
+      "cause_b": "Group#bounds is parent-space in SketchUp -> world_bounds(entity, world, parent_world) transforms Group corners by parent_world; nested rotated groups now export a world AABB",
+      "cause_c": "container bbox = union of children vs geometry scope=direct -> gate skips FRAME_MESH_VS_BBOX / FRAME_BBOX_NOT_AABB for nodes with children, reports FRAME_UNDECIDABLE",
+      "gate_blocking_before": 28,
+      "gate_blocking_after": 0,
+      "reexport": {
+        "model": "mistnost_2_v1.4.skp",
+        "spatial_bytes": 116978,
+        "geometry_bytes": 401865,
+        "compact_bytes": 55770,
+        "geometry_compact_bytes": 129849,
+        "nodes": 53,
+        "validation_issues": 0
+      },
+      "suites": {"ruby": 313, "python": 164, "gate_selftest": 0},
+      "su2024_cleanup": "stale gate.py (39049 B) + 59 reports from 2026-10-27 -> cad2llm_pipeline/_ARCHIVE_2026-11-03; fresh reports from repo gate (21 exports, 6 models)"
     }
   }
 }

@@ -116,7 +116,7 @@ module CAD2LLM
         uid = "#{entity.persistent_id}@#{node_path.join('/')}"
         world = parent_world * entity.transformation
 
-        box = world_bounds(entity, world)
+        box = world_bounds(entity, world, parent_world)
         node = {
           "uid" => uid,
           "persistent_id" => entity.persistent_id,
@@ -141,19 +141,22 @@ module CAD2LLM
       end
     end
 
-    # Group#bounds is already in model space; ComponentInstance bounds must be
-    # taken from the definition (local) and transformed by the world matrix.
-    def world_bounds(entity, world)
+    # SketchUp hands out Group#bounds in the PARENT's coordinate system, not in
+    # world (verified on nested groups: the stored bbox was the parent-frame one
+    # while geometry.vertices were world). ComponentInstance bounds come from
+    # the definition (its own local frame), so they need the full world matrix.
+    # Top-level groups keep parent_world = identity -> unchanged behaviour.
+    def world_bounds(entity, world, parent_world)
       if entity.is_a?(Sketchup::ComponentInstance)
         local = entity.definition.bounds
         return nil if local.nil? || local.empty?
 
         corners = (0..7).map { |i| local.corner(i).transform(world) }
       else
-        world_bounds = entity.bounds
-        return nil if world_bounds.nil? || world_bounds.empty?
+        parent_bounds = entity.bounds
+        return nil if parent_bounds.nil? || parent_bounds.empty?
 
-        corners = (0..7).map { |i| world_bounds.corner(i) }
+        corners = (0..7).map { |i| parent_bounds.corner(i).transform(parent_world) }
       end
       mins = corners.map { |c| [c.x, c.y, c.z] }.transpose.map(&:min)
       maxs = corners.map { |c| [c.x, c.y, c.z] }.transpose.map(&:max)

@@ -252,15 +252,11 @@ module Sketchup
       @own_size = size
     end
 
-    # real API: Group#bounds is already in world coordinates
-    attr_writer :world_origin
-
-    def world_origin
-      @world_origin || @transformation.origin
-    end
-
+    # real API: Group#bounds is in the PARENT's coordinate system, never world
+    # (top-level groups have parent = model, so it looks like world there).
+    # The exporter maps it to world with parent_world.
     def bounds
-      o = world_origin
+      o = @transformation.origin
       BoundingBox.new(o.x, o.y, o.z, o.x + @own_size[0], o.y + @own_size[1], o.z + @own_size[2])
     end
   end
@@ -647,10 +643,9 @@ def t_in(ox, oy, oz)
   Geom::Transformation.new(Geom::Point3d.new(ox, oy, oz))
 end
 
-def mk_group(name:, pid:, pos: [0, 0, 0], size_in: [0, 0, 0], dicts: {}, world_pos: nil)
+def mk_group(name:, pid:, pos: [0, 0, 0], size_in: [0, 0, 0], dicts: {})
   g = Sketchup::Group.new(name: name, pid: pid, transformation: t_in(*pos))
   g.own_size = size_in
-  g.world_origin = Geom::Point3d.new(*world_pos) if world_pos
   dicts.each { |dn, pr| g.attribute_dictionaries << AttrDict.new(dn, pr) }
   g.layer = Sketchup::Layer.new("walls")
   g

@@ -124,8 +124,8 @@ invariant (name, tag, role, zóna, IFC) — vhodné pro CI i pro kontrolu po ru�
 ## Testy
 
 ```powershell
-python -m unittest discover -s tests -v    # 159 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge, gate, patch)
-C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 304 checků (exporter, anotace, bridge)
+python -m unittest discover -s tests -v    # 164 testů (parse, matice, bbox, legacy, v5, vocab, overlay, derive, stamp, bridge, gate, patch)
+C:\Ruby32-x64\bin\ruby.exe spec\run_all.rb # 313 checků (exporter, anotace, bridge)
 ```
 
 Ruby testy běží proti `spec/sketchup_stub.rb` (world-space `Group#bounds`,

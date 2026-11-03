@@ -6,7 +6,9 @@ found; the read path (v5, validate) knew a different set. These tests pin the
 conformance: everything the gate proposes must exist in tools/cad2llm_rules.json.
 """
 
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -150,6 +152,96 @@ class GatePatchTests(unittest.TestCase):
         gate.check_duplicates([{"persistent_id": 7}, {"persistent_id": 7}], issues)
         self.assertEqual([c for c, _, _, _ in issues], ["DATA_DUPLICATE_PID"])
         self.assertEqual(issues[0][2], "pid:7")
+
+
+class GateFrameContractTests(unittest.TestCase):
+    """B2 contract: matrix_4x4 is local->world, bbox_mm/geometry are world.
+
+    Two consequences get pinned here: a rotated node whose mesh already matches
+    the stored box is a contract statement (INFO), not a defect, and a
+    container's bbox is the union of children while geometry covers direct
+    entities only - those two scopes must never be compared.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.reg = gate.Registry(str(gate.DEFAULT_REGISTRY))
+
+    @staticmethod
+    def frame(mesh=(100.0, 50.0, 10.0), **overrides):
+        def xyz(v):
+            return {"x": v[0], "y": v[1], "z": v[2]}
+
+        size = [100.0, 50.0, 10.0]
+        data = {
+            "uid": "ID1",
+            "parent_uid": None,
+            "persistent_id": 1,
+            "name": "rotated_beam",
+            "definition_name": "beam",
+            "metadata": {},
+            "geometry": {"scope": "direct", "vertices": [[0.0, 0.0, 0.0], list(mesh)]},
+            "spatial": {
+                "size_mm": xyz(size),
+                "center_mm": xyz([50.0, 25.0, 5.0]),
+                "bbox_mm": {"min": xyz([0.0, 0.0, 0.0]), "max": xyz(size)},
+                "rotation_deg": {"x": 0.0, "y": 0.0, "z": 90.0},
+                "matrix_4x4": [
+                    [0.0, -1.0, 0.0, 0.0],
+                    [1.0, 0.0, 0.0, 0.0],
+                    [0.0, 0.0, 1.0, 0.0],
+                    [0.0, 0.0, 0.0, 1.0],
+                ],
+            },
+        }
+        data.update(overrides)
+        return data
+
+    @staticmethod
+    def severities(issues):
+        return {code: sev for code, sev, _ in issues}
+
+    def test_rotation_vs_geometry_is_informational(self):
+        issues = gate.analyze_frame(self.reg, self.frame())
+        sev = self.severities(issues)
+        self.assertEqual(sev.get("FRAME_ROTATION_VS_GEOMETRY"), gate.SEV_INFO)
+        self.assertEqual([c for c, s, _ in issues if s == gate.SEV_BLOCK], [])
+
+    def test_unworldly_stored_bbox_is_still_blocking(self):
+        # mesh = aabb(rot, size) -> the stored box is the unrotated one
+        issues = gate.analyze_frame(self.reg, self.frame(mesh=(50.0, 100.0, 10.0)))
+        sev = self.severities(issues)
+        self.assertEqual(sev.get("FRAME_BBOX_NOT_AABB"), gate.SEV_BLOCK)
+
+    def test_mesh_vs_bbox_blocks_for_a_plain_node(self):
+        issues = gate.analyze_frame(self.reg, self.frame(mesh=(125.0, 50.0, 10.0)))
+        sev = self.severities(issues)
+        self.assertEqual(sev.get("FRAME_MESH_VS_BBOX"), gate.SEV_BLOCK)
+
+    def test_container_never_compares_mesh_with_union_bbox(self):
+        issues = gate.analyze_frame(
+            self.reg, self.frame(mesh=(125.0, 50.0, 10.0)), has_children=True
+        )
+        sev = self.severities(issues)
+        self.assertNotIn("FRAME_MESH_VS_BBOX", sev)
+        self.assertNotIn("FRAME_BBOX_NOT_AABB", sev)
+        self.assertEqual(sev.get("FRAME_UNDECIDABLE"), gate.SEV_WARN)
+        self.assertEqual([c for c, s, _ in issues if s == gate.SEV_BLOCK], [])
+
+    def test_run_gate_marks_containers_from_parent_uid(self):
+        parent = self.frame(uid="P1", mesh=(125.0, 50.0, 10.0))
+        child = self.frame(uid="C1", parent_uid="P1", mesh=(125.0, 50.0, 10.0))
+        data = {"export_profile": "geometry", "nodes": [parent, child]}
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "model.json"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            res = gate.run_gate(str(path), self.reg)
+        found = [(i["code"], i["entity"]) for i in res["issues"]]
+        # P1 is a container (child points at it): union bbox, no mesh verdict
+        self.assertIn(("FRAME_UNDECIDABLE", "P1"), found)
+        self.assertNotIn(("FRAME_MESH_VS_BBOX", "P1"), found)
+        # C1 is a leaf: its own bbox is comparable with its own geometry
+        self.assertIn(("FRAME_MESH_VS_BBOX", "C1"), found)
 
 
 class GateSelftestTests(unittest.TestCase):

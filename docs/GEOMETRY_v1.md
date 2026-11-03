@@ -98,6 +98,24 @@ spatial exportu.
 5. Materiál je `display_name` z přiřazeného materiálu plochy, pokud existuje.
 6. Opakovaný export stejného modelu musí dát stejný `hash`.
 
+## Rámec souřadnic (frame contract)
+
+`geometry.vertices` je ve **world mm** — stejně jako `bbox_mm`. Obojí už
+exportér transformoval, `spatial.matrix_4x4` je přitom jen popis
+local→world transformace uzlu. Spotřebitel tedy:
+
+- `matrix_4x4` na `geometry` ani `bbox_mm` **neaplikuje** (dvojitá
+  transformace), jen ji čte jako orientaci uzlu;
+- u kontejneru počítá s tím, že `geometry` pokrývá jen **přímé** entity
+  (`scope: direct`), zatímco `bbox_mm` je sjednocením dětí — gate tyto dva
+  rozsahy u uzlů s dětmi nesrovnává (`FRAME_MESH_VS_BBOX`,
+  `FRAME_BBOX_NOT_AABB` se přeskakují, výsledek je `FRAME_UNDECIDABLE`);
+- bere na vědomí, že `FRAME_ROTATION_VS_GEOMETRY` je INFO (kontrakt
+  „geometrie už je ve světě“), ne blokující nález.
+
+Detail tří rámeců a jejich transformace: [`SCHEMA_v4.md`](SCHEMA_v4.md)
+§ „Kontrakt rámce“.
+
 ## Omezení
 
 - Křivky nejsou samostatný typ: SketchUp je reprezentuje jako hrany. Oblouk je

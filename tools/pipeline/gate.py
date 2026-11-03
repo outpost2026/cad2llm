@@ -343,7 +343,7 @@ def canonical_attributes(reg, meta):
     return found, issues
 
 
-def analyze_frame(reg, node):
+def analyze_frame(reg, node, has_children=False):
     issues = []
     sp = node.get("spatial") or {}
     if not sp:
@@ -412,15 +412,18 @@ def analyze_frame(reg, node):
 
     if not is_identity(rot_mat):
         predicted = aabb_extents(rot_mat, size)
-        mesh = mesh_extents(node)
+        # geometry is direct-only while a container's bbox is the union of its
+        # children - the two scopes can never match, so no mesh verdict here.
+        mesh = None if has_children else mesh_extents(node)
         if mesh is not None:
             if all(abs(mesh[i] - size[i]) <= EPS_MM for i in range(3)):
                 issues.append(
                     (
                         "FRAME_ROTATION_VS_GEOMETRY",
-                        SEV_BLOCK,
-                        "matice predepisuje rotaci, ale souradnice jsou jiz ve svete; "
-                        "aplikovat matici znovu = dvojita transformace",
+                        SEV_INFO,
+                        "matice = local->world transformace, bbox/geometry = world; "
+                        "matici na geometrii a obal neaplikovat (dvojita "
+                        "transformace) - tohle je kontrakt, ne chyba",
                     )
                 )
             elif all(abs(mesh[i] - predicted[i]) <= EPS_MM for i in range(3)):
@@ -443,13 +446,19 @@ def analyze_frame(reg, node):
         else:
             if not all(abs(predicted[i] - size[i]) <= EPS_MM for i in range(3)):
                 if all(abs(bbox_ext[i] - size[i]) <= EPS_MM for i in range(3)):
+                    why = (
+                        "obal je sjednocenim deti a geometrie pokryva jen primo "
+                        "polozky, srovnani nelze provest"
+                        if has_children
+                        else "bez geometrie nelze overit"
+                    )
                     issues.append(
                         (
                             "FRAME_UNDECIDABLE",
                             SEV_WARN,
-                            "rotace %.1f/%.1f/%.1f st. a obal odpovida neotocenemu kvadru; "
-                            "bez geometrie nelze overit (spravny obal by byl %s)"
-                            % (rx, ry, rz, fmt3(predicted)),
+                            "rotace %.1f/%.1f/%.1f st. a obal odpovida neotocenemu "
+                            "kvadru; %s (spravny obal by byl %s)"
+                            % (rx, ry, rz, why, fmt3(predicted)),
                         )
                     )
 
@@ -831,10 +840,15 @@ def run_gate(model_path, reg):
     scope, node_issues, proposals = [], [], []
     check_model_scope(reg, data, scope)
     check_duplicates(nodes, node_issues)
+    # container = a node other nodes point at with parent_uid; its bbox is the
+    # union of children while geometry covers direct entities only.
+    containers = {n.get("parent_uid") for n in nodes if n.get("parent_uid")}
 
     for node in nodes:
         eid = entity_id(node)
-        for code, sev, msg in analyze_frame(reg, node):
+        for code, sev, msg in analyze_frame(
+            reg, node, has_children=node.get("uid") in containers
+        ):
             node_issues.append((code, sev, eid, msg))
         proposal, sem_issues = classify_semantics(reg, node)
         proposals.append(proposal)

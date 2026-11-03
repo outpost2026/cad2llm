@@ -3,7 +3,7 @@
   "repo": "cad2llm",
   "branch": "main",
   "updated_at": "2026-10-27",
-  "status": "Tag discipline pipeline complete. tag_normalize was applied to the live mistnost_2_v1.3 model: 356 entities in 16 definitions (109 faces + 247 edges); post-apply tag_audit = 0 mismatches, tag_normalize = 0 changes. The model is still unsaved (author must Ctrl+S). Exporter 4.3.5 embeds advisory validation.tag_consistency in every export (default on, API opt-out), adds GUI menu 'Audit tags (inner vs parent)', and reuses Exporter.audit_tags as the single audit core for the bridge RPC. RBZ 4.3.5 rebuilt (23296 B) and installed; live export 49 nodes, 30 definitions, 0 mismatches. Ruby 298 checks, Python 117 tests pass. Push not run.",
+  "status": "Release 4.3.6 done. B2 frame fix shipped: (a) FRAME_ROTATION_VS_GEOMETRY is now INFO (contract: matrix_4x4 = local->world, bbox_mm/geometry = world_mm, never apply the matrix to world data), (b) Group#bounds is parent-space in SketchUp, so exporter world_bounds now carries it through parent_world - nested rotated groups get a true world AABB (spec fixture: nested_rot under a 90 deg parent), (c) gate skips mesh-vs-bbox verdicts for containers (bbox = union of children, geometry = direct only) and reports FRAME_UNDECIDABLE instead. RBZ 4.3.6 rebuilt (23959 B, sha256 813430a2...) and installed 6/6 SHA256 into SU2024 Plugins; bridge hot-reloaded (exporter.rb/annotate.rb/bridge.rb), no SketchUp restart needed. Re-exported mistnost_2_v1.4 (full spatial 116978 B, full geometry 401865 B, compact 55770 B, geometry compact 129849 B): 53 nodes, validation issues 0, tag_audit 0/32 defs and 0/53 instances. Repo gate on the new exports: 0 BLOCK (was 28), verdict WARN. Ruby 313 checks, Python 164 tests, gate selftest 0. SU2024 cleanup done: stale gate.py (39049 B) + 59 reports from 2026-10-27 moved to cad2llm_pipeline/_ARCHIVE_2026-11-03, fresh reports regenerated from the repo gate (21 exports, 6 models). Push run for the checkpoint commit 7d14412.",
   "last_commits": [
     {
       "hash": "36c9037",
@@ -120,7 +120,10 @@
     "Applied tag normalization to live mistnost_2_v1.3: 356 entities in 16 definitions (109 faces + 247 edges); post-apply tag_audit 0 mismatches, tag_normalize 0 changes. Model remains unsaved (author must Ctrl+S).",
     "Exporter 4.3.5: Exporter.audit_tags is the single audit core; validation.tag_consistency is embedded in every export by default (checked_definitions, mismatch_definitions, checked_instances, mismatch_instances, items[]); opt-out tag_audit:false.",
     "GUI: menu item 'Audit tags (inner vs parent)' (12 items total) + tag status line in export messagebox; bridge export returns tag_consistency and CLI prints it; CLI opt-out --no-tag-audit.",
-    "RBZ 4.3.5 rebuilt (23296 B) and installed; 6/6 SHA256 match; bridge hot-reloaded; live export 49 nodes / 30 definitions / 49 instances / 0 mismatches."
+    "RBZ 4.3.5 rebuilt (23296 B) and installed; 6/6 SHA256 match; bridge hot-reloaded; live export 49 nodes / 30 definitions / 49 instances / 0 mismatches.",
+    "B2 frame fix (4.3.6): Group#bounds is parent-space, exporter world_bounds carries it with parent_world -> nested rotated groups export a world AABB; FRAME_ROTATION_VS_GEOMETRY downgraded to INFO with the local->world contract; gate skips mesh-vs-bbox for containers (union bbox vs direct geometry) and reports FRAME_UNDECIDABLE.",
+    "RBZ 4.3.6 rebuilt (23959 B, sha256 813430a2a1396207) and installed; 6/6 SHA256 match; bridge hot-reloaded (no SketchUp restart); re-exported mistnost_2_v1.4 (spatial 116978 B, geometry 401865 B, compact 55770 B, geometry compact 129849 B), 53 nodes, 0 validation issues, tag_audit 0/32 and 0/53.",
+    "Repo gate on the re-exported v1.4: 0 BLOCK (baseline was 28 = 24x FRAME_ROTATION_VS_GEOMETRY + 3x FRAME_BBOX_NOT_AABB + 1x FRAME_MESH_VS_BBOX), verdict WARN; fresh reports in SU2024/cad2llm_pipeline/reports generated from the repo gate only."
   ],
   "verified_numbers": {
     "gui_v7_nodes": 46,
@@ -413,6 +416,31 @@
         "exporter": 119
       }
     },
+    "release_4_3_6": {
+      "version": "4.3.6",
+      "rbz_bytes": 23959,
+      "rbz_sha256": "813430a2a13962072f560ab39170ddd57288eefa19152f9e975b9ed153cf3021",
+      "installed_files_sha256_match": 6,
+      "python_tests": 164,
+      "ruby_checks": 313,
+      "ruby_files": {
+        "annotate": 74,
+        "bridge": 111,
+        "exporter": 128
+      },
+      "fix": "B2: world_bounds(entity, world, parent_world) for Group#bounds (parent space), FRAME_ROTATION_VS_GEOMETRY -> INFO with contract, gate skips mesh-vs-bbox for containers",
+      "gate_baseline_vs_new": {"blocking_before": 28, "blocking_after": 0},
+      "reexport_v1.4": {
+        "spatial_bytes": 116978,
+        "geometry_bytes": 401865,
+        "compact_bytes": 55770,
+        "geometry_compact_bytes": 129849,
+        "nodes": 53,
+        "validation_issues": 0,
+        "tag_audit_mismatch_defs": 0,
+        "tag_audit_mismatch_instances": 0
+      }
+    },
     "tag_consistency_live_v1_3": {
       "model": "mistnost_2_v1.3.skp",
       "nodes": 49,
@@ -483,9 +511,9 @@
     "Fix enrich bug A (energy metrics) and bug B (clearance role rules) before energy/fire analysis",
     "Decide fate of context_indexer_v2.py / index_cad2llm.md (generated index duplicates repo content)",
     "Add bridge/Python compact-export tests if compact export is promoted to production",
-    "Author: restart SketchUp to register menu item 'Audit tags (inner vs parent)' and Extension Manager 4.3.5 (bridge already hot-reloaded)",
-    "Author: Ctrl+S mistnost_2_v1.3.skp - tag normalization is in memory only",
-    "Push 6 commits when explicitly approved",
+    "Author: restart SketchUp when convenient so Extension Manager shows 4.3.6 (bridge hot-reloaded, exporter/annotate/bridge already carry the B2 fix)",
+    "Author: Ctrl+S mistnost_2_v1.4.skp if SketchUp reports the model modified (no model edits were made in this session - tag_audit is read-only)",
+    "Re-export mistnost_2_v1.4_cad2llm_v4_geometry_selection.json from the GUI (9-node selection export is still pre-B2 and gates BLOCK 3)",
     "Decide fate of untracked geo.json (contains GPS + absolute model_path)"
   ],
   "key_files": {
@@ -521,15 +549,15 @@
     "release_rbz": "releases/cad2llm_exporter.rbz"
   },
   "notes": {
-    "tests_python": 117,
-    "tests_ruby": 298,
+    "tests_python": 164,
+    "tests_ruby": 313,
     "validate_export": "python tools\\cad2llm.py validate <file.json>",
     "diff_export": "python tools\\cad2llm.py diff <a.json> <b.json>",
     "ascii_check": "pwsh ..\\.scripts\\ascii_filenames_check.ps1",
-    "extension_version": "4.3.5",
-    "extension_install_mode": "manual copy to Plugins from rebuilt RBZ 4.3.5",
+    "extension_version": "4.3.6",
+    "extension_install_mode": "manual copy to Plugins from rebuilt RBZ 4.3.6 (6/6 SHA256)",
     "skp_source_dir": "C:\\Users\\PC\\Documents\\SU2024",
-    "skp_primary_model": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.3.skp",
+    "skp_primary_model": "C:\\Users\\PC\\Documents\\SU2024\\mistnost_2_v1.4.skp",
     "skp_archive_dir": "C:\\Users\\PC\\Documents\\Sketchup2016 (read-only archive: v1-v7, sk24, Door_renovation_v1)",
     "sketchup_plugins_path": "C:\\Users\\PC\\AppData\\Roaming\\SketchUp\\SketchUp 2024\\SketchUp\\Plugins",
     "sketchup_installed": [
@@ -559,9 +587,9 @@
     "project_metadata": "target.kind='model' povoluje jen set_attribute; model target -> uid='model'. Exporter uklada project_metadata.metadata = metadata_of(model, skip: SKIP_DICT_EXACT + ['GeoReference','GSU_ContributorsInfo','temp']). IfcGUIDs zustava. Priklad planu: docs/plans/project_metadata_example.json (hodnoty jsou placeholder, neaplikovano).",
     "vocab_shared": "tools/cad2llm_rules.json -> vocab {version, zones, roles:{system,zone,ifc,label_cs}, tag_roles}; tools/cad2llm_vocab.py check_node -> UNKNOWN_ROLE/UNKNOWN_ZONE/IFC_ROLE_MISMATCH/TAG_ROLE_MISMATCH; cad2llm_core.validate pridava vocab issue pro kazdy uzel (i bez bboxu); v5.classify je metadata-first (CLASS_A, confidence 0.95, evidence R_METADATA_ROLE/R_METADATA_ZONE).",
     "tests_ruby_breakdown": {
-      "annotate": 68,
+      "annotate": 74,
       "bridge": 111,
-      "exporter": 119
+      "exporter": 128
     },
     "house_test02": {
       "export_before": "C:/Users/PC/Documents/SU2024/house_test02_cad2llm_v4.json (13809 B, 8 nodes)",

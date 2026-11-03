@@ -110,10 +110,29 @@ eq("child path", cells[1]["hierarchy_path"], ["battery_b", "cell"])
 
 # -------------------------------------------------------- 5. nested geometry
 parent = mk_group(name: "zone_bed", pid: 401, pos: [100, 0, 0], size_in: [50, 50, 50])
-parent.entities << mk_group(name: "lfp_cell", pid: 402, pos: [50, 0, 0], size_in: [5, 5, 5], world_pos: [150, 0, 0])
+parent.entities << mk_group(name: "lfp_cell", pid: 402, pos: [50, 0, 0], size_in: [5, 5, 5])
 model_with([parent])
 nested = CAD2LLM::Exporter.build(Sketchup.active_model)["nodes"].find { |n| n["name"] == "lfp_cell" }
-eq("nested world bbox", nested["spatial"]["bbox_mm"]["min"]["x"], 3810.0)
+eq("nested world bbox (parent frame + parent_world)", nested["spatial"]["bbox_mm"]["min"]["x"], 3810.0)
+
+# ------------------------------------- 5b. nested group under a rotated parent
+# Group#bounds is parent-space, so a rotated parent must rotate the stored bbox
+# into world; otherwise bbox and geometry.vertices end up in different frames.
+rot_parent = mk_component(name: "rot_parent", pid: 403, def_name: "Rot_parent",
+                          size_in: [20, 20, 20],
+                          transformation: Geom::Transformation.rotation_z_deg(90, Geom::Point3d.new(0, 0, 0)))
+rot_parent.definition.entities << mk_group(name: "nested_rot", pid: 404, pos: [10, 0, 0], size_in: [4, 2, 1])
+model_with([rot_parent])
+rot_nested = CAD2LLM::Exporter.build(Sketchup.active_model)["nodes"].find { |n| n["name"] == "nested_rot" }
+near("rotated parent: bbox min x (mm)", rot_nested["spatial"]["bbox_mm"]["min"]["x"], -50.8)
+near("rotated parent: bbox max x (mm)", rot_nested["spatial"]["bbox_mm"]["max"]["x"], 0.0)
+near("rotated parent: bbox min y (mm)", rot_nested["spatial"]["bbox_mm"]["min"]["y"], 254.0)
+near("rotated parent: bbox max y (mm)", rot_nested["spatial"]["bbox_mm"]["max"]["y"], 355.6)
+near("rotated parent: bbox min z (mm)", rot_nested["spatial"]["bbox_mm"]["min"]["z"], 0.0)
+near("rotated parent: bbox max z (mm)", rot_nested["spatial"]["bbox_mm"]["max"]["z"], 25.4)
+near("rotated parent: size x is the old y", rot_nested["spatial"]["size_mm"]["x"], 50.8)
+near("rotated parent: size y is the old x", rot_nested["spatial"]["size_mm"]["y"], 101.6)
+near("rotated parent: child rotation follows parent", rot_nested["spatial"]["rotation_deg"]["z"], 90.0)
 
 # ------------------------------------------------------ 6. geometry profile
 box = mk_group(name: "wall_box", pid: 501, pos: [100, 0, 0], size_in: [10, 20, 30])
